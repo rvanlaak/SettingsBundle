@@ -1,0 +1,29 @@
+{
+    "name": "dmishh/settings-bundle",
+    "description": "",
+    "keywords": ["symfony2", "bundle", "configuration", "settings"],
+    "homepage": "https://github.com/dmishh/SettingsBundle",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitriy Scherbina",
+            "homepage": "http://dmishh.com"
+        }
+    ],
+    "require": {
+        "symfony/framework-bundle": "~2.1",
+        "symfony/security": "~2.1",
+        "symfony/form": "~2.1",
+        "symfony/validator": "~2.1",
+    },
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-0": { "": "src/" }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
