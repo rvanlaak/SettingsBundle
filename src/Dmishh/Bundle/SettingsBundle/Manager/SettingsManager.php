@@ -22,12 +22,12 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * @var array
      */
-    protected $globalSettings = [];
+    protected $globalSettings = array();
 
     /**
      * @var array
      */
-    protected $userSettings = [];
+    protected $userSettings = array();
 
     /**
      * @var ObjectManager
@@ -43,7 +43,7 @@ class SettingsManager implements SettingsManagerInterface
      * @var array
      */
     protected $options = array(
-        'setting_names' => [],
+        'setting_names' => array(),
         'inherit_global_settings' => true
     );
 
