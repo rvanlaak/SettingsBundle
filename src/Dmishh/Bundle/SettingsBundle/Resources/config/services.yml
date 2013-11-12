@@ -1,0 +1,23 @@
+services:
+    settings.manager:
+        class: Dmishh\Bundle\SettingsBundle\Manager\SettingsManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - { setting_names: %settings.manager.setting_names%}
+
+#    recaptcha:
+#        class: Recaptcher\Recaptcha
+#        arguments: [%recaptcha.public_key%, %recaptcha.private_key%, %recaptcha.use_https%]
+#
+#    form.type.recaptcha:
+#        class: Dmishh\Bundle\RecaptchaBundle\Form\Type\RecaptchaType
+#        arguments: [@recaptcha]
+#        tags:
+#            - { name: form.type, alias: recaptcha }
+#
+#    form.validator.recaptcha:
+#        class: Dmishh\Bundle\RecaptchaBundle\Validator\Constraints\RecaptchaValidator
+#        scope: request
+#        arguments: [@recaptcha, @request]
+#        tags:
+#            - { name: validator.constraint_validator, alias: recaptcha }

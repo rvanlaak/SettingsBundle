@@ -1,0 +1,3 @@
+settings_manager:
+    pattern:  /settings
+    defaults: { _controller: "DmishhSettingsBundle:Settings:index" }
