@@ -12,10 +12,20 @@
 namespace Dmishh\Bundle\SettingsBundle\Tests;
 
 use Dmishh\Bundle\SettingsBundle\Manager\SettingsManager;
+use Dmishh\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
 use Mockery;
 
 class SettingsManagerTest extends AbstractTest
 {
+    /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException
+     */
+    public function testGetUnknownSettingShouldRaiseException()
+    {
+        $settingsManager = $this->createSettingsManager();
+        $settingsManager->get('unknown_setting');
+    }
+
     public function testGlobalSettingsAccessor()
     {
         $settingsManager = $this->createSettingsManager();
@@ -97,6 +107,64 @@ class SettingsManagerTest extends AbstractTest
     }
 
     /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
+     */
+    public function testSetUserSettingInGlobalScopeRaisesException()
+    {
+        $user = $this->createUser();
+        $settingsManager = $this->createSettingsManager();
+        $settingsManager->set('some_global_setting', 'VALUE_GLOBAL');
+        $this->assertEquals('VALUE_GLOBAL', $settingsManager->get('some_global_setting'));
+
+        $settingsManager->set('some_global_setting', 'VALUE_GLOBAL', $user);
+    }
+
+    /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
+     */
+    public function testGetUserSettingInGlobalScopeRaisesException()
+    {
+        $user = $this->createUser();
+        $settingsManager = $this->createSettingsManager();
+        $settingsManager->get('some_global_setting', $user);
+    }
+
+    /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
+     */
+    public function testSetGlobalSettingInUserScopeRaisesException()
+    {
+        $user = $this->createUser();
+        $settingsManager = $this->createSettingsManager();
+        $settingsManager->set('some_user_setting', 'VALUE_USER', $user);
+        $this->assertEquals('VALUE_USER', $settingsManager->get('some_global_setting', $user));
+
+        $settingsManager->set('some_user_setting', 'VALUE_USER');
+    }
+
+    /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
+     */
+    public function testGetGlobalSettingInUserScopeRaisesException()
+    {
+        $settingsManager = $this->createSettingsManager();
+        $settingsManager->get('some_user_setting');
+    }
+
+    public function testGetAllGlobalSettings()
+    {
+        $settingsManager = $this->createSettingsManager();
+        $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_global_setting' => null), $settingsManager->all());
+    }
+
+    public function testGetAllUserSettings()
+    {
+        $user = $this->createUser();
+        $settingsManager = $this->createSettingsManager();
+        $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($user));
+    }
+
+    /**
      * @param int $id
      * @return \Dmishh\Bundle\SettingsBundle\Entity\UserInterface
      */
@@ -107,6 +175,18 @@ class SettingsManagerTest extends AbstractTest
 
     protected function createSettingsManager(array $options = array())
     {
-        return new SettingsManager($this->em, !empty($options) ? $options : array('setting_names' => array('some_setting')));
+        if (empty($options)) {
+            $options = array(
+                'settings_configuration' =>
+                    array(
+                        'some_setting' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
+                        'some_setting2' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
+                        'some_global_setting' => array('scope' => SettingsManagerInterface::SCOPE_GLOBAL),
+                        'some_user_setting' => array('scope' => SettingsManagerInterface::SCOPE_USER),
+                    )
+            );
+        }
+
+        return new SettingsManager($this->em, $options);
     }
 }

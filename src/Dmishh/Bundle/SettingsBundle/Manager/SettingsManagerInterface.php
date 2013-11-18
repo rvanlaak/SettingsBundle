@@ -15,8 +15,42 @@ use Dmishh\Bundle\SettingsBundle\Entity\UserInterface;
 
 interface SettingsManagerInterface
 {
+    const SCOPE_ALL = 'all';
+    const SCOPE_GLOBAL = 'global';
+    const SCOPE_USER = 'user';
+
+    /**
+     * @param string $name
+     * @param UserInterface $user
+     * @return mixed
+     */
     function get($name, UserInterface $user = null);
-    function set($name, $value, UserInterface $user = null);
-    function clear($name, UserInterface $user = null);
+
+    /**
+     * @param UserInterface $user
+     * @return array
+     */
     function all(UserInterface $user = null);
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @param UserInterface $user
+     * @return SettingsManagerInterface
+     */
+    function set($name, $value, UserInterface $user = null);
+
+    /**
+     * @param array $settings
+     * @param UserInterface $user
+     * @return SettingsManagerInterface
+     */
+    function setMany(array $settings, UserInterface $user = null);
+
+    /**
+     * @param string $name
+     * @param UserInterface $user
+     * @return SettingsManagerInterface
+     */
+    function clear($name, UserInterface $user = null);
 }

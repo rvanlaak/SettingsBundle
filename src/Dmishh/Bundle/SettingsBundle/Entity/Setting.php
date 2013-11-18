@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Setting
  *
  * @ORM\Table(name="dmishh_settings")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="\Doctrine\ORM\EntityRepository")
  */
 class Setting
 {

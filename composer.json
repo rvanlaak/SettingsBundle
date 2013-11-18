@@ -1,7 +1,7 @@
 {
     "name": "dmishh/settings-bundle",
     "description": "Database centric Symfony2 configuration management. Global and per-user settings supported.",
-    "keywords": ["symfony2", "bundle", "configuration", "settings"],
+    "keywords": ["symfony2", "bundle", "config", "configuration", "settings"],
     "homepage": "https://github.com/dmishh/SettingsBundle",
     "type": "symfony-bundle",
     "license": "MIT",

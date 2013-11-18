@@ -11,7 +11,6 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Exception;
 
-
 class SettingsException extends \Exception
 {
 

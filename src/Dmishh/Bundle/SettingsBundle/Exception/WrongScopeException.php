@@ -11,10 +11,10 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Exception;
 
-class UnknownSettingException extends SettingsException
+class WrongScopeException extends SettingsException
 {
-    public function __construct($settingName)
+    public function __construct($scopeName, $settingName)
     {
-        parent::__construct(sprintf('Unknown setting "%s"', $settingName));
+        parent::__construct(sprintf('Wrong scope "%s" for setting "%s"', $scopeName, $settingName));
     }
 }
