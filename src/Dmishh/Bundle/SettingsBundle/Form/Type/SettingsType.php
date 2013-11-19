@@ -29,9 +29,14 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->settingsConfiguration as $name => $configuration) {
+        foreach ($this->settingsConfiguration as $name => $config) {
             if (array_key_exists($name, $options['data']) && !in_array($name, $options['disabled_settings'])) {
-                $builder->add($name, 'dmishh_setting', array('configuration' => $configuration['validation']));
+
+                if (!empty($config['validation']['options']['choices'])) {
+                    $config['validation']['options']['choices'] = array_combine($config['validation']['options']['choices'], $config['validation']['options']['choices']);
+                }
+
+                $builder->add($name, $config['validation']['type'], $config['validation']['options']);
             }
         }
     }

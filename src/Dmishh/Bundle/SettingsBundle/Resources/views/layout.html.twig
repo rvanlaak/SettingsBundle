@@ -2,6 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8" />
+    <title></title>
     {% block stylesheets %}
         {#
         {% stylesheets '@DmishhSettingsBundle/Resources/assets/css/form.css' %}
@@ -11,6 +12,12 @@
     {% endblock %}
 </head>
 <body>
-    {% block content %}{% endblock %}
+    {% for flashMessage in app.session.flashbag.get('error') %}
+        <div class="error">{{ flashMessage }}</div>
+    {% endfor %}
+    {% for flashMessage in app.session.flashbag.get('success') %}
+        <div class="success">{{ flashMessage }}</div>
+    {% endfor %}
+    {% block settings_form %}{% endblock %}
 </body>
 </html>

@@ -29,21 +29,19 @@ class SettingsController extends Controller
         $user = $this->getUserObject($user_id);
         $this->verifyCredentials($user);
 
-        $settings = array_map(function ($value) { return array('value' => $value); }, $this->get('dmishh_settings.manager')->all($user));
-        $form = $this->createForm('dmishh_settings', $settings, array('disabled_settings' => $this->getDisabledSettings($user)));
+        $form = $this->createForm('dmishh_settings', $this->get('dmishh_settings.manager')->all($user));
 
         if ($request->isMethod('post')) {
             $form->bind($request);
 
             if ($form->isValid()) {
-                $settingsData = array();
-                foreach ($form->getData() as $name => $data) {
-                    $settingsData[$name] = $data['value'];
-                }
 
-                $this->get('dmishh_settings.manager')->setMany($settingsData, $user);
+                $this->get('dmishh_settings.manager')->setMany($form->getData(), $user);
+                $this->get('session')->getFlashBag()->add('success', 'Settings were successfully updated!');
 
                 return $this->redirect($request->getUri());
+            } else {
+
             }
         }
 
@@ -57,8 +55,16 @@ class SettingsController extends Controller
     }
 
     /**
-     * Override this method and throw 403 or 404 esceptions depending on your business logic
-     *
+     * @param int $userId
+     * @return UserInterface|null
+     */
+    protected function getUserObject($userId = null)
+    {
+        $userClass = $this->container->getParameter('dmishh_settings.manager.user_class');
+        return $userId === null ? null : $this->get('doctrine')->getManager()->getRepository($userClass)->find($userId);
+    }
+
+    /**
      * @param UserInterface $user
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
@@ -79,24 +85,5 @@ class SettingsController extends Controller
                 }
             }
         }
-    }
-
-    /**
-     * @param UserInterface $user
-     * @return array
-     */
-    protected function getDisabledSettings(UserInterface $user = null)
-    {
-        return array();
-    }
-
-    /**
-     * @param int $userId
-     * @return UserInterface|null
-     */
-    protected function getUserObject($userId = null)
-    {
-        $userClass = $this->container->getParameter('dmishh_settings.manager.user_class');
-        return $userId === null ? null : $this->get('doctrine')->getManager()->getRepository($userClass)->find($userId);
     }
 }

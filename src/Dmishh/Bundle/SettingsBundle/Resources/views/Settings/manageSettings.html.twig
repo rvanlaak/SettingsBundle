@@ -1,7 +1,7 @@
 {% extends layout %}
 
-{% block content %}
-    <form method="post" {{ form_enctype(settings_form) }}>
+{% block settings_form %}
+    <form method="post" id="settings-form" {{ form_enctype(settings_form) }}>
         {{ form_widget(settings_form) }}
 
         <input type="submit" value="Save" />
