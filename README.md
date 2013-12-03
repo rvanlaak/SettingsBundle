@@ -1,6 +1,8 @@
 SettingsBundle
 ==============
 
+**Bundle is under heavy development, please, be patient :)**
+
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 
 ### About
