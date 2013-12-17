@@ -79,9 +79,9 @@ Scopes
 
 ### Roadmap
 
-#### 1.1
+#### 1.*
 * Add some default themes (like bootstrap)
-* Add PHP templates support
+* Add DocumentManager support
 
 #### 1.0
 * First stable version

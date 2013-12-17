@@ -23,27 +23,27 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * @var array
      */
-    protected $globalSettings;
+    private $globalSettings;
 
     /**
      * @var array
      */
-    protected $userSettings;
+    private $userSettings;
 
     /**
      * @var ObjectManager
      */
-    protected $em;
+    private $em;
 
     /**
      * @var EntityRepository
      */
-    protected $repository;
+    private $repository;
 
     /**
      * @var array
      */
-    protected $options = array(
+    private $options = array(
         'inherit_global_settings' => true,
         'settings_configuration' => array(),
     );
@@ -65,9 +65,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param UserInterface $user
-     * @return mixed
+     * {@inheritDoc}
      */
     public function get($name, UserInterface $user = null)
     {
@@ -90,8 +88,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param UserInterface $user
-     * @return array
+     * {@inheritDoc}
      */
     public function all(UserInterface $user = null)
     {
@@ -105,10 +102,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param mixed $value
-     * @param UserInterface $user
-     * @return SettingsManager
+     * {@inheritDoc}
      */
     public function set($name, $value, UserInterface $user = null)
     {
@@ -117,6 +111,9 @@ class SettingsManager implements SettingsManagerInterface
         return $this->flush($name, $user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public function setMany(array $settings, UserInterface $user = null)
     {
         foreach ($settings as $name => $value) {
@@ -127,9 +124,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param string $name
-     * @param UserInterface $user
-     * @return SettingsManager
+     * {@inheritDoc}
      */
     public function clear($name, UserInterface $user = null)
     {
@@ -142,7 +137,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param UserInterface $user
      * @return SettingsManager
      */
-    protected function setWithoutFlush($name, $value, UserInterface $user = null)
+    private function setWithoutFlush($name, $value, UserInterface $user = null)
     {
         $this->validateSetting($name, $user);
         $this->loadSettings($user);
@@ -161,7 +156,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param UserInterface $user
      * @return SettingsManager
      */
-    protected function flush($names, UserInterface $user = null)
+    private function flush($names, UserInterface $user = null)
     {
         $names = (array) $names;
 
@@ -210,17 +205,14 @@ class SettingsManager implements SettingsManagerInterface
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
      */
-    protected function validateSetting($name, UserInterface $user = null)
+    private function validateSetting($name, UserInterface $user = null)
     {
+        // Name validation
         if (!is_string($name) || !array_key_exists($name, $this->options['settings_configuration'])) {
             throw new UnknownSettingException($name);
         }
 
-        return $this->validateSettingScope($name, $user);
-    }
-
-    protected function validateSettingScope($name, UserInterface $user = null)
-    {
+        // Scope validation
         $scope = $this->options['settings_configuration'][$name]['scope'];
         if ($scope !== SettingsManagerInterface::SCOPE_ALL) {
             if ($scope === SettingsManagerInterface::SCOPE_GLOBAL && $user !== null || $scope === SettingsManagerInterface::SCOPE_USER && $user === null) {
@@ -232,43 +224,52 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
+     * Method for settings lazy loading
+     *
      * @param UserInterface $user
      * @return SettingsManager
      */
-    protected function loadSettings(UserInterface $user = null)
+    private function loadSettings(UserInterface $user = null)
     {
-        $load = function (UserInterface $user = null) {
-            $settings = array();
-
-            foreach (array_keys($this->options['settings_configuration']) as $name) {
-                try {
-                    $this->validateSettingScope($name, $user);
-                    $settings[$name] = null;
-                } catch (WrongScopeException $e) {
-                    continue;
-                }
-            }
-
-            /** @var Setting $setting */
-            foreach ($this->repository->findBy(array('userId' => $user === null ? null : $user->getId())) as $setting) {
-                if (array_key_exists($setting->getName(), $settings)) {
-                    $settings[$setting->getName()] = unserialize($setting->getValue());
-                }
-            }
-
-            return $settings;
-        };
-
-        // global settings
+        // Global settings
         if ($this->globalSettings === null) {
-            $this->globalSettings = $load();
+            $this->globalSettings = $this->getSettingsFromRepository();
         }
 
-        // user settings
+        // User settings
         if ($user !== null && ($this->userSettings === null || !array_key_exists($user->getId(), $this->userSettings))) {
-            $this->userSettings[$user->getId()] = $load($user);
+            $this->userSettings[$user->getId()] = $this->getSettingsFromRepository($user);
         }
 
         return $this;
+    }
+
+    /**
+     * Retreives settings from repository
+     *
+     * @param UserInterface $user
+     * @return array
+     */
+    private function getSettingsFromRepository(UserInterface $user = null)
+    {
+        $settings = array();
+
+        foreach (array_keys($this->options['settings_configuration']) as $name) {
+            try {
+                $this->validateSettingScope($name, $user);
+                $settings[$name] = null;
+            } catch (WrongScopeException $e) {
+                continue;
+            }
+        }
+
+        /** @var Setting $setting */
+        foreach ($this->repository->findBy(array('userId' => $user === null ? null : $user->getId())) as $setting) {
+            if (array_key_exists($setting->getName(), $settings)) {
+                $settings[$setting->getName()] = unserialize($setting->getValue());
+            }
+        }
+
+        return $settings;
     }
 }

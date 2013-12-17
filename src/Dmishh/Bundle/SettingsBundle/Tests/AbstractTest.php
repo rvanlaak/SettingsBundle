@@ -48,7 +48,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $config->setProxyNamespace('EntityProxy');
         $config->setAutoGenerateProxyClasses(true);
 
-//mapping (example uses annotations, could be any of XML/YAML or plain PHP)
         AnnotationRegistry::registerFile(__DIR__ . '/../../../../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
         $driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
             new \Doctrine\Common\Annotations\AnnotationReader(),

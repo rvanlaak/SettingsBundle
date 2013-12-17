@@ -20,6 +20,8 @@ interface SettingsManagerInterface
     const SCOPE_USER = 'user';
 
     /**
+     * Returns setting value by its name
+     *
      * @param string $name
      * @param UserInterface $user
      * @return mixed
@@ -27,12 +29,16 @@ interface SettingsManagerInterface
     function get($name, UserInterface $user = null);
 
     /**
+     * Returns all settings as associative name-value array
+     *
      * @param UserInterface $user
      * @return array
      */
     function all(UserInterface $user = null);
 
     /**
+     * Sets setting value by its name
+     *
      * @param string $name
      * @param mixed $value
      * @param UserInterface $user
@@ -41,6 +47,8 @@ interface SettingsManagerInterface
     function set($name, $value, UserInterface $user = null);
 
     /**
+     * Sets settings' values from associative name-value array
+     *
      * @param array $settings
      * @param UserInterface $user
      * @return SettingsManagerInterface
@@ -48,6 +56,8 @@ interface SettingsManagerInterface
     function setMany(array $settings, UserInterface $user = null);
 
     /**
+     * Clears setting value
+     *
      * @param string $name
      * @param UserInterface $user
      * @return SettingsManagerInterface
