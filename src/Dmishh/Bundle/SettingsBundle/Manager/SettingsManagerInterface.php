@@ -11,7 +11,7 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
-use Dmishh\Bundle\SettingsBundle\Entity\UserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SettingsManagerInterface
 {

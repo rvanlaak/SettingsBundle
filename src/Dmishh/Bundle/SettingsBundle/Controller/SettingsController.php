@@ -29,14 +29,14 @@ class SettingsController extends Controller
         $user = $this->getUserObject($user_id);
         $this->verifyCredentials($user);
 
-        $form = $this->createForm('dmishh_settings', $this->get('dmishh_settings.manager')->all($user));
+        $form = $this->createForm('dmishh_settings', $this->get('settings_manager')->all($user));
 
         if ($request->isMethod('post')) {
             $form->bind($request);
 
             if ($form->isValid()) {
 
-                $this->get('dmishh_settings.manager')->setMany($form->getData(), $user);
+                $this->get('settings_manager')->setMany($form->getData(), $user);
                 $this->get('session')->getFlashBag()->add('success', 'Settings were successfully updated!');
 
                 return $this->redirect($request->getUri());
@@ -46,10 +46,10 @@ class SettingsController extends Controller
         }
 
         return $this->render(
-            $this->container->getParameter('dmishh_settings.manager.template'),
+            $this->container->getParameter('settings_manager.template'),
             array(
                 'settings_form' => $form->createView(),
-                'layout' => $this->container->getParameter('dmishh_settings.manager.layout'),
+                'layout' => $this->container->getParameter('settings_manager.layout'),
             )
         );
     }
@@ -60,7 +60,7 @@ class SettingsController extends Controller
      */
     protected function getUserObject($userId = null)
     {
-        $userClass = $this->container->getParameter('dmishh_settings.manager.user_class');
+        $userClass = $this->container->getParameter('settings_manager.user_class');
         return $userId === null ? null : $this->get('doctrine')->getManager()->getRepository($userClass)->find($userId);
     }
 
@@ -70,7 +70,7 @@ class SettingsController extends Controller
      */
     protected function verifyCredentials(UserInterface $user = null)
     {
-        $securitySettings = $this->container->getParameter('dmishh_settings.manager.security');
+        $securitySettings = $this->container->getParameter('settings_manager.security');
 
         if (!empty($securitySettings['manage_settings_role'])) {
             if ($user === null) {

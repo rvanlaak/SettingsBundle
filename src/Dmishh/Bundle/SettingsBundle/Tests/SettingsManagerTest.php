@@ -165,28 +165,25 @@ class SettingsManagerTest extends AbstractTest
     }
 
     /**
-     * @param int $id
-     * @return \Dmishh\Bundle\SettingsBundle\Entity\UserInterface
+     * @param string $username
+     * @return \Symfony\Component\Security\Core\User\UserInterface
      */
-    protected function createUser($id = 1)
+    protected function createUser($username = 'user1')
     {
-        return Mockery::mock('Dmishh\Bundle\SettingsBundle\Entity\UserInterface', array('getId' => $id));
+        return Mockery::mock('Symfony\Component\Security\Core\User\UserInterface', array('getUsername' => $username));
     }
 
-    protected function createSettingsManager(array $options = array())
+    protected function createSettingsManager(array $configuration = array())
     {
-        if (empty($options)) {
-            $options = array(
-                'settings_configuration' =>
-                    array(
-                        'some_setting' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
-                        'some_setting2' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
-                        'some_global_setting' => array('scope' => SettingsManagerInterface::SCOPE_GLOBAL),
-                        'some_user_setting' => array('scope' => SettingsManagerInterface::SCOPE_USER),
-                    )
+        if (empty($configuration)) {
+            $configuration = array(
+                'some_setting' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
+                'some_setting2' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
+                'some_global_setting' => array('scope' => SettingsManagerInterface::SCOPE_GLOBAL),
+                'some_user_setting' => array('scope' => SettingsManagerInterface::SCOPE_USER),
             );
         }
 
-        return new SettingsManager($this->em, $options);
+        return new SettingsManager($this->em, $configuration);
     }
 }

@@ -17,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Setting
  *
  * @ORM\Table(name="dmishh_settings")
- * @ORM\Entity(repositoryClass="\Doctrine\ORM\EntityRepository")
+ * @ORM\Entity
  */
 class Setting
 {
@@ -45,11 +45,11 @@ class Setting
     private $value;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $userId;
+    private $username;
 
     /**
      * Get id
@@ -108,21 +108,21 @@ class Setting
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getUserId()
+    public function getUsername()
     {
-        return $this->userId;
+        return $this->username;
     }
 
     /**
-     * @param int $userId
+     * @param string $username
      *
      * @return Setting
      */
-    public function setUserId($userId)
+    public function setUsername($username)
     {
-        $this->userId = $userId;
+        $this->username = $username;
 
         return $this;
     }

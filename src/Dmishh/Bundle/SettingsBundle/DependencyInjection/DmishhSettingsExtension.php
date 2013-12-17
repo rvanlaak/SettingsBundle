@@ -32,10 +32,8 @@ class DmishhSettingsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-//        vardie($config);
-
         foreach ($config as $key => $value) {
-            $container->setParameter('dmishh_settings.manager.' . $key, $value);
+            $container->setParameter('settings_manager.' . $key, $value);
         }
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));

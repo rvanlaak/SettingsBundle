@@ -12,11 +12,11 @@
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
 use Dmishh\Bundle\SettingsBundle\Entity\Setting;
-use Dmishh\Bundle\SettingsBundle\Entity\UserInterface;
 use Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SettingsManager implements SettingsManagerInterface
 {
@@ -43,25 +43,17 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * @var array
      */
-    private $options = array(
-        'inherit_global_settings' => true,
-        'settings_configuration' => array(),
-    );
+    private $configuration;
 
     /**
      * @param ObjectManager $em
-     * @param array $options
+     * @param array $configuration
      */
-    public function __construct(ObjectManager $em, array $options = array())
+    public function __construct(ObjectManager $em, array $configuration = array())
     {
         $this->em = $em;
         $this->repository = $em->getRepository('Dmishh\\Bundle\\SettingsBundle\\Entity\\Setting');
-
-        foreach ($options as $name => $value) {
-            if (array_key_exists($name, $this->options)) {
-                $this->options[$name] = $value;
-            }
-        }
+        $this->configuration = $configuration;
     }
 
     /**
@@ -77,10 +69,8 @@ class SettingsManager implements SettingsManagerInterface
         if ($user === null) {
             $value = $this->globalSettings[$name];
         } else {
-            if ($this->userSettings[$user->getId()][$name] !== null) {
-                $value = $this->userSettings[$user->getId()][$name];
-            } elseif ($this->options['inherit_global_settings'] && array_key_exists($name, $this->globalSettings)) {
-                $value = $this->globalSettings[$name];
+            if ($this->userSettings[$user->getUsername()][$name] !== null) {
+                $value = $this->userSettings[$user->getUsername()][$name];
             }
         }
 
@@ -97,7 +87,7 @@ class SettingsManager implements SettingsManagerInterface
         if ($user === null) {
             return $this->globalSettings;
         } else {
-            return $this->userSettings[$user->getId()];
+            return $this->userSettings[$user->getUsername()];
         }
     }
 
@@ -145,7 +135,7 @@ class SettingsManager implements SettingsManagerInterface
         if ($user === null) {
             $this->globalSettings[$name] = $value;
         } else {
-            $this->userSettings[$user->getId()][$name] = $value;
+            $this->userSettings[$user->getUsername()][$name] = $value;
         }
 
         return $this;
@@ -160,7 +150,7 @@ class SettingsManager implements SettingsManagerInterface
     {
         $names = (array) $names;
 
-        $settings = $this->repository->findBy(array('name' => $names, 'userId' => $user === null ? null : $user->getId()));
+        $settings = $this->repository->findBy(array('name' => $names, 'username' => $user === null ? null : $user->getUsername()));
         $findByName = function ($name) use ($settings) {
             $setting = array_filter($settings, function ($setting) use ($name) {
                 return $setting->getName() == $name;
@@ -169,7 +159,7 @@ class SettingsManager implements SettingsManagerInterface
         };
 
         /** @var Setting $setting */
-        foreach ($this->options['settings_configuration'] as $name => $configuration) {
+        foreach ($this->configuration as $name => $configuration) {
 
             try {
                 $value = $this->get($name, $user);
@@ -182,7 +172,7 @@ class SettingsManager implements SettingsManagerInterface
                 $setting = new Setting();
                 $setting->setName($name);
                 if ($user !== null) {
-                    $setting->setUserId($user->getId());
+                    $setting->setUsername($user->getUsername());
                 }
                 $this->em->persist($setting);
             }
@@ -208,12 +198,12 @@ class SettingsManager implements SettingsManagerInterface
     private function validateSetting($name, UserInterface $user = null)
     {
         // Name validation
-        if (!is_string($name) || !array_key_exists($name, $this->options['settings_configuration'])) {
+        if (!is_string($name) || !array_key_exists($name, $this->configuration)) {
             throw new UnknownSettingException($name);
         }
 
         // Scope validation
-        $scope = $this->options['settings_configuration'][$name]['scope'];
+        $scope = $this->configuration[$name]['scope'];
         if ($scope !== SettingsManagerInterface::SCOPE_ALL) {
             if ($scope === SettingsManagerInterface::SCOPE_GLOBAL && $user !== null || $scope === SettingsManagerInterface::SCOPE_USER && $user === null) {
                 throw new WrongScopeException($scope, $name);
@@ -237,8 +227,8 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         // User settings
-        if ($user !== null && ($this->userSettings === null || !array_key_exists($user->getId(), $this->userSettings))) {
-            $this->userSettings[$user->getId()] = $this->getSettingsFromRepository($user);
+        if ($user !== null && ($this->userSettings === null || !array_key_exists($user->getUsername(), $this->userSettings))) {
+            $this->userSettings[$user->getUsername()] = $this->getSettingsFromRepository($user);
         }
 
         return $this;
@@ -254,9 +244,9 @@ class SettingsManager implements SettingsManagerInterface
     {
         $settings = array();
 
-        foreach (array_keys($this->options['settings_configuration']) as $name) {
+        foreach (array_keys($this->configuration) as $name) {
             try {
-                $this->validateSettingScope($name, $user);
+                $this->validateSetting($name, $user);
                 $settings[$name] = null;
             } catch (WrongScopeException $e) {
                 continue;
@@ -264,7 +254,7 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         /** @var Setting $setting */
-        foreach ($this->repository->findBy(array('userId' => $user === null ? null : $user->getId())) as $setting) {
+        foreach ($this->repository->findBy(array('username' => $user === null ? null : $user->getUsername())) as $setting) {
             if (array_key_exists($setting->getName(), $settings)) {
                 $settings[$setting->getName()] = unserialize($setting->getValue());
             }

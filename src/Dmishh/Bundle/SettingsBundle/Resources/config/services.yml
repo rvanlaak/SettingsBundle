@@ -1,17 +1,12 @@
 services:
-    dmishh_settings.manager:
+    settings_manager:
         class: Dmishh\Bundle\SettingsBundle\Manager\SettingsManager
         arguments:
             - @doctrine.orm.entity_manager
-            - { settings_configuration: %dmishh_settings.manager.settings% }
+            - %settings_manager.settings%
 
-    form.type.dmishh_settings:
+    form.type.settings:
         class: Dmishh\Bundle\SettingsBundle\Form\Type\SettingsType
-        arguments: [%dmishh_settings.manager.settings%]
+        arguments: [%settings_manager.settings%]
         tags:
             - { name: form.type, alias: dmishh_settings }
-
-    form.type.dmishh_setting:
-        class: Dmishh\Bundle\SettingsBundle\Form\Type\SettingType
-        tags:
-            - { name: form.type, alias: dmishh_setting }
