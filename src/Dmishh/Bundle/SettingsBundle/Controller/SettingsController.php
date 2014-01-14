@@ -11,13 +11,12 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Controller;
 
-use Dmishh\Bundle\SettingsBundle\Entity\UserInterface;
-use Journalist\CoreBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class SettingsController extends Controller
 {
@@ -29,7 +28,7 @@ class SettingsController extends Controller
         $user = $this->getUserObject($user_id);
         $this->verifyCredentials($user);
 
-        $form = $this->createForm('dmishh_settings', $this->get('settings_manager')->all($user));
+        $form = $this->createForm('settings_management', $this->get('settings_manager')->all($user));
 
         if ($request->isMethod('post')) {
             $form->bind($request);
@@ -55,8 +54,8 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param int $userId
-     * @return UserInterface|null
+     * @param int|null $userId
+     * @return \Symfony\Component\Security\Core\User\UserInterface|null
      */
     protected function getUserObject($userId = null)
     {
@@ -65,7 +64,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param UserInterface $user
+     * @param \Symfony\Component\Security\Core\User\UserInterface|null $user
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     protected function verifyCredentials(UserInterface $user = null)

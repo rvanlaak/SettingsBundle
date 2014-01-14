@@ -15,15 +15,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 interface SettingsManagerInterface
 {
-    const SCOPE_ALL = 'all';
+    const SCOPE_ALL    = 'all';
     const SCOPE_GLOBAL = 'global';
-    const SCOPE_USER = 'user';
+    const SCOPE_USER   = 'user';
 
     /**
      * Returns setting value by its name
      *
      * @param string $name
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return mixed
      */
     function get($name, UserInterface $user = null);
@@ -31,7 +31,7 @@ interface SettingsManagerInterface
     /**
      * Returns all settings as associative name-value array
      *
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return array
      */
     function all(UserInterface $user = null);
@@ -41,7 +41,7 @@ interface SettingsManagerInterface
      *
      * @param string $name
      * @param mixed $value
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return SettingsManagerInterface
      */
     function set($name, $value, UserInterface $user = null);
@@ -50,7 +50,7 @@ interface SettingsManagerInterface
      * Sets settings' values from associative name-value array
      *
      * @param array $settings
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return SettingsManagerInterface
      */
     function setMany(array $settings, UserInterface $user = null);
@@ -59,7 +59,7 @@ interface SettingsManagerInterface
      * Clears setting value
      *
      * @param string $name
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return SettingsManagerInterface
      */
     function clear($name, UserInterface $user = null);

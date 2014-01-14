@@ -64,6 +64,6 @@ class SettingsType extends AbstractType
      */
     public function getName()
     {
-        return 'dmishh_settings';
+        return 'settings_management';
     }
 }

@@ -18,6 +18,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+/**
+ * Settings Manager provides settings management and persistence using Doctrine's Object Manager
+ *
+ * @author Dmitriy Scherbina <http://dmishh.com>
+ */
 class SettingsManager implements SettingsManagerInterface
 {
     /**
@@ -31,12 +36,12 @@ class SettingsManager implements SettingsManagerInterface
     private $userSettings;
 
     /**
-     * @var ObjectManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     private $em;
 
     /**
-     * @var EntityRepository
+     * @var \Doctrine\ORM\EntityRepository
      */
     private $repository;
 
@@ -45,10 +50,6 @@ class SettingsManager implements SettingsManagerInterface
      */
     private $configuration;
 
-    /**
-     * @param ObjectManager $em
-     * @param array $configuration
-     */
     public function __construct(ObjectManager $em, array $configuration = array())
     {
         $this->em = $em;
@@ -122,9 +123,11 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
+     * Sets setting value to private array. Used for settings' batch saving
+     *
      * @param string $name
      * @param mixed $value
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return SettingsManager
      */
     private function setWithoutFlush($name, $value, UserInterface $user = null)
@@ -142,8 +145,10 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
+     * Flushes settings defined by $names to database
+     *
      * @param string|array $names
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return SettingsManager
      */
     private function flush($names, UserInterface $user = null)
@@ -168,6 +173,7 @@ class SettingsManager implements SettingsManagerInterface
             }
 
             $setting = $findByName($name);
+
             if (!$setting) {
                 $setting = new Setting();
                 $setting->setName($name);
@@ -176,7 +182,6 @@ class SettingsManager implements SettingsManagerInterface
                 }
                 $this->em->persist($setting);
             }
-
 
             $setting->setValue(serialize($value));
         }
@@ -214,9 +219,9 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * Method for settings lazy loading
+     * Settings lazy loading
      *
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return SettingsManager
      */
     private function loadSettings(UserInterface $user = null)
@@ -237,7 +242,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Retreives settings from repository
      *
-     * @param UserInterface $user
+     * @param UserInterface|null $user
      * @return array
      */
     private function getSettingsFromRepository(UserInterface $user = null)
