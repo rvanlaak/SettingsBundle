@@ -112,7 +112,6 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     $this->get('settings_manager')->setMany(array('my_first_setting' => 'new_value'));
     $this->get('settings_manager')->get('my_first_setting'); // => 'new_value'
 
-
     // Each of this methods has last optional $user parameter
     // that allows to get/set per-user settings
 
@@ -131,19 +130,22 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 * In Twig templates:
 
     ```twig
-    {{ settings_manager_get('my_first_setting') }} {# => 'value' #}
+    {# Global setting #}
+    {{ get_setting('some_setting') }} {# => 'value' #}
 
-    {% for setting in settings_manager_all() %}
-        {{ setting }} {# => 'value' #}
+    {# User setting #}
+    {{ get_setting('some_user_setting', app.user) }} {# => 'value' #}
+
+    {# Getting all global settings #}
+    {% for setting in get_all_settings() %}
+        {{ setting }} {# => 'value', ... #}
     {% endfor %}
     ```
-
-__Note:__ [validation](#validation) is provided only at the form level.
 
 <a name="advanced_configuration"></a>
 ### Advanced configuration
 
-Full list of options:
+Full list of options with default values:
 
 ```yaml
 dmishh_settings:
@@ -154,7 +156,20 @@ dmishh_settings:
 <a name="validation"></a>
 #### Settings validation
 
+Settings validation uses [Symfony Forms Component](http://symfony.com/doc/current/book/forms.html#built-in-field-types).
+You just specify, for example, type *[text](http://symfony.com/doc/current/reference/forms/types/text.html)* and use it's options like *max_length*, etc.
 
+```yaml
+dmishh_settings:
+    settings:
+        my_first_setting:
+            validation:
+                type: text
+                options:
+                    max_length: 15
+```
+
+__Note:__ [validation](#validation) is provided only at the form level.
 
 #### Understanding scopes
 
@@ -203,10 +218,6 @@ $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongS
 
 ## Roadmap
 
-#### 1.*
-* Add some default themes (like bootstrap)
-* Add DocumentManager support
-
 #### 1.0
 * First stable version
 
@@ -214,4 +225,4 @@ $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongS
 
 The MIT License (MIT), for details, please, see [LICENSE](https://github.com/dmishh/SettingsBundle/blob/master/LICENSE)
 
-© 2013 Dmitriy Scherbina <http://dmishh.com>
+© 2013-2014 [Dmitriy Scherbina](http://dmishh.com)

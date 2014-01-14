@@ -5,8 +5,16 @@ services:
             - @doctrine.orm.entity_manager
             - %settings_manager.settings%
 
-    form.type.settings:
+    form.type.settings_management:
         class: Dmishh\Bundle\SettingsBundle\Form\Type\SettingsType
-        arguments: [%settings_manager.settings%]
+        arguments:
+            - %settings_manager.settings%
         tags:
-            - { name: form.type, alias: dmishh_settings }
+            - { name: form.type, alias: settings_management }
+
+    twig.extension.settings_extension:
+        class: Dmishh\Bundle\SettingsBundle\Twig\SettingsExtension
+        arguments:
+            - @settings_manager
+        tags:
+            - { name: twig.extension }
