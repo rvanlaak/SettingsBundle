@@ -3,8 +3,6 @@ SettingsBundle
 
 Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM.
 
-**Bundle is under heavy development, please, be patient :)**
-
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 
 ## Features
@@ -34,7 +32,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
         // ...
         "require": {
             // ...
-            "dmishh/settings-bundle": "dev-master"
+            "dmishh/settings-bundle": "dev-master@dev"
         }
     }
     ```
@@ -76,8 +74,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 
     ```yaml
     settings:
-        resource: "@DmishhSettingsBundle/Controller/SettingsController.php"
-        type: annotation
+        resource: "@DmishhSettingsBundle/Resources/config/routing.yml"
         prefix: /settings
     ```
 
@@ -99,20 +96,25 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     ```php
     <?php
 
-    // Sets setting value by its name
+    // Set setting value by its name
     $this->get('settings_manager')->set('my_first_setting', 'value');
 
-    // Returns single setting value by its name
+    // Get single setting value by its name
     $this->get('settings_manager')->get('my_first_setting'); // => 'value'
 
-    // Returns all settings
+    // Get all settings
     $this->get('settings_manager')->all(); // => array('my_first_setting' => 'value')
 
-    // Sets settings values from associative name-value array
+    // Set settings' values from associative name-value array
     $this->get('settings_manager')->setMany(array('my_first_setting' => 'new_value'));
     $this->get('settings_manager')->get('my_first_setting'); // => 'new_value'
 
-    // Each of this methods has last optional $user parameter
+    ```
+
+    ```php
+    <?php
+
+    // Each of methods above has last optional $user parameter
     // that allows to get/set per-user settings
 
     // $user parameter implements UserInterface from Symfony Security Component
@@ -125,7 +127,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 
     ```
 
-* In services/etc: you must inject <em>@settings_manager</em> or the whole <em>@service_container</em> into your service and use it like in the example above
+* In services: you must inject <em>@settings_manager</em> or the whole <em>@service_container</em> into your service and use it like in the example above
 
 * In Twig templates:
 
@@ -209,6 +211,12 @@ $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongS
 
 <a name="customization"></a>
 ### Customization
+
+#### Overriding layout
+
+#### Overriding template
+
+#### Overriding controller
 
 <!--
 ### FAQ

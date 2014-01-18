@@ -15,6 +15,6 @@ class WrongScopeException extends SettingsException
 {
     public function __construct($scopeName, $settingName)
     {
-        parent::__construct(sprintf('Wrong scope "%s" for setting "%s"', $scopeName, $settingName));
+        parent::__construct(sprintf('Wrong scope "%s" for setting "%s". Check your configuration and make sure that user is authenticated.', $scopeName, $settingName));
     }
 }
