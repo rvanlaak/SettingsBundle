@@ -1,9 +1,11 @@
 {% extends layout %}
 
 {% block settings_form %}
+    <h1>{% trans from 'settings' %}settings{% endtrans %}</h1>
+
     <form method="post" id="settings-form" {{ form_enctype(settings_form) }}>
         {{ form_widget(settings_form) }}
 
-        <input type="submit" value="Save" />
+        <input type="submit" value="{% trans from 'settings' %}save{% endtrans %}" />
     </form>
 {% endblock %}

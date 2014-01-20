@@ -32,13 +32,6 @@ class Configuration implements ConfigurationInterface
             SettingsManagerInterface::SCOPE_USER,
         );
 
-//        $types = array(
-//            'text',
-//            'textarea',
-//            'number',
-//            'choice'
-//        );
-
         $rootNode
             ->children()
                 ->scalarNode('user_class')

@@ -15,6 +15,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+/**
+ * Settings management form
+ *
+ * @author Dmitriy Scherbina <http://dmishh.com>
+ */
 class SettingsType extends AbstractType
 {
     protected $settingsConfiguration;
@@ -29,14 +34,27 @@ class SettingsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ($this->settingsConfiguration as $name => $config) {
+        foreach ($this->settingsConfiguration as $name => $configuration) {
+            // If setting's value exists in data and setting isn't disabled
             if (array_key_exists($name, $options['data']) && !in_array($name, $options['disabled_settings'])) {
+                $fieldType = $configuration['validation']['type'];
+                $fieldOptions = $configuration['validation']['options'];
 
-                if (!empty($config['validation']['options']['choices'])) {
-                    $config['validation']['options']['choices'] = array_combine($config['validation']['options']['choices'], $config['validation']['options']['choices']);
+                // Label I18n
+                $fieldOptions['label'] = 'labels.' . $name;
+                $fieldOptions['translation_domain'] = 'settings';
+
+                // Choices I18n
+                if (!empty($fieldOptions['choices'])) {
+                    $fieldOptions['choices'] = array_map(
+                        function ($label) use ($fieldOptions) {
+                            return $fieldOptions['label'] . '_choices.' . $label;
+                        },
+                        array_combine($fieldOptions['choices'], $fieldOptions['choices'])
+                    );
                 }
 
-                $builder->add($name, $config['validation']['type'], $config['validation']['options']);
+                $builder->add($name, $fieldType, $fieldOptions);
             }
         }
     }

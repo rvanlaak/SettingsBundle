@@ -147,12 +147,22 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 <a name="advanced_configuration"></a>
 ### Advanced configuration
 
-Full list of options with default values:
+Full list of options:
 
 ```yaml
 dmishh_settings:
+    user_class: Dmishh/Bundle/SettingsBundle/Entity/User
+    layout: DmishhSettingsBundle::layout.html.twig
+    template: DmishhSettingsBundle:Settings:manage.html.twig
+    security:
+         manage_global_settings_role: ROLE_USER
+         users_can_manage_own_settings: true
     settings:
-        my_first_setting: ~
+        my_first_setting:
+            validation:
+                type: text
+                options:
+                    required: false
 ```
 
 <a name="validation"></a>
@@ -208,6 +218,30 @@ $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongS
 
 <a name="i18n"></a>
 ### I18n
+
+#### Define custom settings names
+
+1. Create _yml_ or _xliff_ file for domain _settings_ (example: _settings.en.yml_) in any of your bundles or directly in _app/Resources_ (note: your bundle must be activated after _DmishhSettingsBundle_ in _AppKernel.php_)
+1. Add your settings translations like in the following example for _yml_ format:
+
+```yaml
+labels:
+    my_custom_setting: My Custom Label
+    profile_update_interval: Profile update interval
+```
+
+#### Provide translations for choice type
+
+1. Create, if not yet, _yml_ or _xliff_ file for domain _settings_ (example: _settings.en.yml_) in any of your bundles or directly in _app/Resources_ (note: your bundle must be activated after _DmishhSettingsBundle_ in _AppKernel.php_)
+1. Add your choices translations like in the following example for _yml_ format (add <i>_choice</i> postfix to your setting's name):
+
+```yaml
+labels:
+    gender: Gender
+    gender_choices:
+        m: Male
+        f: Female
+```
 
 <a name="customization"></a>
 ### Customization
