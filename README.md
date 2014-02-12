@@ -70,7 +70,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     php app/console doctrine:schema:update --force
     ```
 
-* Add following lines to your _app/config/routing.yml_ (how to override default routing and controller):
+* Add following lines to your _app/config/routing.yml_ (see [how to override default routing and controller](#overriding_controller)):
 
     ```yaml
     settings:
@@ -86,7 +86,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
             my_first_setting: ~
     ```
 
-* Open <strong>http://<em>your-project-url</em>/settings/manage</strong> and modify <em>my_first_setting</em>
+* Open <strong>http://<em>your-project-url</em>/app_dev.php/settings/manage</strong> and start managing your settings!
 
 <a name="general_usage"></a>
 ### General usage
@@ -99,7 +99,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     // Set setting value by its name
     $this->get('settings_manager')->set('my_first_setting', 'value');
 
-    // Get single setting value by its name
+    // Get setting value by its name
     $this->get('settings_manager')->get('my_first_setting'); // => 'value'
 
     // Get all settings
@@ -116,18 +116,19 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 
     // Each of methods above has last optional $user parameter
     // that allows to get/set per-user settings
-
     // $user parameter implements UserInterface from Symfony Security Component
-    // Your User Entity must implement it if you wish to use per-user settings
+    // Your User Entity must implement UserInterface if you wish to use per-user settings
+
+    // These are same examples as above with only difference that they are for current user
     $this->get('settings_manager')->set('my_first_setting', 'user_value', $this->getUser());
     $this->get('settings_manager')->get('my_first_setting', $this->getUser()); // => 'user_value'
     $this->get('settings_manager')->all($this->getUser()); //  array('my_first_setting' => 'user_value')
-    $this->get('settings_manager')->setMany(array('my_first_setting' => 'new_user_value'));
-    $this->get('settings_manager')->get('my_first_setting'); // => 'new_user_value'
+    $this->get('settings_manager')->setMany(array('my_first_setting' => 'new_user_value'), $this->getUser());
+    $this->get('settings_manager')->get('my_first_setting', $this->getUser()); // => 'new_user_value'
 
     ```
 
-* In services: you must inject <em>@settings_manager</em> or the whole <em>@service_container</em> into your service and use it like in the example above
+* In services: you must inject <em>@settings_manager</em> or the whole <em>@service_container</em> into your service and use it in the same way as in controllers (like in the example above)
 
 * In Twig templates:
 
@@ -160,8 +161,8 @@ dmishh_settings:
     settings:
         my_first_setting:
             validation:
-                type: text
-                options:
+                type: text # any Symfony2 form type
+                options: # options passed to form
                     required: false
 ```
 
@@ -250,6 +251,7 @@ labels:
 
 #### Overriding template
 
+<a name="overriding_controller"></a>
 #### Overriding controller
 
 <!--
@@ -258,9 +260,11 @@ labels:
 * How to remove prefix "dmishh_" from service names
 -->
 
-## Roadmap
+## Roadmap and contribution
 
-#### 1.0
+Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to support library even better than money :)
+
+#### Version 1.0
 * First stable version
 
 ## License
