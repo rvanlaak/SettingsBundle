@@ -3,5 +3,5 @@ dmishh_settings_manage_global:
     defaults:     { _controller: DmishhSettingsBundle:Settings:manageGlobal }
 
 dmishh_settings_manage_own:
-    path:         /my
+    path:         /personal
     defaults:     { _controller: DmishhSettingsBundle:Settings:manageOwn }
