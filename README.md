@@ -1,7 +1,7 @@
 SettingsBundle
 ==============
 
-Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM.
+Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM. It just works.
 
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 
@@ -29,7 +29,6 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     ```js
     // composer.json
     {
-        // ...
         "require": {
             // ...
             "dmishh/settings-bundle": "dev-master@dev"
@@ -86,7 +85,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
             my_first_setting: ~
     ```
 
-* Open <strong>http://<em>your-project-url</em>/app_dev.php/settings/manage</strong> and start managing your settings!
+* Open <a href="http://YOUR-PROJECT-URL/app_dev.php/settings/global">http://YOUR-PROJECT-URL/app_dev.php/settings/global</a> and start managing your settings!
 
 <a name="general_usage"></a>
 ### General usage
@@ -148,11 +147,13 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 <a name="advanced_configuration"></a>
 ### Advanced configuration
 
+You can configure most of bundle behavior and even more — override everything on your own :)
+
 Full list of options:
 
 ```yaml
 dmishh_settings:
-    user_class: Dmishh/Bundle/SettingsBundle/Entity/User
+    user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
     security:
@@ -186,8 +187,10 @@ __Note:__ [validation](#validation) is provided only at the form level.
 
 #### Understanding scopes
 
-Bundle provides settings separation into 3 scopes: ALL, GLOBAL and USER. GLOBAL and USER are totally independent.
-ALL scope provides you to inherit global settings when user setting with same name is not setted.
+Bundle provides settings separation into 3 scopes: ALL, GLOBAL and USER.
+
+GLOBAL and USER scopes are totally independent.
+ALL scope provides you to inherit global settings when user setting with the same name is not setted.
 Examples must give more clearance:
 
 ```php
@@ -197,6 +200,8 @@ Examples must give more clearance:
 $this->get('settings_manager')->set('all_scope_setting', 'value');
 $this->get('settings_manager')->get('all_scope_setting'); // => 'value'
 $this->get('settings_manager')->get('all_scope_setting', $this->getUser()); // => 'value'
+$this->get('settings_manager')->set('all_scope_setting', 'user_value', $this->getUser());
+$this->get('settings_manager')->get('all_scope_setting', $this->getUser()); // => 'user_value'
 
 // Example #1 with GLOBAL and USER scopes
 $this->get('settings_manager')->set('global_scope_setting', 'value');
@@ -213,8 +218,27 @@ $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongS
 
 #### Configuring per-user settings
 
+To use this feature, ```user_class``` option must be defined. Then you can set GLOBAL or USER scope for your settings.
+
+```yaml
+dmishh_settings:
+    user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
+    settings:
+        my_first_user_setting:
+            scope: user # or "all" if you want for that setting to be visible as global setting
+```
 
 #### Security
+
+To protect settings modification bundle uses Symfony Security Component.
+You can limit global settings modification with ```manage_global_settings_role``` and grant access to authenticated users to modify their settings.
+
+```yaml
+dmishh_settings:
+    security:
+         manage_global_settings_role: ROLE_USER
+         users_can_manage_own_settings: true
+```
 
 
 <a name="i18n"></a>
@@ -249,26 +273,46 @@ labels:
 
 #### Overriding layout
 
+```yaml
+dmishh_settings:
+    layout: DmishhSettingsBundle::layout.html.twig # change to your own
+```
+
 #### Overriding template
+
+```yaml
+dmishh_settings:
+    template: DmishhSettingsBundle:Settings:manage.html.twig # change to your own
+```
 
 <a name="overriding_controller"></a>
 #### Overriding controller
 
-<!--
+TODO
+
 ### FAQ
-* How to change settings table name
-* How to remove prefix "dmishh_" from service names
--->
+
+**→ How to add optional setting?**
+
+Add `required: false` to setting validation options
+
+```yaml
+dmishh_settings:
+    settings:
+        my_first_setting:
+            validation:
+                required: false
+```
 
 ## Roadmap and contribution
 
-Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to support library even better than money :)
+Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library much more better than anything else :)
 
 #### Version 1.0
 * First stable version
 
 ## License
 
-The MIT License (MIT), for details, please, see [LICENSE](https://github.com/dmishh/SettingsBundle/blob/master/LICENSE)
+The MIT License. For the full text of license, please, see [LICENSE](https://github.com/dmishh/SettingsBundle/blob/master/LICENSE)
 
 © 2013-2014 [Dmitriy Scherbina](http://dmishh.com)
