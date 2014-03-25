@@ -20,6 +20,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 * [Advanced configuration](#advanced_configuration)
 * [I18n](#i18n)
 * [Customization](#customization)
+* [FAQ](#faq)
 
 <a name="installation"></a>
 ### Installation (using Composer)
@@ -290,6 +291,7 @@ dmishh_settings:
 
 TODO
 
+<a name="faq"></a>
 ### FAQ
 
 **→ How to add optional setting?**
