@@ -16,7 +16,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Setting
  *
- * @ORM\Table(name="dmishh_settings")
+ * @ORM\Table(
+ *  name="dmishh_settings",
+ *  indexes={@ORM\Index(name="name_user_name_idx", columns={"name", "username"})}
+ * )
  * @ORM\Entity
  */
 class Setting
