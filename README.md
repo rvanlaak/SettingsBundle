@@ -51,7 +51,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     // in AppKernel::registerBundles()
     $bundles = array(
         // ...
-        new Dmishh\Bundle\SettingsBundle\SettingsBundle(),
+        new Dmishh\Bundle\SettingsBundle\DmishhSettingsBundle(),
     );
     ```
 
@@ -256,6 +256,8 @@ labels:
     profile_update_interval: Profile update interval
 ```
 
+Clear your cache with ```app/console cache:clear```
+
 #### Provide translations for choice type
 
 1. Create, if not yet, _yml_ or _xliff_ file for domain _settings_ (example: _settings.en.yml_) in any of your bundles or directly in _app/Resources_ (note: your bundle must be activated after _DmishhSettingsBundle_ in _AppKernel.php_)
@@ -269,15 +271,31 @@ labels:
         f: Female
 ```
 
+Clear your cache with ```app/console cache:clear```
+
 <a name="customization"></a>
 ### Customization
 
 #### Overriding layout
 
+##### Via config
+
+Set your layout in config
+
 ```yaml
 dmishh_settings:
     layout: DmishhSettingsBundle::layout.html.twig # change to your own
 ```
+
+Place ```settings_form``` block near your main content block
+
+```twig
+{% block settings_form %}{% endblock %}
+```
+
+##### Via bundle inheritance
+
+TODO
 
 #### Overriding template
 
@@ -306,12 +324,25 @@ dmishh_settings:
                 required: false
 ```
 
+**→ How to add an `array` setting?
+
+TODO
+
+**→ How to inject `settings_manager` into form?
+
+TODO
+
 ## Roadmap and contribution
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library much more better than anything else :)
 
 #### Version 1.0
 * First stable version
+
+#### Future plans
+* Custom validators
+* Settings options from console
+* Default values
 
 ## License
 
