@@ -32,7 +32,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     {
         "require": {
             // ...
-            "dmishh/settings-bundle": "dev-master@dev"
+            "dmishh/settings-bundle": "1.0.*@dev"
         }
     }
     ```
