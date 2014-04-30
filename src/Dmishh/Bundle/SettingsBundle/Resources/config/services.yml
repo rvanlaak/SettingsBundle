@@ -4,6 +4,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - %settings_manager.settings%
+            - %settings_manager.serialization%
 
     form.type.settings_management:
         class: Dmishh\Bundle\SettingsBundle\Form\Type\SettingsType
