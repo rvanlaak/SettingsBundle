@@ -182,6 +182,11 @@ dmishh_settings:
                 type: text
                 options:
                     max_length: 15
+                    constraints:
+                        Symfony\Component\Validator\Constraints\NotBlank: ~
+                        Symfony\Component\Validator\Constraints\Range:
+                            min: 1
+                            max: 65535
 ```
 
 __Note:__ [validation](#validation) is provided only at the form level.
