@@ -157,6 +157,7 @@ dmishh_settings:
     user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
+    serialization: php # (php|json) default: php; Specify needed type of serialization for fields into database
     security:
          manage_global_settings_role: ROLE_USER
          users_can_manage_own_settings: true
@@ -166,6 +167,11 @@ dmishh_settings:
                 type: text # any Symfony2 form type
                 options: # options passed to form
                     required: false
+                    constraints:
+                        Symfony\Component\Validator\Constraints\NotBlank: ~ # As example of usage
+                        Symfony\Component\Validator\Constraints\Range:
+                            min: 1
+                            max: 65535
 ```
 
 <a name="validation"></a>
