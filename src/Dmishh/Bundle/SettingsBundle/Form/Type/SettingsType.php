@@ -11,6 +11,7 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Form\Type;
 
+use Dmishh\Bundle\SettingsBundle\Exception\SettingsException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -20,12 +21,13 @@ use Symfony\Component\Validator\Constraint;
  * Settings management form
  *
  * @author Dmitriy Scherbina <http://dmishh.com>
+ * @author Artem Zhuravlov
  */
 class SettingsType extends AbstractType
 {
     protected $settingsConfiguration;
 
-    public function __construct( array $settingsConfiguration )
+    public function __construct(array $settingsConfiguration)
     {
         $this->settingsConfiguration = $settingsConfiguration;
     }
@@ -33,37 +35,42 @@ class SettingsType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function buildForm( FormBuilderInterface $builder, array $options )
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        foreach ( $this->settingsConfiguration as $name => $configuration ) {
+        foreach ($this->settingsConfiguration as $name => $configuration) {
             // If setting's value exists in data and setting isn't disabled
-            if ( array_key_exists( $name, $options[ 'data' ] ) && !in_array( $name, $options[ 'disabled_settings' ] ) ) {
-                $fieldType = $configuration[ 'validation' ][ 'type' ];
-                $fieldOptions = $configuration[ 'validation' ][ 'options' ];
+            if (array_key_exists($name, $options['data']) && !in_array($name, $options['disabled_settings'])) {
+                $fieldType = $configuration['validation']['type'];
+                $fieldOptions = $configuration['validation']['options'];
 
-                // Validator Constraints
-                $buffer = [ ];
-                if ( array_key_exists( 'constraints', $fieldOptions ) ) {
-                    foreach ( $fieldOptions[ 'constraints' ] as $class => $opt ) {
-                        $buffer[ ] = new $class( $opt );
+                // Validator constraints
+                if (!empty($fieldOptions['constraints']) && is_array($fieldOptions['constraints'])) {
+                    $constraints = [];
+                    foreach ($fieldOptions['constraints'] as $class => $constraintOptions) {
+                        if (class_exists($class)) {
+                            $constraints[] = new $class($constraintOptions);
+                        } else {
+                            throw new SettingsException(sprintf('Constraint class "%s" not found', $class));
+                        }
                     }
-                    $fieldOptions[ 'constraints' ] = $buffer;
+
+                    $fieldOptions['constraints'] = $constraints;
                 }
 
                 // Label I18n
-                $fieldOptions[ 'label' ] = 'labels.' . $name;
-                $fieldOptions[ 'translation_domain' ] = 'settings';
+                $fieldOptions['label'] = 'labels.' . $name;
+                $fieldOptions['translation_domain'] = 'settings';
 
                 // Choices I18n
-                if ( !empty( $fieldOptions[ 'choices' ] ) ) {
-                    $fieldOptions[ 'choices' ] = array_map(
-                        function ( $label ) use ( $fieldOptions ) {
-                            return $fieldOptions[ 'label' ] . '_choices.' . $label;
+                if (!empty($fieldOptions['choices'])) {
+                    $fieldOptions['choices'] = array_map(
+                        function ($label) use ($fieldOptions) {
+                            return $fieldOptions['label'] . '_choices.' . $label;
                         },
-                        array_combine( $fieldOptions[ 'choices' ], $fieldOptions[ 'choices' ] )
+                        array_combine($fieldOptions['choices'], $fieldOptions['choices'])
                     );
                 }
-                $builder->add( $name, $fieldType, $fieldOptions );
+                $builder->add($name, $fieldType, $fieldOptions);
             }
         }
     }
@@ -71,7 +78,7 @@ class SettingsType extends AbstractType
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions( OptionsResolverInterface $resolver )
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             array(

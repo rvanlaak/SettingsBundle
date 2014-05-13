@@ -11,7 +11,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 * Fast and extensible
 * Per-user settings
 * Settings scopes
-* Settings validation using full power of Symfony2 Form Component
+* Settings validation using full power of Symfony2 Form Component + built-in or custom constraints
 
 ## Docs
 
@@ -32,7 +32,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
     {
         "require": {
             // ...
-            "dmishh/settings-bundle": "1.0.*@dev"
+            "dmishh/settings-bundle": "1.0.*"
         }
     }
     ```
@@ -157,18 +157,17 @@ dmishh_settings:
     user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
-    serialization: php # (php|json) default: php; Specify needed type of serialization for fields into database
     security:
          manage_global_settings_role: ROLE_USER
          users_can_manage_own_settings: true
+    serialization: php # database serialization mechanism (php|json)
     settings:
         my_first_setting:
             validation:
-                type: text # any Symfony2 form type
+                type: number # any Symfony2 form type
                 options: # options passed to form
                     required: false
                     constraints:
-                        Symfony\Component\Validator\Constraints\NotBlank: ~ # As example of usage
                         Symfony\Component\Validator\Constraints\Range:
                             min: 1
                             max: 65535
@@ -179,6 +178,7 @@ dmishh_settings:
 
 Settings validation uses [Symfony Forms Component](http://symfony.com/doc/current/book/forms.html#built-in-field-types).
 You just specify, for example, type *[text](http://symfony.com/doc/current/reference/forms/types/text.html)* and use it's options like *max_length*, etc.
+Also you can use [built-in](http://symfony.com/doc/current/reference/constraints.html) or [custom constraints](http://symfony.com/doc/current/cookbook/validation/custom_constraint.html).
 
 ```yaml
 dmishh_settings:
@@ -189,10 +189,8 @@ dmishh_settings:
                 options:
                     max_length: 15
                     constraints:
-                        Symfony\Component\Validator\Constraints\NotBlank: ~
-                        Symfony\Component\Validator\Constraints\Range:
-                            min: 1
-                            max: 65535
+                        Symfony\Component\Validator\Constraints\Regex:
+                            pattern: "/^\d+$/"
 ```
 
 __Note:__ [validation](#validation) is provided only at the form level.
@@ -335,25 +333,25 @@ dmishh_settings:
                 required: false
 ```
 
-**→ How to add an `array` setting?
+**→ How to add an `array` setting?**
 
 TODO
 
-**→ How to inject `settings_manager` into form?
+**→ How to inject `settings_manager` into form?**
 
 TODO
 
 ## Roadmap and contribution
 
-Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library much more better than anything else :)
+Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
+Thanks to [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
 
-#### Version 1.0
+#### Version 1.0.1
+* Ability to choose serialization mechanism (php or json)
+* Ability to add constraints to validation
+
+#### Version 1.0.0
 * First stable version
-
-#### Future plans
-* Custom validators
-* Settings options from console
-* Default values
 
 ## License
 

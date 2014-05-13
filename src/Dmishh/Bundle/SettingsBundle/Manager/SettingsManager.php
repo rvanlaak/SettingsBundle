@@ -12,6 +12,7 @@
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
 use Dmishh\Bundle\SettingsBundle\Entity\Setting;
+use Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializationTypeException;
 use Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -22,6 +23,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Settings Manager provides settings management and persistence using Doctrine's Object Manager
  *
  * @author Dmitriy Scherbina <http://dmishh.com>
+ * @author Artem Zhuravlov
  */
 class SettingsManager implements SettingsManagerInterface
 {
@@ -48,7 +50,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * @var array
      */
-    private $configuration;
+    private $settingsConfiguration;
 
     /**
      * @var string
@@ -57,32 +59,32 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * @param ObjectManager $em
-     * @param array $configuration
+     * @param array $settingsConfiguration
      * @param string $serialization
      */
-    public function __construct( ObjectManager $em, array $configuration = array(), $serialization = 'php' )
+    public function __construct(ObjectManager $em, array $settingsConfiguration = array(), $serialization = 'php')
     {
         $this->em = $em;
-        $this->repository = $em->getRepository( 'Dmishh\\Bundle\\SettingsBundle\\Entity\\Setting' );
-        $this->configuration = $configuration;
+        $this->repository = $em->getRepository('Dmishh\\Bundle\\SettingsBundle\\Entity\\Setting');
+        $this->settingsConfiguration = $settingsConfiguration;
         $this->serialization = $serialization;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function get( $name, UserInterface $user = null )
+    public function get($name, UserInterface $user = null)
     {
-        $this->validateSetting( $name, $user );
-        $this->loadSettings( $user );
+        $this->validateSetting($name, $user);
+        $this->loadSettings($user);
 
         $value = null;
 
         if ($user === null) {
-            $value = $this->globalSettings[ $name ];
+            $value = $this->globalSettings[$name];
         } else {
-            if ($this->userSettings[ $user->getUsername() ][ $name ] !== null) {
-                $value = $this->userSettings[ $user->getUsername() ][ $name ];
+            if ($this->userSettings[$user->getUsername()][$name] !== null) {
+                $value = $this->userSettings[$user->getUsername()][$name];
             }
         }
 
@@ -92,45 +94,45 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function all( UserInterface $user = null )
+    public function all(UserInterface $user = null)
     {
-        $this->loadSettings( $user );
+        $this->loadSettings($user);
 
         if ($user === null) {
             return $this->globalSettings;
         } else {
-            return $this->userSettings[ $user->getUsername() ];
+            return $this->userSettings[$user->getUsername()];
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    public function set( $name, $value, UserInterface $user = null )
+    public function set($name, $value, UserInterface $user = null)
     {
-        $this->setWithoutFlush( $name, $value, $user );
+        $this->setWithoutFlush($name, $value, $user);
 
-        return $this->flush( $name, $user );
+        return $this->flush($name, $user);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setMany( array $settings, UserInterface $user = null )
+    public function setMany(array $settings, UserInterface $user = null)
     {
         foreach ($settings as $name => $value) {
-            $this->setWithoutFlush( $name, $value, $user );
+            $this->setWithoutFlush($name, $value, $user);
         }
 
-        return $this->flush( array_keys( $settings ), $user );
+        return $this->flush(array_keys($settings), $user);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function clear( $name, UserInterface $user = null )
+    public function clear($name, UserInterface $user = null)
     {
-        return $this->set( $name, null, $user );
+        return $this->set($name, null, $user);
     }
 
     /**
@@ -141,15 +143,15 @@ class SettingsManager implements SettingsManagerInterface
      * @param UserInterface|null $user
      * @return SettingsManager
      */
-    private function setWithoutFlush( $name, $value, UserInterface $user = null )
+    private function setWithoutFlush($name, $value, UserInterface $user = null)
     {
-        $this->validateSetting( $name, $user );
-        $this->loadSettings( $user );
+        $this->validateSetting($name, $user);
+        $this->loadSettings($user);
 
         if ($user === null) {
-            $this->globalSettings[ $name ] = $value;
+            $this->globalSettings[$name] = $value;
         } else {
-            $this->userSettings[ $user->getUsername() ][ $name ] = $value;
+            $this->userSettings[$user->getUsername()][$name] = $value;
         }
 
         return $this;
@@ -160,53 +162,54 @@ class SettingsManager implements SettingsManagerInterface
      *
      * @param string|array $names
      * @param UserInterface|null $user
+     * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializationTypeException
      * @return SettingsManager
      */
-    private function flush( $names, UserInterface $user = null )
+    private function flush($names, UserInterface $user = null)
     {
         $names = (array)$names;
 
-        $settings = $this->repository->findBy( array( 'name' => $names, 'username' => $user === null ? null : $user->getUsername() ) );
-        $findByName = function ( $name ) use ( $settings ) {
+        $settings = $this->repository->findBy(array('name' => $names, 'username' => $user === null ? null : $user->getUsername()));
+        $findByName = function ($name) use ($settings) {
             $setting = array_filter(
                 $settings,
-                function ( $setting ) use ( $name ) {
+                function ($setting) use ($name) {
                     return $setting->getName() == $name;
                 }
             );
 
-            return !empty( $setting ) ? array_pop( $setting ) : null;
+            return !empty($setting) ? array_pop($setting) : null;
         };
 
         /** @var Setting $setting */
-        foreach ($this->configuration as $name => $configuration) {
+        foreach ($this->settingsConfiguration as $name => $configuration) {
 
             try {
-                $value = $this->get( $name, $user );
-            } catch ( WrongScopeException $e ) {
+                $value = $this->get($name, $user);
+            } catch (WrongScopeException $e) {
                 continue;
             }
 
-            $setting = $findByName( $name );
+            $setting = $findByName($name);
 
             if (!$setting) {
                 $setting = new Setting();
-                $setting->setName( $name );
+                $setting->setName($name);
                 if ($user !== null) {
-                    $setting->setUsername( $user->getUsername() );
+                    $setting->setUsername($user->getUsername());
                 }
-                $this->em->persist( $setting );
+                $this->em->persist($setting);
             }
-            
+
             switch ($this->serialization) {
                 case 'php':
-                    $setting->setValue( serialize( $value ) );
+                    $setting->setValue(serialize($value));
                     break;
                 case 'json':
-                    $setting->setValue( json_encode( $value ) );
+                    $setting->setValue(json_encode($value));
                     break;
                 default:
-                    $setting->setValue( serialize( $value ) );
+                    throw new UnknownSerializationTypeException($this->serialization);
             }
         }
 
@@ -224,18 +227,18 @@ class SettingsManager implements SettingsManagerInterface
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
      */
-    private function validateSetting( $name, UserInterface $user = null )
+    private function validateSetting($name, UserInterface $user = null)
     {
         // Name validation
-        if (!is_string( $name ) || !array_key_exists( $name, $this->configuration )) {
-            throw new UnknownSettingException( $name );
+        if (!is_string($name) || !array_key_exists($name, $this->settingsConfiguration)) {
+            throw new UnknownSettingException($name);
         }
 
         // Scope validation
-        $scope = $this->configuration[ $name ][ 'scope' ];
+        $scope = $this->settingsConfiguration[$name]['scope'];
         if ($scope !== SettingsManagerInterface::SCOPE_ALL) {
             if ($scope === SettingsManagerInterface::SCOPE_GLOBAL && $user !== null || $scope === SettingsManagerInterface::SCOPE_USER && $user === null) {
-                throw new WrongScopeException( $scope, $name );
+                throw new WrongScopeException($scope, $name);
             }
         }
 
@@ -248,7 +251,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param UserInterface|null $user
      * @return SettingsManager
      */
-    private function loadSettings( UserInterface $user = null )
+    private function loadSettings(UserInterface $user = null)
     {
         // Global settings
         if ($this->globalSettings === null) {
@@ -256,8 +259,8 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         // User settings
-        if ($user !== null && ( $this->userSettings === null || !array_key_exists( $user->getUsername(), $this->userSettings ) )) {
-            $this->userSettings[ $user->getUsername() ] = $this->getSettingsFromRepository( $user );
+        if ($user !== null && ($this->userSettings === null || !array_key_exists($user->getUsername(), $this->userSettings))) {
+            $this->userSettings[$user->getUsername()] = $this->getSettingsFromRepository($user);
         }
 
         return $this;
@@ -267,33 +270,34 @@ class SettingsManager implements SettingsManagerInterface
      * Retreives settings from repository
      *
      * @param UserInterface|null $user
+     * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializationTypeException
      * @return array
      */
-    private function getSettingsFromRepository( UserInterface $user = null )
+    private function getSettingsFromRepository(UserInterface $user = null)
     {
         $settings = array();
 
-        foreach (array_keys( $this->configuration ) as $name) {
+        foreach (array_keys($this->settingsConfiguration) as $name) {
             try {
-                $this->validateSetting( $name, $user );
-                $settings[ $name ] = null;
-            } catch ( WrongScopeException $e ) {
+                $this->validateSetting($name, $user);
+                $settings[$name] = null;
+            } catch (WrongScopeException $e) {
                 continue;
             }
         }
 
         /** @var Setting $setting */
-        foreach ($this->repository->findBy( array( 'username' => $user === null ? null : $user->getUsername() ) ) as $setting) {
-            if (array_key_exists( $setting->getName(), $settings )) {
+        foreach ($this->repository->findBy(array('username' => $user === null ? null : $user->getUsername())) as $setting) {
+            if (array_key_exists($setting->getName(), $settings)) {
                 switch ($this->serialization) {
                     case 'php':
-                        $settings[ $setting->getName() ] = unserialize( $setting->getValue() );
+                        $settings[$setting->getName()] = unserialize($setting->getValue());
                         break;
                     case 'json':
-                        $settings[ $setting->getName() ] = json_decode( $setting->getValue(), true );
+                        $settings[$setting->getName()] = json_decode($setting->getValue(), true);
                         break;
                     default:
-                        $settings[ $setting->getName() ] = unserialize( $setting->getValue() );
+                        throw new UnknownSerializationTypeException($this->serialization);
                 }
             }
         }

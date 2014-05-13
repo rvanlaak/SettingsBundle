@@ -11,6 +11,10 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Exception;
 
-class SettingsException extends \Exception
+class UnknownSerializationTypeException extends SettingsException
 {
+    public function __construct($serialization)
+    {
+        parent::__construct(sprintf('Unknown serialization type "%s"', $serialization));
+    }
 }
