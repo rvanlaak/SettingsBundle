@@ -166,11 +166,11 @@ class SettingsManagerTest extends AbstractTest
 
     public function testValidSerizalizationTypes()
     {
-        $settingsManager = $this->createSettingsManager([], 'php');
+        $settingsManager = $this->createSettingsManager(array(), 'php');
         $settingsManager->set('some_setting', 123);
         $this->assertEquals(123, $settingsManager->get('some_setting'));
 
-        $settingsManager = $this->createSettingsManager([], 'json');
+        $settingsManager = $this->createSettingsManager(array(), 'json');
         $settingsManager->set('some_setting', 123);
         $this->assertEquals(123, $settingsManager->get('some_setting'));
     }
@@ -180,7 +180,7 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testSetSettingWithInvalidSerizalizationType()
     {
-        $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
+        $settingsManager = $this->createSettingsManager(array(), 'unknown_serialization_type');
         $settingsManager->set('some_setting', 123);
     }
 
@@ -189,10 +189,10 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testGetSettingWithInvalidSerizalizationType()
     {
-        $settingsManager = $this->createSettingsManager([]);
+        $settingsManager = $this->createSettingsManager(array());
         $settingsManager->set('some_setting', 123);
 
-        $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
+        $settingsManager = $this->createSettingsManager(array(), 'unknown_serialization_type');
         $settingsManager->get('some_setting');
     }
 
