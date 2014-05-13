@@ -164,6 +164,38 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($user));
     }
 
+    public function testValidSerizalizationTypes()
+    {
+        $settingsManager = $this->createSettingsManager([], 'php');
+        $settingsManager->set('some_setting', 123);
+        $this->assertEquals(123, $settingsManager->get('some_setting'));
+
+        $settingsManager = $this->createSettingsManager([], 'json');
+        $settingsManager->set('some_setting', 123);
+        $this->assertEquals(123, $settingsManager->get('some_setting'));
+    }
+
+    /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\SettingsException
+     */
+    public function testSetSettingWithInvalidSerizalizationType()
+    {
+        $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
+        $settingsManager->set('some_setting', 123);
+    }
+
+    /**
+     * @expectedException \Dmishh\Bundle\SettingsBundle\Exception\SettingsException
+     */
+    public function testGetSettingWithInvalidSerizalizationType()
+    {
+        $settingsManager = $this->createSettingsManager([]);
+        $settingsManager->set('some_setting', 123);
+
+        $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
+        $settingsManager->get('some_setting');
+    }
+
     /**
      * @param string $username
      * @return \Symfony\Component\Security\Core\User\UserInterface
@@ -173,7 +205,7 @@ class SettingsManagerTest extends AbstractTest
         return Mockery::mock('Symfony\Component\Security\Core\User\UserInterface', array('getUsername' => $username));
     }
 
-    protected function createSettingsManager(array $configuration = array())
+    protected function createSettingsManager(array $configuration = array(), $serialization = 'php')
     {
         if (empty($configuration)) {
             $configuration = array(
@@ -184,6 +216,6 @@ class SettingsManagerTest extends AbstractTest
             );
         }
 
-        return new SettingsManager($this->em, $configuration);
+        return new SettingsManager($this->em, $configuration, $serialization);
     }
 }

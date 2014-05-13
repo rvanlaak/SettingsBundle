@@ -11,14 +11,17 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Form\Type;
 
+use Dmishh\Bundle\SettingsBundle\Exception\SettingsException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraint;
 
 /**
  * Settings management form
  *
  * @author Dmitriy Scherbina <http://dmishh.com>
+ * @author Artem Zhuravlov
  */
 class SettingsType extends AbstractType
 {
@@ -40,6 +43,20 @@ class SettingsType extends AbstractType
                 $fieldType = $configuration['validation']['type'];
                 $fieldOptions = $configuration['validation']['options'];
 
+                // Validator constraints
+                if (!empty($fieldOptions['constraints']) && is_array($fieldOptions['constraints'])) {
+                    $constraints = [];
+                    foreach ($fieldOptions['constraints'] as $class => $constraintOptions) {
+                        if (class_exists($class)) {
+                            $constraints[] = new $class($constraintOptions);
+                        } else {
+                            throw new SettingsException(sprintf('Constraint class "%s" not found', $class));
+                        }
+                    }
+
+                    $fieldOptions['constraints'] = $constraints;
+                }
+
                 // Label I18n
                 $fieldOptions['label'] = 'labels.' . $name;
                 $fieldOptions['translation_domain'] = 'settings';
@@ -53,7 +70,6 @@ class SettingsType extends AbstractType
                         array_combine($fieldOptions['choices'], $fieldOptions['choices'])
                     );
                 }
-
                 $builder->add($name, $fieldType, $fieldOptions);
             }
         }
