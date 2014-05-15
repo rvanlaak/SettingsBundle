@@ -18,27 +18,26 @@ use Mockery;
 
 class SerializerTest extends AbstractTest
 {
-    public static $data = ['abc' => '123', 123, 5.0];
-
+    public static $testData = array('abc' => '123', 123, 5.0);
 
     public function testPhpSerializer()
     {
         $serializer = SerializerFactory::create('php');
-        $this->assertEquals(serialize(self::$data), $serializer->serialize(self::$data));
-        $this->assertEquals(self::$data, $serializer->unserialize($serializer->serialize(self::$data)));
+        $this->assertEquals(serialize(self::$testData), $serializer->serialize(self::$testData));
+        $this->assertEquals(self::$testData, $serializer->unserialize($serializer->serialize(self::$testData)));
     }
 
     public function testJsonSerializer()
     {
         $serializer = SerializerFactory::create('json');
-        $this->assertEquals(json_encode(self::$data), $serializer->serialize(self::$data));
-        $this->assertEquals(self::$data, $serializer->unserialize($serializer->serialize(self::$data)));
+        $this->assertEquals(json_encode(self::$testData), $serializer->serialize(self::$testData));
+        $this->assertEquals(self::$testData, $serializer->unserialize($serializer->serialize(self::$testData)));
     }
 
     public function testCustomSerializer()
     {
         $serializer = SerializerFactory::create('Dmishh\Bundle\SettingsBundle\Tests\Serializer\CustomSerializer');
-        $this->assertEquals(self::$data, $serializer->unserialize($serializer->serialize(self::$data)));
+        $this->assertEquals(self::$testData, $serializer->unserialize($serializer->serialize(self::$testData)));
     }
 
     /**
