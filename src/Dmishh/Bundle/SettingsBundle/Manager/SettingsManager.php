@@ -12,9 +12,11 @@
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
 use Dmishh\Bundle\SettingsBundle\Entity\Setting;
-use Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializationTypeException;
+use Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException;
 use Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException;
+use Dmishh\Bundle\SettingsBundle\Serializer\SerializerFactory;
+use Dmishh\Bundle\SettingsBundle\Serializer\SerializerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -53,9 +55,9 @@ class SettingsManager implements SettingsManagerInterface
     private $settingsConfiguration;
 
     /**
-     * @var string
+     * @var SerializerInterface
      */
-    private $serialization;
+    private $serializer;
 
     /**
      * @param ObjectManager $em
@@ -67,7 +69,7 @@ class SettingsManager implements SettingsManagerInterface
         $this->em = $em;
         $this->repository = $em->getRepository('Dmishh\\Bundle\\SettingsBundle\\Entity\\Setting');
         $this->settingsConfiguration = $settingsConfiguration;
-        $this->serialization = $serialization;
+        $this->serializer = SerializerFactory::create($serialization);
     }
 
     /**
@@ -162,7 +164,7 @@ class SettingsManager implements SettingsManagerInterface
      *
      * @param string|array $names
      * @param UserInterface|null $user
-     * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializationTypeException
+     * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return SettingsManager
      */
     private function flush($names, UserInterface $user = null)
@@ -201,16 +203,7 @@ class SettingsManager implements SettingsManagerInterface
                 $this->em->persist($setting);
             }
 
-            switch ($this->serialization) {
-                case 'php':
-                    $setting->setValue(serialize($value));
-                    break;
-                case 'json':
-                    $setting->setValue(json_encode($value));
-                    break;
-                default:
-                    throw new UnknownSerializationTypeException($this->serialization);
-            }
+            $setting->setValue($this->serializer->serialize($value));
         }
 
         $this->em->flush();
@@ -270,7 +263,7 @@ class SettingsManager implements SettingsManagerInterface
      * Retreives settings from repository
      *
      * @param UserInterface|null $user
-     * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializationTypeException
+     * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return array
      */
     private function getSettingsFromRepository(UserInterface $user = null)
@@ -289,16 +282,7 @@ class SettingsManager implements SettingsManagerInterface
         /** @var Setting $setting */
         foreach ($this->repository->findBy(array('username' => $user === null ? null : $user->getUsername())) as $setting) {
             if (array_key_exists($setting->getName(), $settings)) {
-                switch ($this->serialization) {
-                    case 'php':
-                        $settings[$setting->getName()] = unserialize($setting->getValue());
-                        break;
-                    case 'json':
-                        $settings[$setting->getName()] = json_decode($setting->getValue(), true);
-                        break;
-                    default:
-                        throw new UnknownSerializationTypeException($this->serialization);
-                }
+                $settings[$setting->getName()] = $this->serializer->unserialize($setting->getValue());
             }
         }
 

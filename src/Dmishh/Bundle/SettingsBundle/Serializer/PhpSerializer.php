@@ -9,12 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Dmishh\Bundle\SettingsBundle\Exception;
+namespace Dmishh\Bundle\SettingsBundle\Serializer;
 
-class UnknownSerializationTypeException extends SettingsException
+class PhpSerializer implements SerializerInterface
 {
-    public function __construct($serialization)
+    public function serialize($data)
     {
-        parent::__construct(sprintf('Unknown serialization type "%s"', $serialization));
+        return serialize($data);
+    }
+
+    public function unserialize($serialized)
+    {
+        return unserialize($serialized);
     }
 }

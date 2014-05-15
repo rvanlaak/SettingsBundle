@@ -12,6 +12,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 * Per-user settings
 * Settings scopes
 * Settings validation using full power of Symfony2 Form Component + built-in or custom constraints
+* 2 serialization mechanisms in DB: PHP's native `serialize()` and JSON + you can write your own
 
 ## Docs
 
