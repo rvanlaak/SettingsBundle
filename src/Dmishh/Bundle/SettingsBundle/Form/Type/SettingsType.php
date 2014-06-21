@@ -15,7 +15,6 @@ use Dmishh\Bundle\SettingsBundle\Exception\SettingsException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\Validator\Constraint;
 
 /**
  * Settings management form
