@@ -1,2 +1,6 @@
 settings: Configuración
 save: Guardar
+settings_updated: La configuración se han actualizado con éxito!
+not_allowed_to_edit_global_settings: Usted no puede editar configuración global
+must_be_logged_in_to_edit_own_settings: Usted debe estar conectado para editar la configuración
+not_allowed_to_edit_own_settings: Usted no puede editar sus ajustes

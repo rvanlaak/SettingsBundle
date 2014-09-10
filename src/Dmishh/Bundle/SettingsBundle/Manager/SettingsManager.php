@@ -173,7 +173,7 @@ class SettingsManager implements SettingsManagerInterface
         $findByName = function ($name) use ($settings) {
             $setting = array_filter(
                 $settings,
-                function ($setting) use ($name) {
+                function (Setting $setting) use ($name) {
                     return $setting->getName() == $name;
                 }
             );

@@ -27,7 +27,7 @@ class SettingsController extends Controller
     {
         $securitySettings = $this->container->getParameter('settings_manager.security');
         if (!empty($securitySettings['manage_global_settings_role']) && !$this->get('security.context')->isGranted($securitySettings['manage_global_settings_role'])) {
-            throw new AccessDeniedException('You are not allowed to edit global settings'); // TODO i18n
+            throw new AccessDeniedException($this->container->get('translator')->trans('not_allowed_to_edit_global_settings', array(), 'settings'));
         }
 
         return $this->manage($request);
@@ -41,12 +41,12 @@ class SettingsController extends Controller
     public function manageOwnAction(Request $request)
     {
         if (!$this->get('security.context')->getToken()) {
-            throw new AccessDeniedException('You must be logged in to edit your settings'); // TODO i18n
+            throw new AccessDeniedException($this->get('translator')->trans('must_be_logged_in_to_edit_own_settings', array(), 'settings'));
         }
 
         $securitySettings = $this->container->getParameter('settings_manager.security');
         if (!$securitySettings['users_can_manage_own_settings']) {
-            throw new AccessDeniedException('You are not allowed to edit your settings'); // TODO i18n
+            throw new AccessDeniedException($this->get('translator')->trans('not_allowed_to_edit_own_settings', array(), 'settings'));
         }
 
         return $this->manage($request, $this->get('security.context')->getToken()->getUser());
@@ -67,7 +67,7 @@ class SettingsController extends Controller
             if ($form->isValid()) {
 
                 $this->get('settings_manager')->setMany($form->getData(), $user);
-                $this->get('session')->getFlashBag()->add('success', 'Settings were successfully updated!'); // TODO i18n
+                $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('settings_updated', array(), 'settings'));
 
                 return $this->redirect($request->getUri());
             }

@@ -1,2 +1,6 @@
 settings: Impostazioni
 save: Salva
+settings_updated: Le impostazioni sono state aggiornate correttamente!
+not_allowed_to_edit_global_settings: Non è consentito modificare le impostazioni globali
+must_be_logged_in_to_edit_own_settings: Devi essere loggato per modificare le impostazioni
+not_allowed_to_edit_own_settings: Non è consentito modificare le impostazioni

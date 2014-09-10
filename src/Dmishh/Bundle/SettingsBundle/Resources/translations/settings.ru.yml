@@ -1,2 +1,6 @@
 settings: Настройки
 save: Сохранить
+settings_updated: Настройки успешно обновлены!
+not_allowed_to_edit_global_settings: У вас недостаточно прав для изменения глобальных настроек
+must_be_logged_in_to_edit_own_settings: Вы должны войти в системы для редактирования своих настроек
+not_allowed_to_edit_own_settings: У вас недостаточно прав для изменения своих настроек

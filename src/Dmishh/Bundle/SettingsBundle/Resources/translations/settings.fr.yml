@@ -1,2 +1,6 @@
 settings: Les paramètres de
 save: Enregistrer
+settings_updated: Les paramètres ont été correctement mis à jour!
+not_allowed_to_edit_global_settings: Vous n'êtes pas autorisé à modifier des paramètres globaux
+must_be_logged_in_to_edit_own_settings: Vous devez être connecté afin de modifier vos paramètres
+not_allowed_to_edit_own_settings: Vous n'êtes pas autorisé à modifier vos paramètres
