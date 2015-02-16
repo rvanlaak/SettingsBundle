@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(
  *  name="dmishh_settings",
- *  indexes={@ORM\Index(name="name_user_name_idx", columns={"name", "username"})}
+ *  indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "ownerId"})}
  * )
  * @ORM\Entity
  */
@@ -52,7 +52,7 @@ class Setting
      *
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $username;
+    private $ownerId;
 
     /**
      * Get id
@@ -113,19 +113,19 @@ class Setting
     /**
      * @return string
      */
-    public function getUsername()
+    public function getOwnerId()
     {
-        return $this->username;
+        return $this->ownerId;
     }
 
     /**
-     * @param string $username
+     * @param string $ownerId
      *
      * @return Setting
      */
-    public function setUsername($username)
+    public function setOwnerId($ownerId)
     {
-        $this->username = $username;
+        $this->ownerId = $ownerId;
 
         return $this;
     }

@@ -7,5 +7,5 @@ namespace Dmishh\Bundle\SettingsBundle\Entity;
  */
 interface SettingOwner
 {
-    public function getUsername();
+    public function getSettingIdentifier();
 } 

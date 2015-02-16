@@ -83,8 +83,8 @@ class SettingsManager implements SettingsManagerInterface
         if ($user === null) {
             $value = $this->globalSettings[$name];
         } else {
-            if ($this->userSettings[$user->getUsername()][$name] !== null) {
-                $value = $this->userSettings[$user->getUsername()][$name];
+            if ($this->userSettings[$user->getSettingIdentifier()][$name] !== null) {
+                $value = $this->userSettings[$user->getSettingIdentifier()][$name];
             }
         }
 
@@ -101,7 +101,7 @@ class SettingsManager implements SettingsManagerInterface
         if ($user === null) {
             return $this->globalSettings;
         } else {
-            return $this->userSettings[$user->getUsername()];
+            return $this->userSettings[$user->getSettingIdentifier()];
         }
     }
 
@@ -151,7 +151,7 @@ class SettingsManager implements SettingsManagerInterface
         if ($user === null) {
             $this->globalSettings[$name] = $value;
         } else {
-            $this->userSettings[$user->getUsername()][$name] = $value;
+            $this->userSettings[$user->getSettingIdentifier()][$name] = $value;
         }
 
         return $this;
@@ -169,7 +169,7 @@ class SettingsManager implements SettingsManagerInterface
     {
         $names = (array)$names;
 
-        $settings = $this->repository->findBy(array('name' => $names, 'username' => $user === null ? null : $user->getUsername()));
+        $settings = $this->repository->findBy(array('name' => $names, 'ownerId' => $user === null ? null : $user->getSettingIdentifier()));
         $findByName = function ($name) use ($settings) {
             $setting = array_filter(
                 $settings,
@@ -196,7 +196,7 @@ class SettingsManager implements SettingsManagerInterface
                 $setting = new Setting();
                 $setting->setName($name);
                 if ($user !== null) {
-                    $setting->setUsername($user->getUsername());
+                    $setting->setOwnerId($user->getSettingIdentifier());
                 }
                 $this->em->persist($setting);
             }
@@ -250,8 +250,8 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         // User settings
-        if ($user !== null && ($this->userSettings === null || !array_key_exists($user->getUsername(), $this->userSettings))) {
-            $this->userSettings[$user->getUsername()] = $this->getSettingsFromRepository($user);
+        if ($user !== null && ($this->userSettings === null || !array_key_exists($user->getSettingIdentifier(), $this->userSettings))) {
+            $this->userSettings[$user->getSettingIdentifier()] = $this->getSettingsFromRepository($user);
         }
 
         return $this;
@@ -278,7 +278,7 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         /** @var Setting $setting */
-        foreach ($this->repository->findBy(array('username' => $user === null ? null : $user->getUsername())) as $setting) {
+        foreach ($this->repository->findBy(array('ownerId' => $user === null ? null : $user->getSettingIdentifier())) as $setting) {
             if (array_key_exists($setting->getName(), $settings)) {
                 $settings[$setting->getName()] = $this->serializer->unserialize($setting->getValue());
             }
