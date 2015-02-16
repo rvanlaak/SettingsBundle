@@ -12,12 +12,12 @@
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
 use Dmishh\Bundle\SettingsBundle\Entity\Setting;
+use Dmishh\Bundle\SettingsBundle\Entity\SettingOwner;
 use Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException;
 use Dmishh\Bundle\SettingsBundle\Serializer\SerializerFactory;
 use Dmishh\Bundle\SettingsBundle\Serializer\SerializerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Settings Manager provides settings management and persistence using Doctrine's Object Manager
@@ -73,7 +73,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function get($name, UserInterface $user = null)
+    public function get($name, SettingOwner $user = null)
     {
         $this->validateSetting($name, $user);
         $this->loadSettings($user);
@@ -94,7 +94,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function all(UserInterface $user = null)
+    public function all(SettingOwner $user = null)
     {
         $this->loadSettings($user);
 
@@ -108,7 +108,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function set($name, $value, UserInterface $user = null)
+    public function set($name, $value, SettingOwner $user = null)
     {
         $this->setWithoutFlush($name, $value, $user);
 
@@ -118,7 +118,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function setMany(array $settings, UserInterface $user = null)
+    public function setMany(array $settings, SettingOwner $user = null)
     {
         foreach ($settings as $name => $value) {
             $this->setWithoutFlush($name, $value, $user);
@@ -130,7 +130,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function clear($name, UserInterface $user = null)
+    public function clear($name, SettingOwner $user = null)
     {
         return $this->set($name, null, $user);
     }
@@ -140,10 +140,10 @@ class SettingsManager implements SettingsManagerInterface
      *
      * @param string $name
      * @param mixed $value
-     * @param UserInterface|null $user
+     * @param SettingOwner|null $user
      * @return SettingsManager
      */
-    private function setWithoutFlush($name, $value, UserInterface $user = null)
+    private function setWithoutFlush($name, $value, SettingOwner $user = null)
     {
         $this->validateSetting($name, $user);
         $this->loadSettings($user);
@@ -161,11 +161,11 @@ class SettingsManager implements SettingsManagerInterface
      * Flushes settings defined by $names to database
      *
      * @param string|array $names
-     * @param UserInterface|null $user
+     * @param SettingOwner|null $user
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return SettingsManager
      */
-    private function flush($names, UserInterface $user = null)
+    private function flush($names, SettingOwner $user = null)
     {
         $names = (array)$names;
 
@@ -213,12 +213,12 @@ class SettingsManager implements SettingsManagerInterface
      * Checks that $name is valid setting and it's scope is also valid
      *
      * @param string $name
-     * @param UserInterface $user
+     * @param SettingOwner $user
      * @return SettingsManager
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
      */
-    private function validateSetting($name, UserInterface $user = null)
+    private function validateSetting($name, SettingOwner $user = null)
     {
         // Name validation
         if (!is_string($name) || !array_key_exists($name, $this->settingsConfiguration)) {
@@ -239,10 +239,10 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Settings lazy loading
      *
-     * @param UserInterface|null $user
+     * @param SettingOwner|null $user
      * @return SettingsManager
      */
-    private function loadSettings(UserInterface $user = null)
+    private function loadSettings(SettingOwner $user = null)
     {
         // Global settings
         if ($this->globalSettings === null) {
@@ -260,11 +260,11 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * Retreives settings from repository
      *
-     * @param UserInterface|null $user
+     * @param SettingOwner|null $user
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return array
      */
-    private function getSettingsFromRepository(UserInterface $user = null)
+    private function getSettingsFromRepository(SettingOwner $user = null)
     {
         $settings = array();
 

@@ -198,11 +198,11 @@ class SettingsManagerTest extends AbstractTest
 
     /**
      * @param string $username
-     * @return \Symfony\Component\Security\Core\User\UserInterface
+     * @return \Dmishh\Bundle\SettingsBundle\Entity\SettingOwner
      */
     protected function createUser($username = 'user1')
     {
-        return Mockery::mock('Symfony\Component\Security\Core\User\UserInterface', array('getUsername' => $username));
+        return Mockery::mock('Dmishh\Bundle\SettingsBundle\Entity\SettingOwner', array('getUsername' => $username));
     }
 
     protected function createSettingsManager(array $configuration = array(), $serialization = 'php')

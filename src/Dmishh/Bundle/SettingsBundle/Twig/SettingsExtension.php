@@ -12,7 +12,7 @@
 namespace Dmishh\Bundle\SettingsBundle\Twig;
 
 use Dmishh\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Dmishh\Bundle\SettingsBundle\Entity\SettingOwner;
 
 /**
  * Extension for retreiving settings in Twig templates
@@ -43,10 +43,10 @@ class SettingsExtension extends \Twig_Extension
      * Proxy to SettingsManager::get
      *
      * @param string $name
-     * @param UserInterface|null $user
+     * @param SettingOwner|null $user
      * @return mixed
      */
-    public function getSetting($name, UserInterface $user = null)
+    public function getSetting($name, SettingOwner $user = null)
     {
         return $this->settingsManager->get($name, $user);
     }
@@ -54,10 +54,10 @@ class SettingsExtension extends \Twig_Extension
     /**
      * Proxy to SettingsManager::all
      *
-     * @param UserInterface|null $user
+     * @param SettingOwner|null $user
      * @return array
      */
-    public function getAllSettings(UserInterface $user = null)
+    public function getAllSettings(SettingOwner $user = null)
     {
         return $this->settingsManager->all($user);
     }
