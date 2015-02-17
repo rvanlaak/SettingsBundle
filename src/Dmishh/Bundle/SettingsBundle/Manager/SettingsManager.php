@@ -60,14 +60,14 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * @param ObjectManager $em
      * @param array $settingsConfiguration
-     * @param string $serialization
+     * @param SerializerInterface $serializer
      */
-    public function __construct(ObjectManager $em, array $settingsConfiguration = array(), $serialization = 'php')
+    public function __construct(ObjectManager $em, array $settingsConfiguration = array(), SerializerInterface $serializer)
     {
         $this->em = $em;
         $this->repository = $em->getRepository('Dmishh\\Bundle\\SettingsBundle\\Entity\\Setting');
         $this->settingsConfiguration = $settingsConfiguration;
-        $this->serializer = SerializerFactory::create($serialization);
+        $this->serializer = $serializer;
     }
 
     /**

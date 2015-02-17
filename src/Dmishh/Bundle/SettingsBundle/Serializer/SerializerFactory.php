@@ -14,7 +14,7 @@ namespace Dmishh\Bundle\SettingsBundle\Serializer;
 use Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException;
 use Symfony\Component\DependencyInjection\Container;
 
-abstract class SerializerFactory
+class SerializerFactory
 {
     /**
      * @param string $name short name of serializer (ex.: php) or full class name
