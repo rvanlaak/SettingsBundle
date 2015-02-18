@@ -1,7 +1,7 @@
 SettingsBundle
 ==============
 
-Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM. It just works.
+Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM.
 
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2/small.png)](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2)
@@ -235,7 +235,7 @@ You may configure a scope to each of your settings. You can use ALL (default), G
 dmishh_settings:
     settings:
         my_first_user_setting:
-            scope: user # or "all" if you want for that setting to be visible as global setting
+            scope: user # all, global
 ```
 
 #### Security
