@@ -156,7 +156,6 @@ Full list of options:
 
 ```yaml
 dmishh_settings:
-    user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
     security:
@@ -228,13 +227,12 @@ $this->get('settings_manager')->get('user_scope_setting'); // => WrongScopeExcep
 $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongScopeException
 ```
 
-#### Configuring per-user settings
+#### Configuring scope
 
-To use this feature, ```user_class``` option must be defined. Then you can set GLOBAL or USER scope for your settings.
+You may configure a scope to each of your settings. You can use ALL (default), GLOBAL or USER scope.
 
 ```yaml
 dmishh_settings:
-    user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     settings:
         my_first_user_setting:
             scope: user # or "all" if you want for that setting to be visible as global setting
