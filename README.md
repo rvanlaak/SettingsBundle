@@ -6,6 +6,8 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2/small.png)](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2)
 
+Thanks to [Tobias Nyholm](https://github.com/Nyholm) and [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
+
 ## Features
 
 * Easy-to-use
@@ -344,7 +346,6 @@ TODO
 ## Roadmap and contribution
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
-Thanks to [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
 
 #### Version 1.0.2-1.0.4
 * Minor code improvements
