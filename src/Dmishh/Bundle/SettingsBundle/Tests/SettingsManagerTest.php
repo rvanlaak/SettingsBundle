@@ -13,6 +13,7 @@ namespace Dmishh\Bundle\SettingsBundle\Tests;
 
 use Dmishh\Bundle\SettingsBundle\Manager\SettingsManager;
 use Dmishh\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
+use Dmishh\Bundle\SettingsBundle\Serializer\SerializerFactory;
 use Mockery;
 
 class SettingsManagerTest extends AbstractTest
@@ -216,6 +217,7 @@ class SettingsManagerTest extends AbstractTest
             );
         }
 
-        return new SettingsManager($this->em, $configuration, $serialization);
+        $serializer = SerializerFactory::create($serialization);
+        return new SettingsManager($this->em, $configuration, $serializer);
     }
 }
