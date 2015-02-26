@@ -80,12 +80,20 @@ class SettingsManager implements SettingsManagerInterface
 
         $value = null;
 
-        if ($user === null) {
-            $value = $this->globalSettings[$name];
-        } else {
-            if ($this->userSettings[$user->getUsername()][$name] !== null) {
-                $value = $this->userSettings[$user->getUsername()][$name];
-            }
+        switch ($this->settingsConfiguration[$name]['scope']) {
+            case SettingsManagerInterface::SCOPE_GLOBAL:
+                $value = $this->globalSettings[$name];
+                break;
+            case SettingsManagerInterface::SCOPE_ALL:
+                $value = $this->globalSettings[$name];
+                //Do not break here. Try to fetch the users settings
+            case SettingsManagerInterface::SCOPE_USER:
+                if ($user !== null) {
+                    if ($this->userSettings[$user->getUsername()][$name] !== null) {
+                        $value = $this->userSettings[$user->getUsername()][$name];
+                    }
+                }
+                break;
         }
 
         return $value;
