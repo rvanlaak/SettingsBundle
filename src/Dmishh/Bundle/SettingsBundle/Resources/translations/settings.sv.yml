@@ -1,0 +1,6 @@
+settings: Inställningar
+save: Spara
+settings_updated: Inställningarna är uppdaterade!
+not_allowed_to_edit_global_settings: Du har inte rättigheter att ändra dem globala inställningarna
+must_be_logged_in_to_edit_own_settings: Du måste vara inloggad för att ändra dina inställningar
+not_allowed_to_edit_own_settings: Du har inte rättigheter att ändra dina inställningar
