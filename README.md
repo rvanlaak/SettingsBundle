@@ -347,9 +347,9 @@ TODO
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
 
-#### Version 1.0.2-1.0.4
-* Minor code improvements
-* System messages translations to en, it, es, fr, de, ru, uk languages
+#### Version 1.0.2-1.0.6
+* Minor code improvements and bug fixes
+* System messages translations to en, it, es, fr, de, ru, uk, sv languages
 
 #### Version 1.0.1
 * Ability to choose serialization mechanism (php or json)
@@ -362,4 +362,4 @@ Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundl
 
 The MIT License. For the full text of license, please, see [LICENSE](https://github.com/dmishh/SettingsBundle/blob/master/LICENSE)
 
-© 2013-2014 [Dmitriy Scherbina](http://dmishh.com)
+© 2013-2015 [Dmitriy Scherbina](http://dmishh.com)
