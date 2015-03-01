@@ -165,6 +165,22 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($user));
     }
 
+    public function testScopeAll()
+    {
+        $user = $this->createUser();
+        $settingsManager = $this->createSettingsManager();
+
+        // Global settings should be shown if there is no user setting defined
+        $settingsManager->set('some_setting', 'value');
+        $this->assertEquals('value', $settingsManager->get('some_setting'));
+        $this->assertEquals('value', $settingsManager->get('some_setting', $user), 'Did not get global value when local value was undefined.');
+
+        // The users settings should always be prioritised over the global one (if it exists)
+        $settingsManager->set('some_setting', 'user_value', $user);
+        $this->assertEquals('user_value', $settingsManager->get('some_setting', $user), 'User/Local value should have priority over global.');
+        $this->assertEquals('value', $settingsManager->get('some_setting'));
+    }
+
     public function testValidSerizalizationTypes()
     {
         $settingsManager = $this->createSettingsManager(array(), 'php');
