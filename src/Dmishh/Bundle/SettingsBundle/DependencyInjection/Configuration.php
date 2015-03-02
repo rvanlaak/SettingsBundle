@@ -34,8 +34,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->scalarNode('user_class')
-                ->end()
                 ->scalarNode('layout')
                     ->defaultValue('DmishhSettingsBundle::layout.html.twig')
                 ->end()

@@ -69,7 +69,7 @@ class SettingsController extends Controller
         $form = $this->createForm('settings_management', $this->get('settings_manager')->all($user));
 
         if ($request->isMethod('post')) {
-            $form->bind($request);
+            $form->handleRequest($request);
 
             if ($form->isValid()) {
 

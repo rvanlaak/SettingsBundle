@@ -1,10 +1,12 @@
 SettingsBundle
 ==============
 
-Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM. It just works.
+Bundle is used for storing configuration with Symfony2 in database using Doctrine2 ORM.
 
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2/small.png)](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2)
+
+Thanks to [Tobias Nyholm](https://github.com/Nyholm) and [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
 
 ## Features
 
@@ -155,7 +157,6 @@ Full list of options:
 
 ```yaml
 dmishh_settings:
-    user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
     security:
@@ -227,16 +228,15 @@ $this->get('settings_manager')->get('user_scope_setting'); // => WrongScopeExcep
 $this->get('settings_manager')->set('user_scope_setting', 'value'); // => WrongScopeException
 ```
 
-#### Configuring per-user settings
+#### Configuring scope
 
-To use this feature, ```user_class``` option must be defined. Then you can set GLOBAL or USER scope for your settings.
+You may configure a scope to each of your settings. You can use ALL (default), GLOBAL or USER scope.
 
 ```yaml
 dmishh_settings:
-    user_class: Dmishh/Bundle/SettingsBundle/Entity/User # change this to your user class
     settings:
         my_first_user_setting:
-            scope: user # or "all" if you want for that setting to be visible as global setting
+            scope: user # all, global
 ```
 
 #### Security
@@ -345,11 +345,10 @@ TODO
 ## Roadmap and contribution
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
-Thanks to [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
 
-#### Version 1.0.2-1.0.4
-* Minor code improvements
-* System messages translations to en, it, es, fr, de, ru, uk languages
+#### Version 1.0.2-1.0.6
+* Minor code improvements and bug fixes
+* System messages translations to en, it, es, fr, de, ru, uk, sv languages
 
 #### Version 1.0.1
 * Ability to choose serialization mechanism (php or json)
@@ -362,4 +361,4 @@ Thanks to [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
 
 The MIT License. For the full text of license, please, see [LICENSE](https://github.com/dmishh/SettingsBundle/blob/master/LICENSE)
 
-© 2013-2014 [Dmitriy Scherbina](http://dmishh.com)
+© 2013-2015 [Dmitriy Scherbina](http://dmishh.com)
