@@ -61,19 +61,20 @@ class SettingsController extends Controller
 
     /**
      * @param Request $request
-     * @param SettingOwner|null $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param SettingOwner|null $owner
+     *
+*@return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manage(Request $request, SettingOwner $user = null)
+    protected function manage(Request $request, SettingOwner $owner = null)
     {
-        $form = $this->createForm('settings_management', $this->get('settings_manager')->all($user));
+        $form = $this->createForm('settings_management', $this->get('settings_manager')->all($owner));
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
 
-                $this->get('settings_manager')->setMany($form->getData(), $user);
+                $this->get('settings_manager')->setMany($form->getData(), $owner);
                 $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('settings_updated', array(), 'settings'));
 
                 return $this->redirect($request->getUri());

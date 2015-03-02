@@ -23,44 +23,49 @@ interface SettingsManagerInterface
      * Returns setting value by its name
      *
      * @param string $name
-     * @param SettingOwner|null $user
-     * @return mixed
+     * @param SettingOwner|null $owner
+     *
+*@return mixed
      */
-    function get($name, SettingOwner $user = null);
+    function get($name, SettingOwner $owner = null);
 
     /**
      * Returns all settings as associative name-value array
      *
-     * @param SettingOwner|null $user
-     * @return array
+     * @param SettingOwner|null $owner
+     *
+*@return array
      */
-    function all(SettingOwner $user = null);
+    function all(SettingOwner $owner = null);
 
     /**
      * Sets setting value by its name
      *
      * @param string $name
      * @param mixed $value
-     * @param SettingOwner|null $user
-     * @return SettingsManagerInterface
+     * @param SettingOwner|null $owner
+     *
+*@return SettingsManagerInterface
      */
-    function set($name, $value, SettingOwner $user = null);
+    function set($name, $value, SettingOwner $owner = null);
 
     /**
      * Sets settings' values from associative name-value array
      *
      * @param array $settings
-     * @param SettingOwner|null $user
-     * @return SettingsManagerInterface
+     * @param SettingOwner|null $owner
+     *
+*@return SettingsManagerInterface
      */
-    function setMany(array $settings, SettingOwner $user = null);
+    function setMany(array $settings, SettingOwner $owner = null);
 
     /**
      * Clears setting value
      *
      * @param string $name
-     * @param SettingOwner|null $user
-     * @return SettingsManagerInterface
+     * @param SettingOwner|null $owner
+     *
+*@return SettingsManagerInterface
      */
-    function clear($name, SettingOwner $user = null);
+    function clear($name, SettingOwner $owner = null);
 }

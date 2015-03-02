@@ -43,23 +43,25 @@ class SettingsExtension extends \Twig_Extension
      * Proxy to SettingsManager::get
      *
      * @param string $name
-     * @param SettingOwner|null $user
-     * @return mixed
+     * @param SettingOwner|null $owner
+     *
+*@return mixed
      */
-    public function getSetting($name, SettingOwner $user = null)
+    public function getSetting($name, SettingOwner $owner = null)
     {
-        return $this->settingsManager->get($name, $user);
+        return $this->settingsManager->get($name, $owner);
     }
 
     /**
      * Proxy to SettingsManager::all
      *
-     * @param SettingOwner|null $user
-     * @return array
+     * @param SettingOwner|null $owner
+     *
+*@return array
      */
-    public function getAllSettings(SettingOwner $user = null)
+    public function getAllSettings(SettingOwner $owner = null)
     {
-        return $this->settingsManager->all($user);
+        return $this->settingsManager->all($owner);
     }
 
     /**
