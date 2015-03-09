@@ -215,7 +215,7 @@ class SettingsManagerTest extends AbstractTest
 
     public function testGetDefaultValue()
     {
-        $user = $this->createUser();
+        $user = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
 
         //test default global value
