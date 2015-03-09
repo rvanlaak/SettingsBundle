@@ -11,10 +11,10 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Controller;
 
+use Dmishh\Bundle\SettingsBundle\Entity\SettingOwner;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class SettingsController extends Controller
 {
@@ -49,24 +49,32 @@ class SettingsController extends Controller
             throw new AccessDeniedException($this->get('translator')->trans('not_allowed_to_edit_own_settings', array(), 'settings'));
         }
 
-        return $this->manage($request, $this->get('security.context')->getToken()->getUser());
+        $user = $this->get('security.context')->getToken()->getUser();
+
+        if (!($user instanceof SettingOwner)) {
+            //For this to work the User entity must implement SettingOwner
+            throw new AccessDeniedException();
+        }
+
+        return $this->manage($request, $user);
     }
 
     /**
      * @param Request $request
-     * @param UserInterface|null $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param SettingOwner|null $owner
+     *
+*@return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manage(Request $request, UserInterface $user = null)
+    protected function manage(Request $request, SettingOwner $owner = null)
     {
-        $form = $this->createForm('settings_management', $this->get('settings_manager')->all($user));
+        $form = $this->createForm('settings_management', $this->get('settings_manager')->all($owner));
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
 
-                $this->get('settings_manager')->setMany($form->getData(), $user);
+                $this->get('settings_manager')->setMany($form->getData(), $owner);
                 $this->get('session')->getFlashBag()->add('success', $this->get('translator')->trans('settings_updated', array(), 'settings'));
 
                 return $this->redirect($request->getUri());

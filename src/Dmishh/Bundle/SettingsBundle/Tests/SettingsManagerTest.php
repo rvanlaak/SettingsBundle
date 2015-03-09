@@ -44,52 +44,52 @@ class SettingsManagerTest extends AbstractTest
 
     public function testUserSettingsAccessor()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
-        $settingsManager->set('some_setting', 'VALUE_USER', $user);
-        $this->assertEquals('VALUE_USER', $settingsManager->get('some_setting', $user));
+        $settingsManager->set('some_setting', 'VALUE_USER', $owner);
+        $this->assertEquals('VALUE_USER', $settingsManager->get('some_setting', $owner));
     }
 
     public function testUserSettingsClear()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
-        $settingsManager->set('some_setting', 'VALUE_GLOBAL', $user);
-        $settingsManager->clear('some_setting', $user);
-        $this->assertNull($settingsManager->get('some_setting', $user));
+        $settingsManager->set('some_setting', 'VALUE_GLOBAL', $owner);
+        $settingsManager->clear('some_setting', $owner);
+        $this->assertNull($settingsManager->get('some_setting', $owner));
     }
 
     public function testGlobalAndUserSettingsArentIntersect()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
         $settingsManager->set('some_setting', 'VALUE_GLOBAL');
-        $settingsManager->set('some_setting', 'VALUE_USER', $user);
+        $settingsManager->set('some_setting', 'VALUE_USER', $owner);
         $this->assertEquals('VALUE_GLOBAL', $settingsManager->get('some_setting'));
-        $this->assertEquals('VALUE_USER', $settingsManager->get('some_setting', $user));
+        $this->assertEquals('VALUE_USER', $settingsManager->get('some_setting', $owner));
 
         // in reverse order
-        $settingsManager->set('some_setting', 'VALUE_USER_2', $user);
+        $settingsManager->set('some_setting', 'VALUE_USER_2', $owner);
         $settingsManager->set('some_setting', 'VALUE_GLOBAL_2');
         $this->assertEquals('VALUE_GLOBAL_2', $settingsManager->get('some_setting'));
-        $this->assertEquals('VALUE_USER_2', $settingsManager->get('some_setting', $user));
+        $this->assertEquals('VALUE_USER_2', $settingsManager->get('some_setting', $owner));
     }
 
     public function testUsersSettingsArentIntersect()
     {
-        $user1 = $this->createUser(1);
-        $user2 = $this->createUser(2);
+        $owner1 = $this->createOwner(1);
+        $owner2 = $this->createOwner(2);
         $settingsManager = $this->createSettingsManager();
-        $settingsManager->set('some_setting', 'VALUE_USER_1', $user1);
-        $settingsManager->set('some_setting', 'VALUE_USER_2', $user2);
-        $this->assertEquals('VALUE_USER_1', $settingsManager->get('some_setting', $user1));
-        $this->assertEquals('VALUE_USER_2', $settingsManager->get('some_setting', $user2));
+        $settingsManager->set('some_setting', 'VALUE_USER_1', $owner1);
+        $settingsManager->set('some_setting', 'VALUE_USER_2', $owner2);
+        $this->assertEquals('VALUE_USER_1', $settingsManager->get('some_setting', $owner1));
+        $this->assertEquals('VALUE_USER_2', $settingsManager->get('some_setting', $owner2));
 
         // in reverse order
-        $settingsManager->set('some_setting', 'VALUE_USER_2', $user2);
-        $settingsManager->set('some_setting', 'VALUE_USER_1', $user1);
-        $this->assertEquals('VALUE_USER_1', $settingsManager->get('some_setting', $user1));
-        $this->assertEquals('VALUE_USER_2', $settingsManager->get('some_setting', $user2));
+        $settingsManager->set('some_setting', 'VALUE_USER_2', $owner2);
+        $settingsManager->set('some_setting', 'VALUE_USER_1', $owner1);
+        $this->assertEquals('VALUE_USER_1', $settingsManager->get('some_setting', $owner1));
+        $this->assertEquals('VALUE_USER_2', $settingsManager->get('some_setting', $owner2));
     }
 
     public function testPersistence()
@@ -112,12 +112,12 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testSetUserSettingInGlobalScopeRaisesException()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
         $settingsManager->set('some_global_setting', 'VALUE_GLOBAL');
         $this->assertEquals('VALUE_GLOBAL', $settingsManager->get('some_global_setting'));
 
-        $settingsManager->set('some_global_setting', 'VALUE_GLOBAL', $user);
+        $settingsManager->set('some_global_setting', 'VALUE_GLOBAL', $owner);
     }
 
     /**
@@ -125,9 +125,9 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testGetUserSettingInGlobalScopeRaisesException()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
-        $settingsManager->get('some_global_setting', $user);
+        $settingsManager->get('some_global_setting', $owner);
     }
 
     /**
@@ -135,10 +135,10 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testSetGlobalSettingInUserScopeRaisesException()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
-        $settingsManager->set('some_user_setting', 'VALUE_USER', $user);
-        $this->assertEquals('VALUE_USER', $settingsManager->get('some_global_setting', $user));
+        $settingsManager->set('some_user_setting', 'VALUE_USER', $owner);
+        $this->assertEquals('VALUE_USER', $settingsManager->get('some_global_setting', $owner));
 
         $settingsManager->set('some_user_setting', 'VALUE_USER');
     }
@@ -160,24 +160,24 @@ class SettingsManagerTest extends AbstractTest
 
     public function testGetAllUserSettings()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
-        $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($user));
+        $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($owner));
     }
 
     public function testScopeAll()
     {
-        $user = $this->createUser();
+        $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
 
         // Global settings should be shown if there is no user setting defined
         $settingsManager->set('some_setting', 'value');
         $this->assertEquals('value', $settingsManager->get('some_setting'));
-        $this->assertEquals('value', $settingsManager->get('some_setting', $user), 'Did not get global value when local value was undefined.');
+        $this->assertEquals('value', $settingsManager->get('some_setting', $owner), 'Did not get global value when local value was undefined.');
 
         // The users settings should always be prioritised over the global one (if it exists)
-        $settingsManager->set('some_setting', 'user_value', $user);
-        $this->assertEquals('user_value', $settingsManager->get('some_setting', $user), 'User/Local value should have priority over global.');
+        $settingsManager->set('some_setting', 'user_value', $owner);
+        $this->assertEquals('user_value', $settingsManager->get('some_setting', $owner), 'User/Local value should have priority over global.');
         $this->assertEquals('value', $settingsManager->get('some_setting'));
     }
 
@@ -214,12 +214,13 @@ class SettingsManagerTest extends AbstractTest
     }
 
     /**
-     * @param string $username
-     * @return \Symfony\Component\Security\Core\User\UserInterface
+     * @param string $ownerId
+     *
+     * @return \Dmishh\Bundle\SettingsBundle\Entity\SettingOwner
      */
-    protected function createUser($username = 'user1')
+    protected function createOwner($ownerId = 'user1')
     {
-        return Mockery::mock('Symfony\Component\Security\Core\User\UserInterface', array('getUsername' => $username));
+        return Mockery::mock('Dmishh\Bundle\SettingsBundle\Entity\SettingOwner', array('getSettingIdentifier' => $ownerId));
     }
 
     protected function createSettingsManager(array $configuration = array(), $serialization = 'php')
