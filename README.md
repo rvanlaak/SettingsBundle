@@ -346,6 +346,12 @@ TODO
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
 
+#### Version 2.0.0-dev
+
+Make sure to read the [Upgrade.md](Upgrade.md) to successfully migrate your application.
+
+* New interface for your entity. We are no longer using `UserInterface`. Use `SettingOwner` instead. 
+
 #### Version 1.0.2-1.0.6
 * Minor code improvements and bug fixes
 * System messages translations to en, it, es, fr, de, ru, uk, sv languages
