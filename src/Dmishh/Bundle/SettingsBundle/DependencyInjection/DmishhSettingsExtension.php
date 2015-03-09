@@ -14,6 +14,7 @@ namespace Dmishh\Bundle\SettingsBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -38,5 +39,17 @@ class DmishhSettingsExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
+
+        // Configure the correct storage
+        if ($config['cache_service'] !== null) {
+            $storage = new Reference($config['cache_service']);
+            $cachedManager=$container->getDefinition('dmishh.settings.cached_manager');
+            $cachedManager->addMethodCall('setCacheStorage', array($storage));
+
+            // set an alias to make sure the cached settings manager is the default
+            $container->setAlias('settings_manager', 'dmishh.settings.cached_manager');
+        }
+
+        $container->setParameter('dmishh.settings.cache.lifetime', $config['cache_lifetime']);
     }
 }
