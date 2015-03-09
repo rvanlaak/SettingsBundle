@@ -120,8 +120,7 @@ Thanks to [Tobias Nyholm](https://github.com/Nyholm) and [Artem Zhuravlov](https
 
     // Each of methods above has last optional $user parameter
     // that allows to get/set per-user settings
-    // $user parameter implements UserInterface from Symfony Security Component
-    // Your User Entity must implement UserInterface if you wish to use per-user settings
+    // Your User Entity must implement SettingOwner if you wish to use per-user settings
 
     // These are same examples as above with only difference that they are for current user
     $this->get('settings_manager')->set('my_first_setting', 'user_value', $this->getUser());
@@ -346,6 +345,12 @@ TODO
 ## Roadmap and contribution
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
+
+#### Version 2.0.0-dev
+
+Make sure to read the [Upgrade.md](Upgrade.md) to successfully migrate your application.
+
+* New interface for your entity. We are no longer using `UserInterface`. Use `SettingOwner` instead. 
 
 #### Version 1.0.2-1.0.6
 * Minor code improvements and bug fixes
