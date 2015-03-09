@@ -14,7 +14,6 @@ namespace Dmishh\Bundle\SettingsBundle\Manager;
 use Dmishh\Bundle\SettingsBundle\Entity\Setting;
 use Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException;
-use Dmishh\Bundle\SettingsBundle\Serializer\SerializerFactory;
 use Dmishh\Bundle\SettingsBundle\Serializer\SerializerInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\User\UserInterface;
