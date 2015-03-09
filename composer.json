@@ -9,6 +9,14 @@
         {
             "name": "Dmitriy Scherbina",
             "homepage": "http://dmishh.com"
+        },
+        {
+            "name": "Tobias Nyholm",
+            "homepage": "https://github.com/Nyholm"
+        },
+        {
+            "name": "Artem Zhuravlov",
+            "homepage": "https://github.com/azhuravlov"
         }
     ],
     "require": {
