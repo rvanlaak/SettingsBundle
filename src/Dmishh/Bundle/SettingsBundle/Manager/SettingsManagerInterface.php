@@ -24,10 +24,11 @@ interface SettingsManagerInterface
      *
      * @param string            $name
      * @param SettingOwner|null $owner
+     * @param mixed|null        $default value to return if the setting is not set
      *
      * @return mixed
      */
-    public function get($name, SettingOwner $owner = null);
+    public function get($name, SettingOwner $owner = null, $default = null);
 
     /**
      * Returns all settings as associative name-value array.
