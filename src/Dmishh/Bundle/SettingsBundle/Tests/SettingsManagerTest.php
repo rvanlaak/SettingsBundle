@@ -174,11 +174,13 @@ class SettingsManagerTest extends AbstractTest
         $settingsManager->set('some_setting', 'value');
         $this->assertEquals('value', $settingsManager->get('some_setting'));
         $this->assertEquals('value', $settingsManager->get('some_setting', $owner), 'Did not get global value when local value was undefined.');
+        $this->assertEquals(array('some_setting' => 'value', 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($owner), 'Did not get global value when local value was undefined.');
 
         // The users settings should always be prioritised over the global one (if it exists)
         $settingsManager->set('some_setting', 'user_value', $owner);
         $this->assertEquals('user_value', $settingsManager->get('some_setting', $owner), 'User/Local value should have priority over global.');
         $this->assertEquals('value', $settingsManager->get('some_setting'));
+        $this->assertEquals(array('some_setting' => 'user_value', 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($owner), 'User/Local value should have priority over global.');
     }
 
     public function testValidSerizalizationTypes()

@@ -107,9 +107,19 @@ class SettingsManager implements SettingsManagerInterface
 
         if ($owner === null) {
             return $this->globalSettings;
-        } else {
-            return $this->ownerSettings[$owner->getSettingIdentifier()];
         }
+
+        $settings = $this->ownerSettings[$owner->getSettingIdentifier()];
+
+        // If some user setting is not defined, please use the value from global
+        foreach ($settings as $key => $value) {
+            if ($value === null && isset($this->globalSettings[$key])) {
+                $settings[$key] = $this->globalSettings[$key];
+            }
+        }
+
+        return $settings;
+
     }
 
     /**
