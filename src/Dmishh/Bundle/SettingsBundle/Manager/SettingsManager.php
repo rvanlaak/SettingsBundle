@@ -72,7 +72,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritDoc}
      */
-    public function get($name, SettingOwner $owner = null)
+    public function get($name, SettingOwner $owner = null, $default = null)
     {
         $this->validateSetting($name, $owner);
         $this->loadSettings($owner);
@@ -95,7 +95,7 @@ class SettingsManager implements SettingsManagerInterface
                 break;
         }
 
-        return $value;
+        return $value === null ? $default : $value;
     }
 
     /**
