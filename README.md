@@ -6,7 +6,7 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2/small.png)](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2)
 
-Thanks to [Tobias Nyholm](https://github.com/Nyholm) and [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
+Thanks to **[Tobias Nyholm](https://github.com/Nyholm)** and [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
 
 ## Features
 
@@ -25,6 +25,7 @@ Thanks to [Tobias Nyholm](https://github.com/Nyholm) and [Artem Zhuravlov](https
 * [I18n](#i18n)
 * [Customization](#customization)
 * [FAQ](#faq)
+* [Upgrade from 1.0.*](#upgrade_v1)
 
 <a name="installation"></a>
 ### Installation (using Composer)
@@ -36,7 +37,7 @@ Thanks to [Tobias Nyholm](https://github.com/Nyholm) and [Artem Zhuravlov](https
     {
         "require": {
             // ...
-            "dmishh/settings-bundle": "1.0.*"
+            "dmishh/settings-bundle": "2.0.*@dev"
         }
     }
     ```
@@ -342,19 +343,22 @@ TODO
 
 TODO
 
+<a name="upgrade_v1"></a>
+### Upgrade from 1.0.*
+
+Make sure to read the [UPGRADE.md](UPGRADE.md) to successfully migrate your application.
+
 ## Roadmap and contribution
 
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
 
 #### Version 2.0.0-dev
 
-Make sure to read the [Upgrade.md](Upgrade.md) to successfully migrate your application.
-
 * New interface for your entity. We are no longer using `UserInterface`. Use `SettingOwner` instead.
 * Changed behavior of `SettingsManager::all`. It will not return global config if the user/local values are missing
 * Added possibility to add default value as third parameter on `SettingsManager::get`
 
-#### Version 1.0.2-1.0.6
+#### Version 1.0.2-1.0.7
 * Minor code improvements and bug fixes
 * System messages translations to en, it, es, fr, de, ru, uk, sv languages
 
