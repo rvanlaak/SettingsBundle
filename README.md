@@ -352,6 +352,7 @@ Make sure to read the [Upgrade.md](Upgrade.md) to successfully migrate your appl
 
 * New interface for your entity. We are no longer using `UserInterface`. Use `SettingOwner` instead.
 * Changed behavior of `SettingsManager::all`. It will not return global config if the user/local values are missing
+* Added possibility to add default value as third parameter on `SettingsManager::get`
 
 #### Version 1.0.2-1.0.6
 * Minor code improvements and bug fixes
