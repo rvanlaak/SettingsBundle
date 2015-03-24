@@ -202,17 +202,19 @@ class SettingsManager implements SettingsManagerInterface
             return !empty($setting) ? array_pop($setting) : null;
         };
 
-        /** @var Setting $setting */
-        foreach ($this->settingsConfiguration as $name => $configuration) {
+        // For each settings that you are trying to save
+        foreach ($names as $name) {
             try {
                 $value = $this->get($name, $owner);
             } catch (WrongScopeException $e) {
                 continue;
             }
 
+            /** @var Setting $setting */
             $setting = $findByName($name);
 
             if (!$setting) {
+                // if the setting does not exist in DB, create it
                 $setting = new Setting();
                 $setting->setName($name);
                 if ($owner !== null) {
