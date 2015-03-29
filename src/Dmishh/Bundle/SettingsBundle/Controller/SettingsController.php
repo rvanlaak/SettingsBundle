@@ -11,7 +11,7 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Controller;
 
-use Dmishh\Bundle\SettingsBundle\Entity\SettingOwner;
+use Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -51,8 +51,8 @@ class SettingsController extends Controller
 
         $user = $this->get('security.context')->getToken()->getUser();
 
-        if (!($user instanceof SettingOwner)) {
-            //For this to work the User entity must implement SettingOwner
+        if (!($user instanceof SettingsOwnerInterface)) {
+            //For this to work the User entity must implement SettingsOwnerInterface
             throw new AccessDeniedException();
         }
 
@@ -61,11 +61,14 @@ class SettingsController extends Controller
 
     /**
      * @param Request $request
-     * @param SettingOwner|null $owner
-     *
+     * @param SettingsOwnerInterface|null $owner
+
+
+
+*
 *@return \Symfony\Component\HttpFoundation\Response
      */
-    protected function manage(Request $request, SettingOwner $owner = null)
+    protected function manage(Request $request, SettingsOwnerInterface $owner = null)
     {
         $form = $this->createForm('settings_management', $this->get('settings_manager')->all($owner));
 

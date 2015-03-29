@@ -239,11 +239,11 @@ class SettingsManagerTest extends AbstractTest
     /**
      * @param string $ownerId
      *
-     * @return \Dmishh\Bundle\SettingsBundle\Entity\SettingOwner
+     * @return \Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface
      */
     protected function createOwner($ownerId = 'user1')
     {
-        return Mockery::mock('Dmishh\Bundle\SettingsBundle\Entity\SettingOwner', array('getSettingIdentifier' => $ownerId));
+        return Mockery::mock('Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface', array('getSettingIdentifier' => $ownerId));
     }
 
     protected function createSettingsManager(array $configuration = array(), $serialization = 'php')

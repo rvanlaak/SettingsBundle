@@ -121,7 +121,7 @@ Thanks to **[Tobias Nyholm](https://github.com/Nyholm)** and [Artem Zhuravlov](h
 
     // Each of methods above has last optional $user parameter
     // that allows to get/set per-user settings
-    // Your User Entity must implement SettingOwner if you wish to use per-user settings
+    // Your User Entity must implement SettingsOwnerInterface if you wish to use per-user settings
 
     // These are same examples as above with only difference that they are for current user
     $this->get('settings_manager')->set('my_first_setting', 'user_value', $this->getUser());
@@ -354,7 +354,7 @@ Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundl
 
 #### Version 2.0.0-dev
 
-* New interface for your entity. We are no longer using `UserInterface`. Use `SettingOwner` instead.
+* New interface for your entity. We are no longer using `UserInterface`. Use `SettingsOwnerInterface` instead.
 * Changed behavior of `SettingsManager::all`. It will not return global config if the user/local values are missing
 * Added possibility to add default value as third parameter on `SettingsManager::get`
 

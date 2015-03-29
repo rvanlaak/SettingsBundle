@@ -11,7 +11,7 @@
 
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
-use Dmishh\Bundle\SettingsBundle\Entity\SettingOwner;
+use Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface;
 
 interface SettingsManagerInterface
 {
@@ -21,52 +21,82 @@ interface SettingsManagerInterface
 
     /**
      * Returns setting value by its name.
-     *
-     * @param string            $name
-     * @param SettingOwner|null $owner
+
+
+
+*
+*@param string            $name
+     * @param SettingsOwnerInterface|null $owner
      * @param mixed|null        $default value to return if the setting is not set
-     *
-     * @return mixed
+
+
+
+*
+*@return mixed
      */
-    public function get($name, SettingOwner $owner = null, $default = null);
+    public function get($name, SettingsOwnerInterface $owner = null, $default = null);
 
     /**
      * Returns all settings as associative name-value array.
-     *
-     * @param SettingOwner|null $owner
-     *
-     * @return array
+
+
+
+*
+*@param SettingsOwnerInterface|null $owner
+
+
+
+*
+*@return array
      */
-    public function all(SettingOwner $owner = null);
+    public function all(SettingsOwnerInterface $owner = null);
 
     /**
      * Sets setting value by its name.
-     *
-     * @param string            $name
+
+
+
+*
+*@param string            $name
      * @param mixed             $value
-     * @param SettingOwner|null $owner
-     *
-     * @return SettingsManagerInterface
+     * @param SettingsOwnerInterface|null $owner
+
+
+
+*
+*@return SettingsManagerInterface
      */
-    public function set($name, $value, SettingOwner $owner = null);
+    public function set($name, $value, SettingsOwnerInterface $owner = null);
 
     /**
      * Sets settings' values from associative name-value array.
-     *
-     * @param array             $settings
-     * @param SettingOwner|null $owner
-     *
-     * @return SettingsManagerInterface
+
+
+
+*
+*@param array             $settings
+     * @param SettingsOwnerInterface|null $owner
+
+
+
+*
+*@return SettingsManagerInterface
      */
-    public function setMany(array $settings, SettingOwner $owner = null);
+    public function setMany(array $settings, SettingsOwnerInterface $owner = null);
 
     /**
      * Clears setting value.
-     *
-     * @param string            $name
-     * @param SettingOwner|null $owner
-     *
-     * @return SettingsManagerInterface
+
+
+
+*
+*@param string            $name
+     * @param SettingsOwnerInterface|null $owner
+
+
+
+*
+*@return SettingsManagerInterface
      */
-    public function clear($name, SettingOwner $owner = null);
+    public function clear($name, SettingsOwnerInterface $owner = null);
 }
