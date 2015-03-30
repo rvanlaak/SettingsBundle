@@ -2,9 +2,7 @@
 
 /**
  * This file is part of the DmishhSettingsBundle package.
- *
  * (c) 2013 Dmitriy Scherbina <http://dmishh.com>
- *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -41,17 +39,11 @@ class SettingsExtension extends \Twig_Extension
 
     /**
      * Proxy to SettingsManager::get
-
-
-
-*
-*@param string $name
+     *
+     * @param string                      $name
      * @param SettingsOwnerInterface|null $owner
-
-
-
-*
-*@return mixed
+     *
+     * @return mixed
      */
     public function getSetting($name, SettingsOwnerInterface $owner = null, $default = null)
     {
@@ -60,16 +52,10 @@ class SettingsExtension extends \Twig_Extension
 
     /**
      * Proxy to SettingsManager::all
-
-
-
-*
-*@param SettingsOwnerInterface|null $owner
-
-
-
-*
-*@return array
+     *
+     * @param SettingsOwnerInterface|null $owner
+     *
+     * @return array
      */
     public function getAllSettings(SettingsOwnerInterface $owner = null)
     {
