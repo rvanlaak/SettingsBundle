@@ -2,9 +2,7 @@
 
 /**
  * This file is part of the DmishhSettingsBundle package.
- *
  * (c) 2013 Dmitriy Scherbina <http://dmishh.com>
- *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -12,7 +10,7 @@
 namespace Dmishh\Bundle\SettingsBundle\Twig;
 
 use Dmishh\Bundle\SettingsBundle\Manager\SettingsManagerInterface;
-use Dmishh\Bundle\SettingsBundle\Entity\SettingOwner;
+use Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface;
 
 /**
  * Extension for retrieving settings in Twig templates
@@ -42,12 +40,12 @@ class SettingsExtension extends \Twig_Extension
     /**
      * Proxy to SettingsManager::get
      *
-     * @param string $name
-     * @param SettingOwner|null $owner
+     * @param string                      $name
+     * @param SettingsOwnerInterface|null $owner
      *
      * @return mixed
      */
-    public function getSetting($name, SettingOwner $owner = null, $default = null)
+    public function getSetting($name, SettingsOwnerInterface $owner = null, $default = null)
     {
         return $this->settingsManager->get($name, $owner, $default);
     }
@@ -55,11 +53,11 @@ class SettingsExtension extends \Twig_Extension
     /**
      * Proxy to SettingsManager::all
      *
-     * @param SettingOwner|null $owner
+     * @param SettingsOwnerInterface|null $owner
      *
      * @return array
      */
-    public function getAllSettings(SettingOwner $owner = null)
+    public function getAllSettings(SettingsOwnerInterface $owner = null)
     {
         return $this->settingsManager->all($owner);
     }
