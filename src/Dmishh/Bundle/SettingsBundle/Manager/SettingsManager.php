@@ -65,7 +65,7 @@ class SettingsManager implements SettingsManagerInterface
         SerializerInterface $serializer
     ) {
         $this->em = $em;
-        $this->repository = $em->getRepository('Dmishh\\Bundle\\SettingsBundle\\Entity\\Setting');
+        $this->repository = $em->getRepository('Dmishh\Bundle\SettingsBundle\Entity\Setting');
         $this->settingsConfiguration = $settingsConfiguration;
         $this->serializer = $serializer;
     }

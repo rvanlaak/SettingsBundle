@@ -234,61 +234,83 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals('value', $settingsManager->get('some_setting', $user, 'foobar'));
     }
 
+    /**
+     * Covers https://github.com/dmishh/SettingsBundle/issues/28
+     */
     public function testFlush()
     {
         $names = array('foo', 'bar', 'baz');
         $settings = 'foobar';
         $owner = null;
-        $value='settingValue';
+        $value = 'settingValue';
         $serializedValue = 'sValue';
 
         $flushMethod = new \ReflectionMethod('Dmishh\Bundle\SettingsBundle\Manager\SettingsManager', 'flush');
         $flushMethod->setAccessible(true);
 
-        $serializer = $this->getMockBuilder('Dmishh\Bundle\SettingsBundle\Serializer\PhpSerializer')
-            ->setMethods(array('serialize'))->getMock();
+        $serializer = $this
+            ->getMockBuilder('Dmishh\Bundle\SettingsBundle\Serializer\PhpSerializer')
+            ->setMethods(array('serialize'))
+            ->getMock();
 
-        $serializer->expects($this->exactly(count($names)))->method('serialize')->with($this->equalTo($value))->willReturn($serializedValue);
+        $serializer
+            ->expects($this->exactly(count($names)))
+            ->method('serialize')
+            ->with($this->equalTo($value))
+            ->willReturn($serializedValue);
 
-        $repo = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+        $repo = $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->setMethods(array('findBy'))
             ->getMock();
+
         $repo->expects($this->once())->method('findBy')->with($this->equalTo(array(
             'name'=>$names,
             'ownerId'=>$owner,
         )))->willReturn($settings);
 
-        $em = $this->getMockBuilder('Doctrine\Orm\EntityManager')
+        $em = $this
+            ->getMockBuilder('Doctrine\Orm\EntityManager')
             ->disableOriginalConstructor()
             ->setMethods(array('getRepository', 'flush'))
             ->getMock();
+
         $em->expects($this->once())->method('getRepository')->willReturn($repo);
         $em->expects($this->once())->method('flush');
 
-        $setting = $this->getMockBuilder('Dmishh\Bundle\SettingsBundle\Entity\Settings')
+        $setting = $this
+            ->getMockBuilder('Dmishh\Bundle\SettingsBundle\Entity\Settings')
             ->disableOriginalConstructor()
             ->setMethods(array('setValue'))
             ->getMock();
 
         $setting->expects($this->exactly(count($names)))->method('setValue')->with($this->equalTo($serializedValue));
 
-        $manager = $this->getMockBuilder('Dmishh\Bundle\SettingsBundle\Manager\SettingsManager')
+        $manager = $this
+            ->getMockBuilder('Dmishh\Bundle\SettingsBundle\Manager\SettingsManager')
             ->setConstructorArgs(array($em, array(), $serializer))
             ->setMethods(array('findSettingByName', 'get'))
             ->getMock();
 
-        $manager->expects($this->exactly(count($names)))->method('get')->withConsecutive(
-            array($this->equalTo('foo'), $owner),
-            array($this->equalTo('bar'), $owner),
-            array($this->equalTo('baz'), $owner)
-        )->willReturn($value);
+        $manager
+            ->expects($this->exactly(count($names)))
+            ->method('get')
+            ->withConsecutive(
+                array($this->equalTo('foo'), $owner),
+                array($this->equalTo('bar'), $owner),
+                array($this->equalTo('baz'), $owner)
+            )
+            ->willReturn($value);
 
-        $manager->expects($this->exactly(count($names)))->method('findSettingByName')->withConsecutive(
-            array($settings, $this->equalTo('foo')),
-            array($settings, $this->equalTo('bar')),
-            array($settings, $this->equalTo('baz'))
-        )->willReturn($setting);
+        $manager
+            ->expects($this->exactly(count($names)))
+            ->method('findSettingByName')
+            ->withConsecutive(
+                array($settings, $this->equalTo('foo')),
+                array($settings, $this->equalTo('bar')),
+                array($settings, $this->equalTo('baz'))
+            )->willReturn($setting);
 
         $flushMethod->invoke($manager, $names, $owner);
     }
@@ -317,26 +339,6 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals($s1, $result);
     }
 
-    /**
-     * https://github.com/dmishh/SettingsBundle/issues/28
-     */
-    public function testDoesntCreateDuplicates()
-    {
-        $settingsManager = $this->createSettingsManager(
-            array(
-                'some_setting' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
-                'some_setting2' => array('scope' => SettingsManagerInterface::SCOPE_ALL)
-            )
-        );
-
-        $settingsManager->set('some_setting', 1);
-        $settingsManager->set('some_setting', 2);
-        $settingsManager->set('some_setting', 3);
-        $settingsManager->set('some_setting2', true);
-
-        $this->assertEquals(2, count($this->em->getRepository('Dmishh\Bundle\SettingsBundle\Entity\Setting')->findAll()));
-    }
-
     protected function createSetting($name){
         $s = $this->getMockBuilder('Dmishh\Bundle\SettingsBundle\Entity\Setting')
             ->setMethods(array('getName'))
@@ -348,7 +350,6 @@ class SettingsManagerTest extends AbstractTest
 
         return $s;
     }
-
 
     /**
      * @param string $ownerId
