@@ -188,31 +188,27 @@ class SettingsManager implements SettingsManagerInterface
     {
         $names = (array) $names;
 
-        $settings = $this->repository->findBy(
-            array('name' => $names, 'ownerId' => $owner === null ? null : $owner->getSettingIdentifier())
+        $settings = $this->repository->findBy(array(
+                'name' => $names,
+                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier()
+            )
         );
-        $findByName = function ($name) use ($settings) {
-            $setting = array_filter(
-                $settings,
-                function (Setting $setting) use ($name) {
-                    return $setting->getName() == $name;
-                }
-            );
 
-            return !empty($setting) ? array_pop($setting) : null;
-        };
+        // Assert: $settings might be a smaller set than $names
 
-        /** @var Setting $setting */
-        foreach ($this->settingsConfiguration as $name => $configuration) {
+        // For each settings that you are trying to save
+        foreach ($names as $name) {
             try {
                 $value = $this->get($name, $owner);
             } catch (WrongScopeException $e) {
                 continue;
             }
 
-            $setting = $findByName($name);
+            /** @var Setting $setting */
+            $setting = $this->findSettingByName($settings, $name);
 
             if (!$setting) {
+                // if the setting does not exist in DB, create it
                 $setting = new Setting();
                 $setting->setName($name);
                 if ($owner !== null) {
@@ -227,6 +223,22 @@ class SettingsManager implements SettingsManagerInterface
         $this->em->flush();
 
         return $this;
+    }
+
+    /**
+     * Find a setting by name form an array of settings.
+     *
+     * @param Setting[] $haystack
+     * @param string $needle
+     *
+     * @return Setting|null
+     */
+    protected function findSettingByName($haystack, $needle) {
+        foreach ($haystack as $setting) {
+            if ($setting->getName() === $needle) {
+                return $setting;
+            }
+        }
     }
 
     /**
