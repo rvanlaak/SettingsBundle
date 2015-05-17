@@ -234,6 +234,25 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals('value', $settingsManager->get('some_setting', $user, 'foobar'));
     }
 
+    /**
+     * https://github.com/dmishh/SettingsBundle/issues/28
+     */
+    public function testDoesntCreateDuplicates()
+    {
+        $settingsManager = $this->createSettingsManager(
+            array(
+                'some_setting' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
+                'some_setting2' => array('scope' => SettingsManagerInterface::SCOPE_ALL)
+            )
+        );
+
+        $settingsManager->set('some_setting', 1);
+        $settingsManager->set('some_setting', 2);
+        $settingsManager->set('some_setting', 3);
+        $settingsManager->set('some_setting2', true);
+
+        $this->assertEquals(2, count($this->em->getRepository('Dmishh\Bundle\SettingsBundle\Entity\Setting')->findAll()));
+    }
 
 
     /**
