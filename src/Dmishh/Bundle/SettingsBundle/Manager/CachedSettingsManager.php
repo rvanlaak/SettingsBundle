@@ -58,7 +58,7 @@ class CachedSettingsManager implements SettingsManagerInterface
      */
     protected function getCacheStorage()
     {
-        if ($this->storage == null) {
+        if ($this->storage === null) {
             throw new ServiceNotFoundException('Could not find a cache service');
         }
 
