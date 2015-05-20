@@ -267,12 +267,12 @@ dmishh_settings:
     cache_lifetime: 3600
 
 doctrine_cache:
-  aliases:
-    apc_cache: my_apc_cache
-  providers:
-    my_apc_cache:
-      type: apc
-      namespace: random_namespace
+    aliases:
+        apc_cache: my_apc_cache
+    providers:
+        my_apc_cache:
+            type: apc
+            namespace: random_namespace
 ```
 
 Read more about how you configure the Doctrine cache bundle on [their GitHub page](https://github.com/doctrine/DoctrineCacheBundle).
@@ -378,8 +378,6 @@ Make sure to read the [UPGRADE.md](UPGRADE.md) to successfully migrate your appl
 Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send [pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support library better than anything else :)
 
 #### Version 2.0.0-dev
-
-Make sure to read the [Upgrade.md](Upgrade.md) to successfully migrate your application.
 
 * Added optional caching
 * New interface for your entity. We are no longer using `UserInterface`. Use `SettingsOwnerInterface` instead.

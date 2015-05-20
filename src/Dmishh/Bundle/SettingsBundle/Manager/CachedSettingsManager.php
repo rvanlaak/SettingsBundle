@@ -9,9 +9,9 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 /**
  * @author Tobias Nyholm
  */
-class CachedManager implements SettingsManagerInterface
+class CachedSettingsManager implements SettingsManagerInterface
 {
-    const PREFIX = 'dmishh_o{%s}_v{%s}';
+    const PREFIX = 'dmishh_o{%s}_k{%s}';
 
     /**
      * @var CacheProvider storage
