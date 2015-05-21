@@ -34,6 +34,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
+                ->booleanNode('use_twig_filter')->defaultTrue()->end()
                 ->scalarNode('layout')
                     ->defaultValue('DmishhSettingsBundle::layout.html.twig')
                 ->end()

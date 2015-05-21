@@ -1,0 +1,8 @@
+services:
+
+    twig.extension.settings_extension:
+        class: Dmishh\Bundle\SettingsBundle\Twig\SettingsExtension
+        arguments:
+            - @settings_manager
+        tags:
+            - { name: twig.extension }
