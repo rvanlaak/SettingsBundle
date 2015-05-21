@@ -7,7 +7,7 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @dmishh.settings.serializer
-            - %settings_manager.settings%
+            - ~
 
     dmishh.settings.cached_settings_manager:
         class: Dmishh\Bundle\SettingsBundle\Manager\CachedSettingsManager
@@ -20,12 +20,11 @@ services:
         class: Dmishh\Bundle\SettingsBundle\Serializer\SerializerInterface
         factory_service: dmishh.settings.serializer_factory
         factory_method: create
-        arguments: [%settings_manager.serialization%]
+        arguments: [~]
 
     form.type.settings_management:
         class: Dmishh\Bundle\SettingsBundle\Form\Type\SettingsType
-        arguments:
-            - %settings_manager.settings%
+        arguments: [~]
         tags:
             - { name: form.type, alias: settings_management }
 
