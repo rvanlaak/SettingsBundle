@@ -157,17 +157,25 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $cachedSettingsManager->clear($name, $owner);
     }
 
+    /**
+     * Make sure we do always return a string, no matter input
+     */
     public function testGetCacheKey()
     {
         $name = 'name';
         $owner = $this->createOwner();
 
-        $manager = new cachedSettingsManagerDummy();
+        $getCacheKey = new \ReflectionMethod('Dmishh\Bundle\SettingsBundle\Manager\CachedSettingsManager', 'getCacheKey');
+        $getCacheKey->setAccessible(true);
 
-        $this->assertTrue(is_string($manager->getCacheKey($name, $owner)));
-        $this->assertTrue(is_string($manager->getCacheKey($name, null)));
-        $this->assertTrue(is_string($manager->getCacheKey(null, $owner)));
-        $this->assertTrue(is_string($manager->getCacheKey(null, null)));
+        $cachedSettingsManager = $this->getMockBuilder('Dmishh\Bundle\SettingsBundle\Manager\CachedSettingsManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $getCacheKey->invoke($cachedSettingsManager, $name, $owner);
+        $getCacheKey->invoke($cachedSettingsManager, $name, null);
+        $getCacheKey->invoke($cachedSettingsManager, null, $owner);
+        $getCacheKey->invoke($cachedSettingsManager, null, null);
     }
 
     /**
@@ -178,17 +186,5 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
     protected function createOwner($ownerId = 'user1')
     {
         return \Mockery::mock('Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface', array('getSettingIdentifier' => $ownerId));
-    }
-}
-
-class cachedSettingsManagerDummy extends CachedSettingsManager
-{
-    public function __construct()
-    {
-    }
-
-    public function getCacheKey($key, SettingsOwnerInterface $owner = null)
-    {
-        return parent::getCacheKey($key, $owner);
     }
 }
