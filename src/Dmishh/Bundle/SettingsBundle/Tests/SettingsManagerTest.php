@@ -289,7 +289,7 @@ class SettingsManagerTest extends AbstractTest
 
         $manager = $this
             ->getMockBuilder('Dmishh\Bundle\SettingsBundle\Manager\SettingsManager')
-            ->setConstructorArgs(array($em, array(), $serializer))
+            ->setConstructorArgs(array($em, $serializer, array()))
             ->setMethods(array('findSettingByName', 'get'))
             ->getMock();
 
@@ -339,7 +339,8 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals($s1, $result);
     }
 
-    protected function createSetting($name){
+    protected function createSetting($name)
+    {
         $s = $this->getMockBuilder('Dmishh\Bundle\SettingsBundle\Entity\Setting')
             ->setMethods(array('getName'))
             ->getMock();
@@ -373,6 +374,7 @@ class SettingsManagerTest extends AbstractTest
         }
 
         $serializer = SerializerFactory::create($serialization);
-        return new SettingsManager($this->em, $configuration, $serializer);
+
+        return new SettingsManager($this->em, $serializer, $configuration);
     }
 }
