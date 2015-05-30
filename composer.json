@@ -39,5 +39,8 @@
         "branch-alias": {
             "dev-master": "2.0.x-dev"
         }
+    },
+    "suggest": {
+        "doctrine/doctrine-cache-bundle": "If you want to add caching to your settings"
     }
 }

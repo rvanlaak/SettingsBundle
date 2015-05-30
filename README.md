@@ -160,6 +160,8 @@ Full list of options:
 dmishh_settings:
     layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
+    cache_service: null
+    cache_lifetime: 3600
     security:
          manage_global_settings_role: ROLE_USER
          users_can_manage_own_settings: true
@@ -251,6 +253,29 @@ dmishh_settings:
          manage_global_settings_role: ROLE_USER
          users_can_manage_own_settings: true
 ```
+
+
+#### Caching
+
+If you want to cache your settings you may provide a cache service that implements `Doctrine\Common\Cache\CacheProvider`.
+Every time you fetch a setting from the database we will cache it for `cache_lifetime` seconds. If you edit the
+setting we will automatically invalidate the cache.
+
+```yaml
+dmishh_settings:
+    cache_service: apc_cache
+    cache_lifetime: 3600
+
+doctrine_cache:
+    aliases:
+        apc_cache: my_apc_cache
+    providers:
+        my_apc_cache:
+            type: apc
+            namespace: random_namespace
+```
+
+Read more about how you configure the Doctrine cache bundle on [their GitHub page](https://github.com/doctrine/DoctrineCacheBundle).
 
 
 <a name="i18n"></a>
@@ -354,6 +379,7 @@ Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundl
 
 #### Version 2.0.0-dev
 
+* Added optional caching
 * New interface for your entity. We are no longer using `UserInterface`. Use `SettingsOwnerInterface` instead.
 * Changed behavior of `SettingsManager::all`. It will not return global config if the user/local values are missing
 * Added possibility to add default value as third parameter on `SettingsManager::get`

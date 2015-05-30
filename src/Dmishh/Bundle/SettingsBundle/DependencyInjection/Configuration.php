@@ -40,6 +40,8 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('template')
                     ->defaultValue('DmishhSettingsBundle:Settings:manage.html.twig')
                 ->end()
+                ->scalarNode('cache_service')->defaultNull()->end()
+                ->integerNode('cache_lifetime')->defaultValue(3600)->end()
                 ->arrayNode('security')
                     ->addDefaultsIfNotSet()
                     ->children()
