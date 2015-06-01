@@ -14,8 +14,9 @@ Thanks to **[Tobias Nyholm](https://github.com/Nyholm)** and [Artem Zhuravlov](h
 * Fast and extensible
 * Per-user settings
 * Settings scopes
-* Settings validation using full power of Symfony2 Form Component + built-in or custom constraints
+* Settings validation using full power of Symfony2 Form Component
 * 2 serialization mechanisms in DB: PHP's native `serialize()` and JSON + you can write your own
+* Settings caching
 
 ## Docs
 

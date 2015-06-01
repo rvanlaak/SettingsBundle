@@ -48,7 +48,10 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $config->setProxyNamespace('EntityProxy');
         $config->setAutoGenerateProxyClasses(true);
 
-        AnnotationRegistry::registerFile(__DIR__ . '/../../../../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php');
+        AnnotationRegistry::registerFile(
+          __DIR__ .
+          '/../../../../../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
+        );
         $driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
             new \Doctrine\Common\Annotations\AnnotationReader(),
             array(__DIR__ . '/../Entity')

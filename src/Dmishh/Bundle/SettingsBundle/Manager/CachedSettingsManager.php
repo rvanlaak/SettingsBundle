@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * This file is part of the DmishhSettingsBundle package.
+ * (c) 2013 Dmitriy Scherbina <http://dmishh.com>
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Dmishh\Bundle\SettingsBundle\Manager;
 
 use Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface;
@@ -11,20 +18,20 @@ use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
  */
 class CachedSettingsManager implements SettingsManagerInterface
 {
-    const PREFIX = 'dmishh_o{%s}_k{%s}';
+    const PREFIX = 'dmishh_settings_o{%s}_k{%s}';
 
     /**
-     * @var CacheProvider storage
+     * @var CacheProvider $storage
      */
     private $storage;
 
     /**
-     * @var SettingsManagerInterface settingsManagers
+     * @var SettingsManagerInterface $settingsManagers
      */
     private $settingsManager;
 
     /**
-     * @var int cacheLifeTime
+     * @var int $cacheLifeTime
      */
     private $cacheLifeTime;
 
@@ -63,51 +70,6 @@ class CachedSettingsManager implements SettingsManagerInterface
         }
 
         return $this->storage;
-    }
-
-    /**
-     * @param SettingsOwnerInterface $owner
-     * @param string                 $name
-     *
-     * @return boolean TRUE if the cache entry was successfully deleted, FALSE otherwise.
-     */
-    protected function invalidateCache($name, SettingsOwnerInterface $owner = null)
-    {
-        return $this->getCacheStorage()->delete($this->getCacheKey($name, $owner));
-    }
-
-    /**
-     * Get from cache.
-     *
-     * @param SettingsOwnerInterface $owner
-     * @param string                 $name
-     *
-     * @return mixed|null if nothing was found in cache
-     */
-    protected function fetchFromCache($name, SettingsOwnerInterface $owner = null)
-    {
-        $storage = $this->getCacheStorage();
-        $cacheKey = $this->getCacheKey($name, $owner);
-
-        if (!$storage->contains($cacheKey)) {
-            return;
-        }
-
-        return $storage->fetch($cacheKey);
-    }
-
-    /**
-     * Store in cache.
-     *
-     * @param SettingsOwnerInterface $owner
-     * @param string                 $name
-     * @param mixed                  $value
-     *
-     * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
-     */
-    protected function storeInCache($name, $value, SettingsOwnerInterface $owner = null)
-    {
-        return $this->getCacheStorage()->save($this->getCacheKey($name, $owner), $value, $this->cacheLifeTime);
     }
 
     /**
@@ -170,6 +132,51 @@ class CachedSettingsManager implements SettingsManagerInterface
         $this->invalidateCache($name, $owner);
 
         return $this->settingsManager->clear($name, $owner);
+    }
+
+    /**
+     * @param SettingsOwnerInterface $owner
+     * @param string                 $name
+     *
+     * @return boolean TRUE if the cache entry was successfully deleted, FALSE otherwise.
+     */
+    protected function invalidateCache($name, SettingsOwnerInterface $owner = null)
+    {
+        return $this->getCacheStorage()->delete($this->getCacheKey($name, $owner));
+    }
+
+    /**
+     * Get from cache.
+     *
+     * @param SettingsOwnerInterface $owner
+     * @param string                 $name
+     *
+     * @return mixed|null if nothing was found in cache
+     */
+    protected function fetchFromCache($name, SettingsOwnerInterface $owner = null)
+    {
+        $storage = $this->getCacheStorage();
+        $cacheKey = $this->getCacheKey($name, $owner);
+
+        if (!$storage->contains($cacheKey)) {
+            return;
+        }
+
+        return $storage->fetch($cacheKey);
+    }
+
+    /**
+     * Store in cache.
+     *
+     * @param SettingsOwnerInterface $owner
+     * @param string                 $name
+     * @param mixed                  $value
+     *
+     * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
+     */
+    protected function storeInCache($name, $value, SettingsOwnerInterface $owner = null)
+    {
+        return $this->getCacheStorage()->save($this->getCacheKey($name, $owner), $value, $this->cacheLifeTime);
     }
 
     /**

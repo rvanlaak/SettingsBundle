@@ -45,29 +45,29 @@ class SettingsManager implements SettingsManagerInterface
     private $repository;
 
     /**
-     * @var array
-     */
-    private $settingsConfiguration;
-
-    /**
      * @var SerializerInterface
      */
     private $serializer;
 
     /**
+     * @var array
+     */
+    private $settingsConfiguration;
+
+    /**
      * @param ObjectManager       $em
-     * @param array               $settingsConfiguration
      * @param SerializerInterface $serializer
+     * @param array               $settingsConfiguration
      */
     public function __construct(
         ObjectManager $em,
-        array $settingsConfiguration = array(),
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        array $settingsConfiguration = array()
     ) {
         $this->em = $em;
         $this->repository = $em->getRepository('Dmishh\Bundle\SettingsBundle\Entity\Setting');
-        $this->settingsConfiguration = $settingsConfiguration;
         $this->serializer = $serializer;
+        $this->settingsConfiguration = $settingsConfiguration;
     }
 
     /**
