@@ -122,6 +122,14 @@ Thanks to **[Tobias Nyholm](https://github.com/Nyholm)** and [Artem Zhuravlov](h
     // Each of methods above has last optional $user parameter
     // that allows to get/set per-user settings
     // Your User Entity must implement SettingsOwnerInterface if you wish to use per-user settings
+    // Example: class User extends BaseUser implements SettingsOwnerInterface
+    //
+    // You need to implement the getSettingIdentifier()
+    // Example:
+    // public function getSettingIdentifier()
+    // {
+    //     return $this->id;
+    // }
 
     // These are same examples as above with only difference that they are for current user
     $this->get('settings_manager')->set('my_first_setting', 'user_value', $this->getUser());
