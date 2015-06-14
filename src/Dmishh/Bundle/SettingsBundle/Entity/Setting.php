@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(
  *  name="dmishh_settings",
- *  indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "ownerId"})}
+ *  indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "owner_id"})}
  * )
  * @ORM\Entity
  */
@@ -50,7 +50,7 @@ class Setting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(name="owner_id", type="string", length=255, nullable=true)
      */
     private $ownerId;
 
