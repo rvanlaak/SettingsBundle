@@ -25,7 +25,14 @@ class SettingsController extends Controller
     public function manageGlobalAction(Request $request)
     {
         $securitySettings = $this->container->getParameter('settings_manager.security');
-        if (!empty($securitySettings['manage_global_settings_role']) && !$this->get('security.context')->isGranted(
+
+        if (class_exists('\Symfony\Component\Security\Core\Security')) {
+            $securityContext = $this->get('security.authorization_checker');
+        } else { // SF < 2.6
+            $securityContext = $this->get('security.context');
+        }
+
+        if (!empty($securitySettings['manage_global_settings_role']) && !$securityContext->isGranted(
                 $securitySettings['manage_global_settings_role']
             )
         ) {
@@ -47,7 +54,13 @@ class SettingsController extends Controller
      */
     public function manageOwnAction(Request $request)
     {
-        if (!$this->get('security.context')->getToken()) {
+        if (class_exists('\Symfony\Component\Security\Core\Security')) {
+            $securityContext = $this->get('security.token_storage');
+        } else { // SF < 2.6
+            $securityContext = $this->get('security.context');
+        }
+
+        if (!$securityContext->getToken()) {
             throw new AccessDeniedException($this->get('translator')->trans(
                 'must_be_logged_in_to_edit_own_settings',
                 array(),
@@ -64,7 +77,7 @@ class SettingsController extends Controller
             ));
         }
 
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $securityContext->getToken()->getUser();
 
         if (!($user instanceof SettingsOwnerInterface)) {
             //For this to work the User entity must implement SettingsOwnerInterface
