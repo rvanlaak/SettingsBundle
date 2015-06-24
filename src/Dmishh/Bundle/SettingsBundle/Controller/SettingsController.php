@@ -26,7 +26,7 @@ class SettingsController extends Controller
     {
         $securitySettings = $this->container->getParameter('settings_manager.security');
 
-        if (class_exists('\Symfony\Component\Security\Core\Security')) {
+        if ($this->has('security.authorization_checker')) {
             $securityContext = $this->get('security.authorization_checker');
         } else { // SF < 2.6
             $securityContext = $this->get('security.context');
@@ -54,7 +54,7 @@ class SettingsController extends Controller
      */
     public function manageOwnAction(Request $request)
     {
-        if (class_exists('\Symfony\Component\Security\Core\Security')) {
+        if ($this->has('security.token_storage')) {
             $securityContext = $this->get('security.token_storage');
         } else { // SF < 2.6
             $securityContext = $this->get('security.context');
