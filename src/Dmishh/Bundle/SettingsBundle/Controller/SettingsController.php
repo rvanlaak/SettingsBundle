@@ -25,12 +25,7 @@ class SettingsController extends Controller
     public function manageGlobalAction(Request $request)
     {
         $securitySettings = $this->container->getParameter('settings_manager.security');
-
-        if ($this->has('security.authorization_checker')) {
-            $securityContext = $this->get('security.authorization_checker');
-        } else { // SF < 2.6
-            $securityContext = $this->get('security.context');
-        }
+        $securityContext = $this->getSecurityContext('security.authorization_checker');
 
         if (!empty($securitySettings['manage_global_settings_role']) && !$securityContext->isGranted(
                 $securitySettings['manage_global_settings_role']
@@ -54,12 +49,7 @@ class SettingsController extends Controller
      */
     public function manageOwnAction(Request $request)
     {
-        if ($this->has('security.token_storage')) {
-            $securityContext = $this->get('security.token_storage');
-        } else { // SF < 2.6
-            $securityContext = $this->get('security.context');
-        }
-
+        $securityContext = $this->getSecurityContext('security.token_storage');
         if (!$securityContext->getToken()) {
             throw new AccessDeniedException($this->get('translator')->trans(
                 'must_be_logged_in_to_edit_own_settings',
@@ -119,5 +109,21 @@ class SettingsController extends Controller
                 'layout' => $this->container->getParameter('settings_manager.layout'),
             )
         );
+    }
+
+    /**
+     * Get SecurityContext service
+     * @param string $service The service name
+     *
+     * @return mixed The service
+     */
+    private function getSecurityContext($service)
+    {
+        if ($this->has($service)) {
+            return $this->get($service);
+        }
+
+        // SF < 2.6
+        return $this->get('security.context');
     }
 }

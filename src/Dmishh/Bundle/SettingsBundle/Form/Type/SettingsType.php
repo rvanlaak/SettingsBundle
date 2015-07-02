@@ -108,7 +108,6 @@ class SettingsType extends AbstractType
         }
     }
 
-
     /**
      * {@inheritDoc}
      */
