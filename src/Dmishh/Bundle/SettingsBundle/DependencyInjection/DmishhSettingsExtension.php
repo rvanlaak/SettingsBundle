@@ -19,7 +19,7 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
 /**
- * This is the class that loads and manages your bundle configuration
+ * This is the class that loads and manages your bundle configuration.
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
@@ -33,11 +33,12 @@ class DmishhSettingsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        foreach ($config as $key => $value) {
-            $container->setParameter('settings_manager.' . $key, $value);
+        $globalSettings = ['template', 'security', 'layout'];
+        foreach ($globalSettings as $key) {
+            $container->setParameter('settings_manager.'.$key, $config[$key]);
         }
 
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
         // Configure the correct storage
@@ -51,5 +52,8 @@ class DmishhSettingsExtension extends Extension
         }
 
         $container->setParameter('dmishh.settings.cache.lifetime', $config['cache_lifetime']);
+        $container->findDefinition('dmishh.settings.settings_manager')->replaceArgument(2, $config['settings']);
+        $container->findDefinition('form.type.settings_management')->replaceArgument(0, $config['settings']);
+        $container->findDefinition('dmishh.settings.serializer')->replaceArgument(0, $config['serialization']);
     }
 }
