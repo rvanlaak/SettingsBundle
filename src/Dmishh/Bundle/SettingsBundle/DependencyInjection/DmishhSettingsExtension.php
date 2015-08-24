@@ -38,6 +38,9 @@ class DmishhSettingsExtension extends Extension
         }
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        if ($config['use_twig_filter']) {
+            $loader->load('twig.yml');
+        }
         $loader->load('services.yml');
 
         // Configure the correct storage
