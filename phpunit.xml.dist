@@ -22,6 +22,8 @@
 
     <php>
         <server name="KERNEL_DIR" value="." />
+        <ini name="opcache.load_comments" value="1" />
+        <ini name="zend_optimizerplus.load_comments" value="1" />
     </php>
 
     <filter>
