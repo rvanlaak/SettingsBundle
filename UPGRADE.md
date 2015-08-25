@@ -35,6 +35,7 @@ php app/console doctrine:schema:update --force
 **3) Queries:**
 
 The following queries should be executed:
+
 ``` sql
 DROP INDEX name_user_name_idx ON dmishh_settings;
 ALTER TABLE dmishh_settings CHANGE username ownerId VARCHAR(255) DEFAULT NULL;
