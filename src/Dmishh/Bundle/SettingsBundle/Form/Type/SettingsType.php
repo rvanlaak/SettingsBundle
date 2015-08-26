@@ -97,6 +97,8 @@ class SettingsType extends AbstractType
             )
         );
 
+        // SF2.6 : parameters of OptionsResolver::addAllowedTypes change and OptionsResolver::setDefined was include
+        // @see https://github.com/symfony/OptionsResolver/blob/master/CHANGELOG.md#260 
         if (method_exists($resolver, 'setDefined')) {
             $resolver->addAllowedTypes('disabled_settings', 'array');
         } else {
