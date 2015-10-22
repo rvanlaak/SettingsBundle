@@ -2,13 +2,6 @@ services:
     settings_manager:
       alias: dmishh.settings.settings_manager
 
-    dmishh.settings.settings_manager:
-        class: Dmishh\Bundle\SettingsBundle\Manager\SettingsManager
-        arguments:
-            - @doctrine.orm.entity_manager
-            - @dmishh.settings.serializer
-            - %settings_manager.settings%
-
     dmishh.settings.cached_settings_manager:
         class: Dmishh\Bundle\SettingsBundle\Manager\CachedSettingsManager
         arguments: [@dmishh.settings.settings_manager, %dmishh.settings.cache.lifetime%]
