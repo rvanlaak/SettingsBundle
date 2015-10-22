@@ -188,11 +188,7 @@ class SettingsManager implements SettingsManagerInterface
     {
         $names = (array) $names;
 
-        $settings = $this->repository->findBy(array(
-                'name' => $names,
-                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier()
-            )
-        );
+        $settings = $this->getSettingsFromRepositoryByNames($names,$owner);
 
         // Assert: $settings might be a smaller set than $names
 
@@ -300,7 +296,7 @@ class SettingsManager implements SettingsManagerInterface
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return array
      */
-    private function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
+    protected function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
     {
         $settings = array();
 
@@ -332,5 +328,14 @@ class SettingsManager implements SettingsManagerInterface
         }
         return new $setting();
 
+    }
+
+    protected function getSettingsFromRepositoryByNames($names,SettingsOwnerInterface $owner = null){
+        $settings = $this->repository->findBy(array(
+                'name' => $names,
+                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier()
+            )
+        );
+        return $settings;
     }
 }

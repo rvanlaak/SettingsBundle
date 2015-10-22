@@ -38,7 +38,7 @@ class SettingsManager extends \Dmishh\Bundle\SettingsBundle\Manager\SettingsMana
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return array
      */
-    private function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
+    protected function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
     {
         $settings = array();
 
@@ -70,5 +70,14 @@ class SettingsManager extends \Dmishh\Bundle\SettingsBundle\Manager\SettingsMana
         }
         return $setting;
 
+    }
+
+    protected function getSettingsFromRepositoryByNames($names,SettingsOwnerInterface $owner = null){
+        $settings = $this->repository->findBy(array(
+                'name' => array('$in' => $names),
+                'owner.$id' => $owner === null ? null : new \MongoId($owner->getSettingIdentifier())
+            )
+        );
+        return $settings;
     }
 }
