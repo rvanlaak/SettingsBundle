@@ -40,6 +40,8 @@ class DmishhSettingsExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
 
+        $db_driver = $config['db_driver'];
+        $loader->load(sprintf('services_%s.yml',$db_driver));
         // Configure the correct storage
         if ($config['cache_service'] !== null) {
             $storage = new Reference($config['cache_service']);
