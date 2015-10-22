@@ -32,8 +32,18 @@ class Configuration implements ConfigurationInterface
             SettingsManagerInterface::SCOPE_USER,
         );
 
+        $supportedDrivers = array('orm', 'mongodb');
+
         $rootNode
             ->children()
+                ->scalarNode('db_driver')
+                    ->validate()
+                        ->ifNotInArray($supportedDrivers)
+                        ->thenInvalid('The driver %s is not supported. Please choose one of '.json_encode($supportedDrivers))
+                    ->end()
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
                 ->scalarNode('layout')
                     ->defaultValue('DmishhSettingsBundle::layout.html.twig')
                 ->end()
