@@ -32,8 +32,8 @@ class SettingsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'get_setting' => new \Twig_Function_Method($this, 'getSetting'),
-            'get_all_settings' => new \Twig_Function_Method($this, 'getAllSettings')
+            new \Twig_SimpleFunction('get_setting', array($this, 'getSetting')),
+            new \Twig_SimpleFunction('get_all_settings', array($this, 'getAllSettings')),
         );
     }
 
