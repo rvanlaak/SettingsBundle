@@ -25,7 +25,7 @@ class SettingsController extends Controller
     public function manageGlobalAction(Request $request)
     {
         $securitySettings = $this->container->getParameter('settings_manager.security');
-        $securityContext = $this->getSecurityContext('security.authorization_checker');
+        $securityContext = $this->getAuthorizationChecker();
 
         if (!empty($securitySettings['manage_global_settings_role']) && !$securityContext->isGranted(
                 $securitySettings['manage_global_settings_role']
@@ -49,7 +49,8 @@ class SettingsController extends Controller
      */
     public function manageOwnAction(Request $request)
     {
-        $securityContext = $this->getSecurityContext('security.token_storage');
+        $securityContext = $this->getSecurityContext();
+
         if (!$securityContext->getToken()) {
             throw new AccessDeniedException($this->get('translator')->trans(
                 'must_be_logged_in_to_edit_own_settings',
@@ -112,15 +113,33 @@ class SettingsController extends Controller
     }
 
     /**
-     * Get SecurityContext service
-     * @param string $service The service name
+     * Get AuthorizationChecker service
      *
-     * @return mixed The service
+     * @return \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\Symfony\Component\Security\Core\SecurityContextInterface
      */
-    private function getSecurityContext($service)
+    private function getAuthorizationChecker()
     {
-        if ($this->has($service)) {
-            return $this->get($service);
+        // SF 2.6+
+        // http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        if ($this->has('security.authorization_checker')) {
+            return $this->get('security.authorization_checker');
+        }
+
+        // SF < 2.6
+        return $this->get('security.context');
+    }
+
+    /**
+     * Get SecurityContext service
+     *
+     * @return \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    private function getSecurityContext()
+    {
+        // SF 2.6+
+        // http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        if ($this->has('security.token_storage')) {
+            return $this->get('security.token_storage');
         }
 
         // SF < 2.6
