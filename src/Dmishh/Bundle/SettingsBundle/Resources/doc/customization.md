@@ -1,4 +1,14 @@
-### Customization
+## SettingsBundle
+
+* [Installation](installation.md)
+* [General usage](general-usage.md)
+* [Scopes](scopes.md)
+* [Advanced configuration](advanced-configuration.md)
+* [I18n](i18n.md)
+* **Customization**
+* [FAQ](faq.md)
+
+## Customization
 
 #### Overriding layout
 
