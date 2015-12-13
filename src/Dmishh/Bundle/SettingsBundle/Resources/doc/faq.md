@@ -1,4 +1,14 @@
-### FAQ
+## SettingsBundle
+
+* [Installation](installation.md)
+* [General usage](general-usage.md)
+* [Scopes](scopes.md)
+* [Advanced configuration](advanced-configuration.md)
+* [I18n](i18n.md)
+* [Customization](customization.md)
+* **FAQ**
+
+## FAQ
 
 **? How to add optional setting?**
 

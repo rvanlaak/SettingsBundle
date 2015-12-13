@@ -1,4 +1,14 @@
-### General usage
+## SettingsBundle
+
+* [Installation](installation.md)
+* **General usage**
+* [Scopes](scopes.md)
+* [Advanced configuration](advanced-configuration.md)
+* [I18n](i18n.md)
+* [Customization](customization.md)
+* [FAQ](faq.md)
+
+## General usage
 
 * In controllers:
 

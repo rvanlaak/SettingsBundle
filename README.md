@@ -28,11 +28,11 @@ $this->get('settings_manager')->get('name'); // returns 'foo'
 
 // User settings
 $this->get('settings_manager')->get('name', $user); // returns global 'foo'
-$this->get('settings_manager')->set('name', 'bar', $user); 
+$this->get('settings_manager')->set('name', 'bar', $user);
 $this->get('settings_manager')->get('name', $user); // returns 'bar'
 ```
 
-Twig template: 
+Twig template:
 
 ```twig
 {# Global setting #}
@@ -41,14 +41,14 @@ Twig template:
 {# User setting #}
 {{ get_setting('some_user_setting', app.user) }} {# => 'value' #}
 ```
-    
+
 See the [general usage](/src/Dmishh/Bundle/SettingsBundle/Resources/doc/usage.md) documentation for more examples.
 
 ## Documentation
 
 * [Installation](src/Dmishh/Bundle/SettingsBundle/Resources/doc/installation.md)
-* [General usage](src/Dmishh/Bundle/SettingsBundle/Resources/doc/usage.md)
-* [Scopes](src/Dmishh/Bundle/SettingsBundle/Resources/doc/scope.md)
+* [General usage](src/Dmishh/Bundle/SettingsBundle/Resources/doc/general-usage.md)
+* [Scopes](src/Dmishh/Bundle/SettingsBundle/Resources/doc/scopes.md)
 * [Advanced configuration](src/Dmishh/Bundle/SettingsBundle/Resources/doc/configuration.md)
 * [I18n](src/Dmishh/Bundle/SettingsBundle/Resources/doc/i18n.md)
 * [Customization](src/Dmishh/Bundle/SettingsBundle/Resources/doc/customization.md)
@@ -56,8 +56,8 @@ See the [general usage](/src/Dmishh/Bundle/SettingsBundle/Resources/doc/usage.md
 
 ## Roadmap and contribution
 
-Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send 
-[pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support 
+Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send
+[pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support
 library better than anything else :)
 
 #### Version 2.0.0-dev

@@ -1,5 +1,14 @@
+## SettingsBundle
 
-### Advanced configuration
+* [Installation](installation.md)
+* [General usage](general-usage.md)
+* [Scopes](scopes.md)
+* **Advanced configuration**
+* [I18n](i18n.md)
+* [Customization](customization.md)
+* [FAQ](faq.md)
+
+## Advanced configuration
 
 Full list of options:
 

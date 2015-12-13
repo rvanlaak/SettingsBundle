@@ -1,4 +1,14 @@
-### Understanding scopes
+## SettingsBundle
+
+* [Installation](installation.md)
+* [General usage](general-usage.md)
+* **Scopes**
+* [Advanced configuration](advanced-configuration.md)
+* [I18n](i18n.md)
+* [Customization](customization.md)
+* [FAQ](faq.md)
+
+## Understanding scopes
 
 Bundle provides settings separation into 3 scopes: `ALL`, `GLOBAL` and `USER`.
 

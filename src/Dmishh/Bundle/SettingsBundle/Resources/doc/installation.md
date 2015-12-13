@@ -1,4 +1,14 @@
-### Installation (using Composer)
+## SettingsBundle
+
+* **Installation**
+* [General usage](general-usage.md)
+* [Scopes](scopes.md)
+* [Advanced configuration](advanced-configuration.md)
+* [I18n](i18n.md)
+* [Customization](customization.md)
+* [FAQ](faq.md)
+
+## Installation (using Composer)
 
 * Add the following to your `composer.json` file:
 
