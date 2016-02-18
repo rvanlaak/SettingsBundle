@@ -263,6 +263,11 @@ class SettingsManager implements SettingsManagerInterface
         if ($scope !== SettingsManagerInterface::SCOPE_ALL) {
             if ($scope === SettingsManagerInterface::SCOPE_GLOBAL && $owner !== null || $scope === SettingsManagerInterface::SCOPE_USER && $owner === null) {
                 throw new WrongScopeException($scope, $name);
+            } elseif ($owner !== null) {
+                $namespace = $this->settingsConfiguration[$name]['namespace'];
+                if (!$owner instanceof $namespace) {
+                    throw new WrongScopeException($scope, $name, $namespace);
+                }
             }
         }
 
