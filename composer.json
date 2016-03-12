@@ -21,6 +21,7 @@
     ],
     "require": {
         "php": ">=5.5.9",
+        "psr/cache": "^1.0",
         "symfony/framework-bundle": "~2.3,!=2.5.0",
         "doctrine/orm": "~2.2,>=2.2.3"
     },
@@ -37,6 +38,6 @@
         }
     },
     "suggest": {
-        "doctrine/doctrine-cache-bundle": "If you want to add caching to your settings"
+        "cache/adapter-bundle": "This bundle will help you to add your PSR-6 cache implementations as Symfony services"
     }
 }

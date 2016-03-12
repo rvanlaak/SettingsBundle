@@ -11,7 +11,7 @@ services:
 
     dmishh.settings.cached_settings_manager:
         class: Dmishh\SettingsBundle\Manager\CachedSettingsManager
-        arguments: [@dmishh.settings.settings_manager, %dmishh.settings.cache.lifetime%]
+        arguments: [@dmishh.settings.settings_manager, ~, ~]
 
     dmishh.settings.serializer_factory:
         class: Dmishh\SettingsBundle\Serializer\SerializerFactory

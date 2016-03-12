@@ -41,15 +41,15 @@ class DmishhSettingsExtension extends Extension
         $loader->load('services.yml');
 
         // Configure the correct storage
-        if ($config['cache_service'] !== null) {
-            $storage = new Reference($config['cache_service']);
-            $cachedManager = $container->getDefinition('dmishh.settings.cached_settings_manager');
-            $cachedManager->addMethodCall('setCacheStorage', array($storage));
+        if ($config['cache_service'] === null) {
+            $container->removeDefinition('dmishh.settings.cached_settings_manager');
+        } else {
+            $container->getDefinition('dmishh.settings.cached_settings_manager')
+                ->replaceArgument(1, new Reference($config['cache_service']))
+                ->replaceArgument(2, $config['cache_lifetime']);
 
             // set an alias to make sure the cached settings manager is the default
             $container->setAlias('settings_manager', 'dmishh.settings.cached_settings_manager');
         }
-
-        $container->setParameter('dmishh.settings.cache.lifetime', $config['cache_lifetime']);
     }
 }

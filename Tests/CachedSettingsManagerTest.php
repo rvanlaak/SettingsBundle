@@ -4,6 +4,8 @@ namespace Dmishh\SettingsBundle\Tests;
 
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 use Dmishh\SettingsBundle\Manager\CachedSettingsManager;
+use Dmishh\SettingsBundle\Manager\SettingsManager;
+use Psr\Cache\CacheItemPoolInterface;
 
 class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,12 +16,12 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $value = 'foobar';
         $defaultValue = 'default';
 
-        $settingManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingManager = \Mockery::mock(SettingsManager::class);
         $settingManager->shouldReceive('get')->once()->with($name, $owner, $defaultValue)->andReturn($value);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('fetchFromCache', 'storeInCache'))
-            ->setConstructorArgs(array($settingManager, 4711))
+            ->setConstructorArgs(array($settingManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->once())
             ->method('fetchFromCache')
@@ -40,11 +42,11 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $value = 'foobar';
         $defaultValue = 'default';
 
-        $settingsManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingsManager = \Mockery::mock(SettingsManager::class);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('fetchFromCache', 'storeInCache'))
-            ->setConstructorArgs(array($settingsManager, 4711))
+            ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->once())
             ->method('fetchFromCache')
@@ -59,12 +61,12 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $owner = $this->createOwner();
         $value = array('foo' => 'bar');
 
-        $settingsManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingsManager = \Mockery::mock(SettingsManager::class);
         $settingsManager->shouldReceive('all')->once()->with($owner)->andReturn($value);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('fetchFromCache', 'storeInCache'))
-            ->setConstructorArgs(array($settingsManager, 4711))
+            ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->once())
             ->method('fetchFromCache')
@@ -83,11 +85,11 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $owner = $this->createOwner();
         $value = array('foo' => 'bar');
 
-        $settingsManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingsManager = \Mockery::mock(SettingsManager::class);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('fetchFromCache', 'storeInCache'))
-            ->setConstructorArgs(array($settingsManager, 4711))
+            ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->once())
             ->method('fetchFromCache')
@@ -103,12 +105,12 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $name = 'name';
         $value = 'foobar';
 
-        $settingsManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingsManager = \Mockery::mock(SettingsManager::class);
         $settingsManager->shouldReceive('set')->once()->with($name, $value, $owner);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('invalidateCache'))
-            ->setConstructorArgs(array($settingsManager, 4711))
+            ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->once())
             ->method('invalidateCache')
@@ -123,12 +125,12 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $owner = $this->createOwner();
         $settings = array('name0' => 'value0', 'name1' => 'value1', 'name2' => 'value2');
 
-        $settingsManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingsManager = \Mockery::mock(SettingsManager::class);
         $settingsManager->shouldReceive('setMany')->once()->with($settings, $owner);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('invalidateCache'))
-            ->setConstructorArgs(array($settingsManager, 4711))
+            ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->exactly(3))
             ->method('invalidateCache')
@@ -142,12 +144,12 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $owner = $this->createOwner();
         $name = 'name';
 
-        $settingsManager = \Mockery::mock('Dmishh\SettingsBundle\Manager\SettingsManager');
+        $settingsManager = \Mockery::mock(SettingsManager::class);
         $settingsManager->shouldReceive('clear')->once()->with($name, $owner);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->setMethods(array('invalidateCache'))
-            ->setConstructorArgs(array($settingsManager, 4711))
+            ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
         $cachedSettingsManager->expects($this->once())
             ->method('invalidateCache')
@@ -165,10 +167,10 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
         $name = 'name';
         $owner = $this->createOwner();
 
-        $getCacheKey = new \ReflectionMethod('Dmishh\SettingsBundle\Manager\CachedSettingsManager', 'getCacheKey');
+        $getCacheKey = new \ReflectionMethod(CachedSettingsManager::class, 'getCacheKey');
         $getCacheKey->setAccessible(true);
 
-        $cachedSettingsManager = $this->getMockBuilder('Dmishh\SettingsBundle\Manager\CachedSettingsManager')
+        $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
             ->disableOriginalConstructor()
             ->getMock();
 
