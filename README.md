@@ -6,8 +6,6 @@ Bundle is used for storing configuration with Symfony2 in database using Doctrin
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2/small.png)](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2)
 
-Thanks to **[Tobias Nyholm](https://github.com/Nyholm)** and [Artem Zhuravlov](https://github.com/azhuravlov) for contribution.
-
 ## Features
 
 * Easy-to-use (Twig extension, container service)
