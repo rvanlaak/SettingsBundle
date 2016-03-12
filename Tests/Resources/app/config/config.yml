@@ -1,0 +1,12 @@
+framework:
+  secret: foobar
+  test: ~
+
+doctrine:
+  dbal:
+    driver: pdo_mysql
+  orm: ~
+
+dmishh_settings:
+  settings:
+    my_first_setting: ~
