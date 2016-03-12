@@ -25,9 +25,9 @@ class SettingsController extends Controller
     public function manageGlobalAction(Request $request)
     {
         $securitySettings = $this->container->getParameter('settings_manager.security');
-        if (!empty($securitySettings['manage_global_settings_role']) && !$this->get('security.context')->isGranted(
-                $securitySettings['manage_global_settings_role']
-            )
+
+        if (!empty($securitySettings['manage_global_settings_role']) &&
+            !$this->getAuthorizationChecker()->isGranted($securitySettings['manage_global_settings_role'])
         ) {
             throw new AccessDeniedException($this->container->get('translator')->trans(
                 'not_allowed_to_edit_global_settings',
@@ -47,7 +47,9 @@ class SettingsController extends Controller
      */
     public function manageOwnAction(Request $request)
     {
-        if (!$this->get('security.context')->getToken()) {
+        $securityContext = $this->getSecurityContext();
+
+        if (!$securityContext->getToken()) {
             throw new AccessDeniedException($this->get('translator')->trans(
                 'must_be_logged_in_to_edit_own_settings',
                 array(),
@@ -64,7 +66,7 @@ class SettingsController extends Controller
             ));
         }
 
-        $user = $this->get('security.context')->getToken()->getUser();
+        $user = $securityContext->getToken()->getUser();
 
         if (!($user instanceof SettingsOwnerInterface)) {
             //For this to work the User entity must implement SettingsOwnerInterface
@@ -106,5 +108,39 @@ class SettingsController extends Controller
                 'layout' => $this->container->getParameter('settings_manager.layout'),
             )
         );
+    }
+
+    /**
+     * Get AuthorizationChecker service
+     *
+     * @return \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    private function getAuthorizationChecker()
+    {
+        // SF 2.6+
+        // http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        if ($this->has('security.authorization_checker')) {
+            return $this->get('security.authorization_checker');
+        }
+
+        // SF < 2.6
+        return $this->get('security.context');
+    }
+
+    /**
+     * Get SecurityContext service
+     *
+     * @return \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface
+     */
+    private function getSecurityContext()
+    {
+        // SF 2.6+
+        // http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
+        if ($this->has('security.token_storage')) {
+            return $this->get('security.token_storage');
+        }
+
+        // SF < 2.6
+        return $this->get('security.context');
     }
 }
