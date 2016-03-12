@@ -14,7 +14,6 @@ Full list of options:
 
 ```yaml
 dmishh_settings:
-    layout: DmishhSettingsBundle::layout.html.twig
     template: DmishhSettingsBundle:Settings:manage.html.twig
     cache_service: null
     cache_lifetime: 3600

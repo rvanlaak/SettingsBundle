@@ -1,23 +1,17 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title></title>
-    {% block stylesheets %}
-        {#
-        {% stylesheets '@DmishhSettingsBundle/Resources/assets/css/form.css' %}
-        <link type="text/css" rel="stylesheet" href="{{ asset_url }}" />
-        {% endstylesheets %}
-        #}
-    {% endblock %}
-</head>
-<body>
-    {% for flashMessage in app.session.flashbag.get('error') %}
-        <div class="error">{{ flashMessage }}</div>
-    {% endfor %}
-    {% for flashMessage in app.session.flashbag.get('success') %}
-        <div class="success">{{ flashMessage }}</div>
-    {% endfor %}
-    {% block settings_form %}{% endblock %}
-</body>
+    <html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+        {% for flashMessage in app.session.flashbag.get('error') %}
+            <div class="message error">{{ flashMessage }}</div>
+        {% endfor %}
+        {% for flashMessage in app.session.flashbag.get('success') %}
+            <div class="message success">{{ flashMessage }}</div>
+        {% endfor %}
+        {% block content %}{% endblock %}
+    </body>
 </html>
