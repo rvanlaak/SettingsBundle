@@ -14,8 +14,6 @@ namespace Dmishh\SettingsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Setting.
- *
  * @ORM\Table(
  *  name="dmishh_settings",
  *  indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "owner_id"})}
@@ -55,8 +53,6 @@ class Setting
     private $ownerId;
 
     /**
-     * Get id.
-     *
      * @return int
      */
     public function getId()
@@ -65,8 +61,6 @@ class Setting
     }
 
     /**
-     * Set name.
-     *
      * @param string $name
      *
      * @return Setting
@@ -79,8 +73,6 @@ class Setting
     }
 
     /**
-     * Get name.
-     *
      * @return string
      */
     public function getName()
@@ -89,8 +81,6 @@ class Setting
     }
 
     /**
-     * Set value.
-     *
      * @param string $value
      *
      * @return Setting
@@ -103,8 +93,6 @@ class Setting
     }
 
     /**
-     * Get value.
-     *
      * @return string
      */
     public function getValue()

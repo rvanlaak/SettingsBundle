@@ -108,7 +108,7 @@ class CachedSettingsManager implements SettingsManagerInterface
 
     /**
      * @param SettingsOwnerInterface $owner
-     * @param string                 $name
+     * @param string $name
      *
      * @return bool TRUE if the cache entry was successfully deleted, FALSE otherwise.
      */
@@ -121,7 +121,7 @@ class CachedSettingsManager implements SettingsManagerInterface
      * Get from cache.
      *
      * @param SettingsOwnerInterface $owner
-     * @param string                 $name
+     * @param string $name
      *
      * @return mixed|null if nothing was found in cache
      */
@@ -136,8 +136,8 @@ class CachedSettingsManager implements SettingsManagerInterface
      * Store in cache.
      *
      * @param SettingsOwnerInterface $owner
-     * @param string                 $name
-     * @param mixed                  $value
+     * @param string $name
+     * @param mixed $value
      *
      * @return bool TRUE if the entry was successfully stored in the cache, FALSE otherwise.
      */
@@ -151,7 +151,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param string                 $key
+     * @param string $key
      * @param SettingsOwnerInterface $owner
      *
      * @return string

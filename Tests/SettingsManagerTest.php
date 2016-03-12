@@ -155,14 +155,20 @@ class SettingsManagerTest extends AbstractTest
     public function testGetAllGlobalSettings()
     {
         $settingsManager = $this->createSettingsManager();
-        $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_global_setting' => null), $settingsManager->all());
+        $this->assertEquals(
+            array('some_setting' => null, 'some_setting2' => null, 'some_global_setting' => null),
+            $settingsManager->all()
+        );
     }
 
     public function testGetAllUserSettings()
     {
         $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
-        $this->assertEquals(array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($owner));
+        $this->assertEquals(
+            array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null),
+            $settingsManager->all($owner)
+        );
     }
 
     public function testScopeAll()
@@ -173,14 +179,30 @@ class SettingsManagerTest extends AbstractTest
         // Global settings should be shown if there is no user setting defined
         $settingsManager->set('some_setting', 'value');
         $this->assertEquals('value', $settingsManager->get('some_setting'));
-        $this->assertEquals('value', $settingsManager->get('some_setting', $owner), 'Did not get global value when local value was undefined.');
-        $this->assertEquals(array('some_setting' => 'value', 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($owner), 'Did not get global value when local value was undefined.');
+        $this->assertEquals(
+            'value',
+            $settingsManager->get('some_setting', $owner),
+            'Did not get global value when local value was undefined.'
+        );
+        $this->assertEquals(
+            array('some_setting' => 'value', 'some_setting2' => null, 'some_user_setting' => null),
+            $settingsManager->all($owner),
+            'Did not get global value when local value was undefined.'
+        );
 
         // The users settings should always be prioritised over the global one (if it exists)
         $settingsManager->set('some_setting', 'user_value', $owner);
-        $this->assertEquals('user_value', $settingsManager->get('some_setting', $owner), 'User/Local value should have priority over global.');
+        $this->assertEquals(
+            'user_value',
+            $settingsManager->get('some_setting', $owner),
+            'User/Local value should have priority over global.'
+        );
         $this->assertEquals('value', $settingsManager->get('some_setting'));
-        $this->assertEquals(array('some_setting' => 'user_value', 'some_setting2' => null, 'some_user_setting' => null), $settingsManager->all($owner), 'User/Local value should have priority over global.');
+        $this->assertEquals(
+            array('some_setting' => 'user_value', 'some_setting2' => null, 'some_user_setting' => null),
+            $settingsManager->all($owner),
+            'User/Local value should have priority over global.'
+        );
     }
 
     public function testValidSerizalizationTypes()
@@ -235,7 +257,7 @@ class SettingsManagerTest extends AbstractTest
     }
 
     /**
-     * Covers https://github.com/dmishh/SettingsBundle/issues/28.
+     * @see https://github.com/dmishh/SettingsBundle/issues/28
      */
     public function testFlush()
     {
@@ -265,10 +287,14 @@ class SettingsManagerTest extends AbstractTest
             ->setMethods(array('findBy'))
             ->getMock();
 
-        $repo->expects($this->once())->method('findBy')->with($this->equalTo(array(
-            'name' => $names,
-            'ownerId' => $owner,
-        )))->willReturn($settings);
+        $repo->expects($this->once())->method('findBy')->with(
+            $this->equalTo(
+                array(
+                    'name' => $names,
+                    'ownerId' => $owner,
+                )
+            )
+        )->willReturn($settings);
 
         $em = $this
             ->getMockBuilder('Doctrine\Orm\EntityManager')
@@ -358,7 +384,10 @@ class SettingsManagerTest extends AbstractTest
      */
     protected function createOwner($ownerId = 'user1')
     {
-        return Mockery::mock('Dmishh\SettingsBundle\Entity\SettingsOwnerInterface', array('getSettingIdentifier' => $ownerId));
+        return Mockery::mock(
+            'Dmishh\SettingsBundle\Entity\SettingsOwnerInterface',
+            array('getSettingIdentifier' => $ownerId)
+        );
     }
 
     protected function createSettingsManager(array $configuration = array(), $serialization = 'php')

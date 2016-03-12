@@ -186,6 +186,9 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createOwner($ownerId = 'user1')
     {
-        return \Mockery::mock('Dmishh\SettingsBundle\Entity\SettingsOwnerInterface', array('getSettingIdentifier' => $ownerId));
+        return \Mockery::mock(
+            'Dmishh\SettingsBundle\Entity\SettingsOwnerInterface',
+            array('getSettingIdentifier' => $ownerId)
+        );
     }
 }
