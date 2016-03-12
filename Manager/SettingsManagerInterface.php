@@ -20,9 +20,9 @@ interface SettingsManagerInterface
     /**
      * Returns setting value by its name.
      *
-     * @param string                      $name
+     * @param string $name
      * @param SettingsOwnerInterface|null $owner
-     * @param mixed|null                  $default value to return if the setting is not set
+     * @param mixed|null $default value to return if the setting is not set
      *
      * @return mixed
      */
@@ -40,8 +40,8 @@ interface SettingsManagerInterface
     /**
      * Sets setting value by its name.
      *
-     * @param string                      $name
-     * @param mixed                       $value
+     * @param string $name
+     * @param mixed $value
      * @param SettingsOwnerInterface|null $owner
      *
      * @return SettingsManagerInterface
@@ -51,7 +51,7 @@ interface SettingsManagerInterface
     /**
      * Sets settings' values from associative name-value array.
      *
-     * @param array                       $settings
+     * @param array $settings
      * @param SettingsOwnerInterface|null $owner
      *
      * @return SettingsManagerInterface
@@ -61,7 +61,7 @@ interface SettingsManagerInterface
     /**
      * Clears setting value.
      *
-     * @param string                      $name
+     * @param string $name
      * @param SettingsOwnerInterface|null $owner
      *
      * @return SettingsManagerInterface

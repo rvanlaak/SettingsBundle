@@ -19,7 +19,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 class Configuration implements ConfigurationInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfigTreeBuilder()
     {
@@ -58,7 +58,7 @@ class Configuration implements ConfigurationInterface
                                 ->defaultValue('all')
                                 ->validate()
                                     ->ifNotInArray($scopes)
-                                    ->thenInvalid('Invalid scope %s. Valid scopes are: ' . implode(', ', array_map(function ($s) { return '"' . $s . '"'; }, $scopes)) . '.')
+                                    ->thenInvalid('Invalid scope %s. Valid scopes are: '.implode(', ', array_map(function ($s) { return '"'.$s.'"'; }, $scopes)).'.')
                                 ->end()
                             ->end()
                             ->scalarNode('type')->defaultValue('text')->end()
@@ -71,6 +71,7 @@ class Configuration implements ConfigurationInterface
                                         if (!is_array($v)) {
                                             throw new InvalidTypeException();
                                         }
+
                                         return $v;
                                     })
                                 ->end()
@@ -83,6 +84,7 @@ class Configuration implements ConfigurationInterface
                                         if (!is_array($v)) {
                                             throw new InvalidTypeException();
                                         }
+
                                         return $v;
                                     })
                                 ->end()

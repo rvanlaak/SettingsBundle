@@ -2,7 +2,6 @@
 
 namespace Dmishh\SettingsBundle\Tests;
 
-use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 use Dmishh\SettingsBundle\Manager\CachedSettingsManager;
 use Dmishh\SettingsBundle\Manager\SettingsManager;
 use Psr\Cache\CacheItemPoolInterface;
@@ -160,7 +159,7 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Make sure we do always return a string, no matter input
+     * Make sure we do always return a string, no matter input.
      */
     public function testGetCacheKey()
     {
@@ -187,6 +186,9 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createOwner($ownerId = 'user1')
     {
-        return \Mockery::mock('Dmishh\SettingsBundle\Entity\SettingsOwnerInterface', array('getSettingIdentifier' => $ownerId));
+        return \Mockery::mock(
+            'Dmishh\SettingsBundle\Entity\SettingsOwnerInterface',
+            array('getSettingIdentifier' => $ownerId)
+        );
     }
 }

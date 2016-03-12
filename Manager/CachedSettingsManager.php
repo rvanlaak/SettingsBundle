@@ -11,7 +11,6 @@ namespace Dmishh\SettingsBundle\Manager;
 
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 use Psr\Cache\CacheItemPoolInterface;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
  * @author Tobias Nyholm
@@ -21,17 +20,17 @@ class CachedSettingsManager implements SettingsManagerInterface
     const PREFIX = 'dmishh_settings_o{%s}_k{%s}';
 
     /**
-     * @var CacheItemPoolInterface $storage
+     * @var CacheItemPoolInterface
      */
     private $storage;
 
     /**
-     * @var SettingsManagerInterface $settingsManagers
+     * @var SettingsManagerInterface
      */
     private $settingsManager;
 
     /**
-     * @var int $cacheLifeTime
+     * @var int
      */
     private $cacheLifeTime;
 
@@ -109,9 +108,9 @@ class CachedSettingsManager implements SettingsManagerInterface
 
     /**
      * @param SettingsOwnerInterface $owner
-     * @param string                 $name
+     * @param string $name
      *
-     * @return boolean TRUE if the cache entry was successfully deleted, FALSE otherwise.
+     * @return bool TRUE if the cache entry was successfully deleted, FALSE otherwise.
      */
     protected function invalidateCache($name, SettingsOwnerInterface $owner = null)
     {
@@ -122,7 +121,7 @@ class CachedSettingsManager implements SettingsManagerInterface
      * Get from cache.
      *
      * @param SettingsOwnerInterface $owner
-     * @param string                 $name
+     * @param string $name
      *
      * @return mixed|null if nothing was found in cache
      */
@@ -137,10 +136,10 @@ class CachedSettingsManager implements SettingsManagerInterface
      * Store in cache.
      *
      * @param SettingsOwnerInterface $owner
-     * @param string                 $name
-     * @param mixed                  $value
+     * @param string $name
+     * @param mixed $value
      *
-     * @return boolean TRUE if the entry was successfully stored in the cache, FALSE otherwise.
+     * @return bool TRUE if the entry was successfully stored in the cache, FALSE otherwise.
      */
     protected function storeInCache($name, $value, SettingsOwnerInterface $owner = null)
     {
@@ -152,7 +151,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param string                 $key
+     * @param string $key
      * @param SettingsOwnerInterface $owner
      *
      * @return string

@@ -3,8 +3,6 @@
 namespace Dmishh\SettingsBundle\Tests;
 
 use Dmishh\SettingsBundle\DependencyInjection\DmishhSettingsExtension;
-use Dmishh\SettingsBundle\Serializer\JsonSerializer;
-use Dmishh\SettingsBundle\Serializer\PhpSerializer;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
 /**

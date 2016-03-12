@@ -11,7 +11,6 @@
 
 namespace Dmishh\SettingsBundle\Tests;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Configuration;
 
@@ -23,7 +22,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     protected $em;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setUp()
     {
@@ -32,7 +31,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function tearDown()
     {
@@ -49,12 +48,12 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         $config->setAutoGenerateProxyClasses(true);
 
         AnnotationRegistry::registerFile(
-          __DIR__ .
-          '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
+            __DIR__.
+            '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
         );
         $driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
             new \Doctrine\Common\Annotations\AnnotationReader(),
-            array(__DIR__ . '/../Entity')
+            array(__DIR__.'/../Entity')
         );
         $config->setMetadataDriverImpl($driver);
         $config->setMetadataCacheImpl($cache);
@@ -70,7 +69,6 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return null
      */
     protected function generateSchema()
     {
