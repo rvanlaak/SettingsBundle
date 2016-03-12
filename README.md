@@ -66,6 +66,7 @@ library better than anything else :)
 * New interface for your entity. We are no longer using `UserInterface`. Use `SettingsOwnerInterface` instead.
 * Changed behavior of `SettingsManager::all`. It will not return global config if the user/local values are missing
 * Added possibility to add default value as third parameter on `SettingsManager::get`
+* Updated namespace to `Dmishh\SettingsBundle` instead of `Dmishh\Bundle\SettingsBundle`
 
 #### Version 1.0.2-1.0.7
 * Minor code improvements and bug fixes

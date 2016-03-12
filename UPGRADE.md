@@ -2,7 +2,7 @@
 
 ## Upgrade from 1.0.x to 2.0.0
 
-Your User entity should implement the `Dmishh\Bundle\SettingsBundle\Entity\SettingsOwnerInterface` interface. In order to maintain
+Your User entity should implement the `Dmishh\SettingsBundle\Entity\SettingsOwnerInterface` interface. In order to maintain
 your user setting you need to implement the `getSettingIdentifier` to return the username.
 
 ``` php
