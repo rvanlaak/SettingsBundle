@@ -10,7 +10,7 @@
 namespace Dmishh\SettingsBundle\Manager;
 
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
-use Doctrine\Common\Cache\CacheProvider;
+use Psr\Cache\CacheItemPoolInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
@@ -21,7 +21,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     const PREFIX = 'dmishh_settings_o{%s}_k{%s}';
 
     /**
-     * @var CacheProvider $storage
+     * @var CacheItemPoolInterface $storage
      */
     private $storage;
 
@@ -38,38 +38,11 @@ class CachedSettingsManager implements SettingsManagerInterface
     /**
      * @param SettingsManagerInterface $settingsManager
      */
-    public function __construct(SettingsManagerInterface $settingsManager, $cacheLifeTime)
+    public function __construct(SettingsManagerInterface $settingsManager, CacheItemPoolInterface $storage, $cacheLifeTime)
     {
         $this->settingsManager = $settingsManager;
-        $this->cacheLifeTime = $cacheLifeTime;
-    }
-
-    /**
-     * @param CacheProvider $storage
-     *
-     * @return $this
-     */
-    public function setCacheStorage(CacheProvider $storage)
-    {
         $this->storage = $storage;
-
-        return $this;
-    }
-
-    /**
-     * Get the storage.
-     *
-     * @return CacheProvider
-     *
-     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
-     */
-    protected function getCacheStorage()
-    {
-        if ($this->storage === null) {
-            throw new ServiceNotFoundException('Could not find a cache service');
-        }
-
-        return $this->storage;
+        $this->cacheLifeTime = $cacheLifeTime;
     }
 
     /**
@@ -142,7 +115,7 @@ class CachedSettingsManager implements SettingsManagerInterface
      */
     protected function invalidateCache($name, SettingsOwnerInterface $owner = null)
     {
-        return $this->getCacheStorage()->delete($this->getCacheKey($name, $owner));
+        return $this->storage->deleteItem($this->getCacheKey($name, $owner));
     }
 
     /**
@@ -155,14 +128,9 @@ class CachedSettingsManager implements SettingsManagerInterface
      */
     protected function fetchFromCache($name, SettingsOwnerInterface $owner = null)
     {
-        $storage = $this->getCacheStorage();
         $cacheKey = $this->getCacheKey($name, $owner);
 
-        if (!$storage->contains($cacheKey)) {
-            return;
-        }
-
-        return $storage->fetch($cacheKey);
+        return $this->storage->getItem($cacheKey)->get();
     }
 
     /**
@@ -176,7 +144,11 @@ class CachedSettingsManager implements SettingsManagerInterface
      */
     protected function storeInCache($name, $value, SettingsOwnerInterface $owner = null)
     {
-        return $this->getCacheStorage()->save($this->getCacheKey($name, $owner), $value, $this->cacheLifeTime);
+        $item = $this->storage->getItem($this->getCacheKey($name, $owner))
+            ->set($value)
+            ->expiresAfter($this->cacheLifeTime);
+
+        return $this->storage->save($item);
     }
 
     /**

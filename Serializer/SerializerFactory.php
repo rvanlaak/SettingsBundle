@@ -23,7 +23,7 @@ class SerializerFactory
      */
     public static function create($name)
     {
-        $serializerClass = 'Dmishh\\Bundle\\SettingsBundle\\Serializer\\' . Container::camelize($name) . 'Serializer';
+        $serializerClass = 'Dmishh\\SettingsBundle\\Serializer\\' . Container::camelize($name) . 'Serializer';
 
         if (class_exists($serializerClass)) {
             return new $serializerClass;
