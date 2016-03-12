@@ -40,7 +40,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('template')
                     ->defaultValue('DmishhSettingsBundle:Settings:manage.html.twig')
                 ->end()
-                ->scalarNode('cache_service')->defaultNull()->end()
+                ->scalarNode('cache_service')->defaultNull()->info('A service implementing Psr\Cache\CacheItemPoolInterface')->end()
                 ->integerNode('cache_lifetime')->defaultValue(3600)->end()
                 ->arrayNode('security')
                     ->addDefaultsIfNotSet()
@@ -64,23 +64,30 @@ class Configuration implements ConfigurationInterface
                                     ->thenInvalid('Invalid scope %s. Valid scopes are: ' . implode(', ', array_map(function ($s) { return '"' . $s . '"'; }, $scopes)) . '.')
                                 ->end()
                             ->end()
-                            ->arrayNode('validation')
-                                ->addDefaultsIfNotSet()
-                                ->children()
-                                    ->scalarNode('type')
-                                        ->defaultValue('text')
-                                    ->end()
-                                    ->variableNode('options')
-                                        ->defaultValue(array())
-                                        ->validate()
-                                        ->always(function ($v) {
-                                                if (!is_array($v)) {
-                                                    throw new InvalidTypeException();
-                                                }
-                                                return $v;
-                                            })
-                                        ->end()
-                                    ->end()
+                            ->scalarNode('type')->defaultValue('text')->end()
+
+                            ->variableNode('options')
+                                ->info('The options given to the form builder')
+                                ->defaultValue(array())
+                                ->validate()
+                                    ->always(function ($v) {
+                                        if (!is_array($v)) {
+                                            throw new InvalidTypeException();
+                                        }
+                                        return $v;
+                                    })
+                                ->end()
+                            ->end()
+                            ->variableNode('constraints')
+                                ->info('The constraints on this option. Example, use constraits found in Symfony\Component\Validator\Constraints')
+                                ->defaultValue(array())
+                                ->validate()
+                                    ->always(function ($v) {
+                                        if (!is_array($v)) {
+                                            throw new InvalidTypeException();
+                                        }
+                                        return $v;
+                                    })
                                 ->end()
                             ->end()
                         ->end()

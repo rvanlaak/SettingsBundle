@@ -24,14 +24,13 @@ dmishh_settings:
     serialization: php # database serialization mechanism (php|json)
     settings:
         my_first_setting:
-            validation:
-                type: number # any Symfony2 form type
-                options: # options passed to form
-                    required: false
-                    constraints:
-                        Symfony\Component\Validator\Constraints\Range:
-                            min: 1
-                            max: 65535
+            type: number # any Symfony2 form type
+            options: # options passed to form
+                required: false
+            constraints:
+                Symfony\Component\Validator\Constraints\Range:
+                    min: 1
+                    max: 65535
 ```
 
 
@@ -45,13 +44,12 @@ Also you can use [built-in](http://symfony.com/doc/current/reference/constraints
 dmishh_settings:
     settings:
         my_first_setting:
-            validation:
-                type: text
-                options:
-                    max_length: 15
-                    constraints:
-                        Symfony\Component\Validator\Constraints\Regex:
-                            pattern: "/^\d+$/"
+            type: text
+            options:
+                max_length: 15
+            constraints:
+                Symfony\Component\Validator\Constraints\Regex:
+                    pattern: "/^\d+$/"
 ```
 
 __Note:__ [validation](#validation) is provided only at the form level.
@@ -67,26 +65,3 @@ dmishh_settings:
          manage_global_settings_role: ROLE_USER
          users_can_manage_own_settings: true
 ```
-
-
-#### Caching
-
-If you want to cache your settings you may provide a cache service that implements `Doctrine\Common\Cache\CacheProvider`.
-Every time you fetch a setting from the database we will cache it for `cache_lifetime` seconds. If you edit the
-setting we will automatically invalidate the cache.
-
-```yaml
-dmishh_settings:
-    cache_service: apc_cache
-    cache_lifetime: 3600
-
-doctrine_cache:
-    aliases:
-        apc_cache: my_apc_cache
-    providers:
-        my_apc_cache:
-            type: apc
-            namespace: random_namespace
-```
-
-Read more about how you configure the Doctrine cache bundle on [their GitHub page](https://github.com/doctrine/DoctrineCacheBundle).

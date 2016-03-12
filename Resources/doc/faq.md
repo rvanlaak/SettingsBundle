@@ -18,7 +18,7 @@ Add `required: false` to setting validation options
 dmishh_settings:
     settings:
         my_first_setting:
-            validation:
+            options:
                 required: false
 ```
 
