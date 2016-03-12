@@ -65,3 +65,23 @@ dmishh_settings:
          manage_global_settings_role: ROLE_USER
          users_can_manage_own_settings: true
 ```
+
+#### Caching
+
+If you want to cache your settings you may provide a cache service that implements `Psr\Cache\CacheItemPoolInterface`.
+Every time you fetch a setting from the database we will cache it for `cache_lifetime` seconds. If you edit the
+setting we will automatically invalidate the cache.
+
+```yaml
+dmishh_settings:
+    cache_service: cache.provider.my_redis
+    cache_lifetime: 3600
+
+# Using cache/adapter-bundle
+cache_adapter:
+    providers:
+        my_redis:
+            factory: 'cache.factory.redis'
+```
+
+Read more about how you configure the cache adapter bundle on [www.php-cache.com](http://www.php-cache.com).
