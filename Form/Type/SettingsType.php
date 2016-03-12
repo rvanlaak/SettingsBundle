@@ -40,8 +40,9 @@ class SettingsType extends AbstractType
         foreach ($this->settingsConfiguration as $name => $configuration) {
             // If setting's value exists in data and setting isn't disabled
             if (array_key_exists($name, $options['data']) && !in_array($name, $options['disabled_settings'])) {
-                $fieldType = $configuration['validation']['type'];
-                $fieldOptions = $configuration['validation']['options'];
+                $fieldType = $configuration['type'];
+                $fieldOptions = $configuration['options'];
+                $fieldOptions['constraints'] = $configuration['constraints'];
 
                 // Validator constraints
                 if (!empty($fieldOptions['constraints']) && is_array($fieldOptions['constraints'])) {

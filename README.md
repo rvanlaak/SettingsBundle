@@ -67,6 +67,7 @@ library better than anything else :)
 * Changed behavior of `SettingsManager::all`. It will not return global config if the user/local values are missing
 * Added possibility to add default value as third parameter on `SettingsManager::get`
 * Updated namespace to `Dmishh\SettingsBundle` instead of `Dmishh\Bundle\SettingsBundle`
+* Updated the configuration. This break BC but makes sure the configuration is not as "deep". [#31](https://github.com/dmishh/SettingsBundle/issues/31)
 
 #### Version 1.0.2-1.0.7
 * Minor code improvements and bug fixes
