@@ -18,20 +18,22 @@ class SerializerFactory
 {
     /**
      * @param string $name short name of serializer (ex.: php) or full class name
+     *
      * @throws \Dmishh\SettingsBundle\Exception\UnknownSerializerException
+     *
      * @return SerializerInterface
      */
     public static function create($name)
     {
-        $serializerClass = 'Dmishh\\SettingsBundle\\Serializer\\' . Container::camelize($name) . 'Serializer';
+        $serializerClass = 'Dmishh\\SettingsBundle\\Serializer\\'.Container::camelize($name).'Serializer';
 
         if (class_exists($serializerClass)) {
-            return new $serializerClass;
+            return new $serializerClass();
         } else {
             $serializerClass = $name;
 
             if (class_exists($serializerClass)) {
-                $serializer = new $serializerClass;
+                $serializer = new $serializerClass();
                 if ($serializer instanceof SerializerInterface) {
                     return $serializer;
                 }

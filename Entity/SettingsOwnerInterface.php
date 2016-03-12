@@ -12,7 +12,7 @@
 namespace Dmishh\SettingsBundle\Entity;
 
 /**
- * This interface must be implemented by the Entity connected to a setting
+ * This interface must be implemented by the Entity connected to a setting.
  */
 interface SettingsOwnerInterface
 {

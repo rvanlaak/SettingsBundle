@@ -71,7 +71,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get($name, SettingsOwnerInterface $owner = null, $default = null)
     {
@@ -100,7 +100,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function all(SettingsOwnerInterface $owner = null)
     {
@@ -123,7 +123,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function set($name, $value, SettingsOwnerInterface $owner = null)
     {
@@ -133,7 +133,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setMany(array $settings, SettingsOwnerInterface $owner = null)
     {
@@ -145,7 +145,7 @@ class SettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function clear($name, SettingsOwnerInterface $owner = null)
     {
@@ -182,6 +182,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param SettingsOwnerInterface|null $owner
      *
      * @throws \Dmishh\SettingsBundle\Exception\UnknownSerializerException
+     *
      * @return SettingsManager
      */
     private function flush($names, SettingsOwnerInterface $owner = null)
@@ -190,7 +191,7 @@ class SettingsManager implements SettingsManagerInterface
 
         $settings = $this->repository->findBy(array(
                 'name' => $names,
-                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier()
+                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier(),
             )
         );
 
@@ -229,11 +230,12 @@ class SettingsManager implements SettingsManagerInterface
      * Find a setting by name form an array of settings.
      *
      * @param Setting[] $haystack
-     * @param string $needle
+     * @param string    $needle
      *
      * @return Setting|null
      */
-    protected function findSettingByName($haystack, $needle) {
+    protected function findSettingByName($haystack, $needle)
+    {
         foreach ($haystack as $setting) {
             if ($setting->getName() === $needle) {
                 return $setting;
@@ -248,6 +250,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param SettingsOwnerInterface $owner
      *
      * @return SettingsManager
+     *
      * @throws \Dmishh\SettingsBundle\Exception\UnknownSettingException
      * @throws \Dmishh\SettingsBundle\Exception\WrongScopeException
      */
@@ -301,6 +304,7 @@ class SettingsManager implements SettingsManagerInterface
      * @param SettingsOwnerInterface|null $owner
      *
      * @throws \Dmishh\SettingsBundle\Exception\UnknownSerializerException
+     *
      * @return array
      */
     private function getSettingsFromRepository(SettingsOwnerInterface $owner = null)

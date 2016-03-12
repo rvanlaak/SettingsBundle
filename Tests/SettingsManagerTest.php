@@ -235,7 +235,7 @@ class SettingsManagerTest extends AbstractTest
     }
 
     /**
-     * Covers https://github.com/dmishh/SettingsBundle/issues/28
+     * Covers https://github.com/dmishh/SettingsBundle/issues/28.
      */
     public function testFlush()
     {
@@ -266,8 +266,8 @@ class SettingsManagerTest extends AbstractTest
             ->getMock();
 
         $repo->expects($this->once())->method('findBy')->with($this->equalTo(array(
-            'name'=>$names,
-            'ownerId'=>$owner,
+            'name' => $names,
+            'ownerId' => $owner,
         )))->willReturn($settings);
 
         $em = $this
@@ -315,7 +315,6 @@ class SettingsManagerTest extends AbstractTest
         $flushMethod->invoke($manager, $names, $owner);
     }
 
-
     public function testFindSettingByName()
     {
         $settingsManager = $this->createSettingsManager();
@@ -324,7 +323,7 @@ class SettingsManagerTest extends AbstractTest
         $s2 = $this->createSetting('bar');
         $s3 = $this->createSetting('baz');
         $s4 = $this->createSetting('foo');
-        $settings=array($s1, $s2, $s3, $s4);
+        $settings = array($s1, $s2, $s3, $s4);
 
         $method = new \ReflectionMethod('Dmishh\SettingsBundle\Manager\SettingsManager', 'findSettingByName');
         $method->setAccessible(true);

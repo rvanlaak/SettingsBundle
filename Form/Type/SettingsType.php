@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
- * Settings management form
+ * Settings management form.
  *
  * @author Dmitriy Scherbina <http://dmishh.com>
  * @author Artem Zhuravlov
@@ -33,7 +33,7 @@ class SettingsType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -59,14 +59,14 @@ class SettingsType extends AbstractType
                 }
 
                 // Label I18n
-                $fieldOptions['label'] = 'labels.' . $name;
+                $fieldOptions['label'] = 'labels.'.$name;
                 $fieldOptions['translation_domain'] = 'settings';
 
                 // Choices I18n
                 if (!empty($fieldOptions['choices'])) {
                     $fieldOptions['choices'] = array_map(
                         function ($label) use ($fieldOptions) {
-                            return $fieldOptions['label'] . '_choices.' . $label;
+                            return $fieldOptions['label'].'_choices.'.$label;
                         },
                         array_combine($fieldOptions['choices'], $fieldOptions['choices'])
                     );
@@ -78,7 +78,8 @@ class SettingsType extends AbstractType
 
     /**
      * SF < 2.7
-     * {@inheritDoc}
+     * {@inheritdoc}
+     *
      * @deprecated since version 2.3, to be renamed in 3.0.
      *             Use the method configureSettings instead
      */
@@ -88,7 +89,7 @@ class SettingsType extends AbstractType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
@@ -105,14 +106,14 @@ class SettingsType extends AbstractType
         } else {
             $resolver->addAllowedTypes(
                 array(
-                    'disabled_settings' => 'array'
+                    'disabled_settings' => 'array',
                 )
             );
         }
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

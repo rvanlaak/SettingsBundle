@@ -13,7 +13,7 @@ use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 
 /**
- * Extension for retrieving settings in Twig templates
+ * Extension for retrieving settings in Twig templates.
  *
  * @author Dmitriy Scherbina <http://dmishh.com>
  */
@@ -38,7 +38,7 @@ class SettingsExtension extends \Twig_Extension
     }
 
     /**
-     * Proxy to SettingsManager::get
+     * Proxy to SettingsManager::get.
      *
      * @param string                      $name
      * @param SettingsOwnerInterface|null $owner
@@ -51,7 +51,7 @@ class SettingsExtension extends \Twig_Extension
     }
 
     /**
-     * Proxy to SettingsManager::all
+     * Proxy to SettingsManager::all.
      *
      * @param SettingsOwnerInterface|null $owner
      *
@@ -63,7 +63,7 @@ class SettingsExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {

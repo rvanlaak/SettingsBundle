@@ -14,7 +14,7 @@ namespace Dmishh\SettingsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Setting
+ * Setting.
  *
  * @ORM\Table(
  *  name="dmishh_settings",
@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Setting
 {
     /**
-     * @var integer
+     * @var int
      *
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -55,9 +55,9 @@ class Setting
     private $ownerId;
 
     /**
-     * Get id
+     * Get id.
      *
-     * @return integer
+     * @return int
      */
     public function getId()
     {
@@ -65,9 +65,10 @@ class Setting
     }
 
     /**
-     * Set name
+     * Set name.
      *
      * @param string $name
+     *
      * @return Setting
      */
     public function setName($name)
@@ -78,7 +79,7 @@ class Setting
     }
 
     /**
-     * Get name
+     * Get name.
      *
      * @return string
      */
@@ -88,9 +89,10 @@ class Setting
     }
 
     /**
-     * Set value
+     * Set value.
      *
      * @param string $value
+     *
      * @return Setting
      */
     public function setValue($value)
@@ -101,7 +103,7 @@ class Setting
     }
 
     /**
-     * Get value
+     * Get value.
      *
      * @return string
      */

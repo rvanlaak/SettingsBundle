@@ -20,6 +20,7 @@ class SettingsController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function manageGlobalAction(Request $request)
@@ -43,6 +44,7 @@ class SettingsController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     *
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function manageOwnAction(Request $request)
@@ -77,7 +79,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param Request                     $request
      * @param SettingsOwnerInterface|null $owner
      *
      * @return \Symfony\Component\HttpFoundation\Response
@@ -90,7 +92,6 @@ class SettingsController extends Controller
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-
                 $this->get('settings_manager')->setMany($form->getData(), $owner);
                 $this->get('session')->getFlashBag()->add(
                     'success',
@@ -111,7 +112,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Get AuthorizationChecker service
+     * Get AuthorizationChecker service.
      *
      * @return \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\Symfony\Component\Security\Core\SecurityContextInterface
      */
@@ -128,7 +129,7 @@ class SettingsController extends Controller
     }
 
     /**
-     * Get SecurityContext service
+     * Get SecurityContext service.
      *
      * @return \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface
      */

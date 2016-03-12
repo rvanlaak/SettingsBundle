@@ -11,10 +11,7 @@
 
 namespace Dmishh\SettingsBundle\Tests;
 
-use Dmishh\SettingsBundle\Manager\SettingsManager;
-use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Dmishh\SettingsBundle\Serializer\SerializerFactory;
-use Mockery;
 
 class SerializerTest extends AbstractTest
 {
