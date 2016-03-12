@@ -10,28 +10,16 @@
 
 ## Customization
 
-#### Overriding layout
+#### Overriding layout via bundle inheritance
 
-##### Via config
+Make use of Symfony Bundle Inheritance to expose the bundle via your own template. See the Symfony Cookbook for an
+article about how to override parts of a bundle.
 
-Set your layout in config
-
-```yaml
-dmishh_settings:
-    layout: DmishhSettingsBundle::layout.html.twig # change to your own
-```
-
-Place ```settings_form``` block near your main content block
-
-```twig
-{% block settings_form %}{% endblock %}
-```
-
-##### Via bundle inheritance
-
-TODO
+* [How to Use Bundle Inheritance to Override Parts of a Bundle »](http://symfony.com/doc/current/cookbook/bundles/inheritance.html#overriding-resources-templates-routing-etc)
 
 #### Overriding template
+
+The template the bundle controller will use can be overwritten by changing the configuration parameter.
 
 ```yaml
 dmishh_settings:

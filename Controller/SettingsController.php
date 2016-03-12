@@ -105,7 +105,6 @@ class SettingsController extends Controller
             $this->container->getParameter('settings_manager.template'),
             array(
                 'settings_form' => $form->createView(),
-                'layout' => $this->container->getParameter('settings_manager.layout'),
             )
         );
     }

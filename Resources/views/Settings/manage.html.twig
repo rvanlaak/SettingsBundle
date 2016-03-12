@@ -1,11 +1,10 @@
-{% extends layout %}
+{% extends 'DmishhSettingsBundle::layout.html.twig' %}
 
-{% block settings_form %}
+{% block content %}
     <h1>{% trans from 'settings' %}settings{% endtrans %}</h1>
 
-    <form method="post" id="settings-form" {{ form_enctype(settings_form) }}>
+    {{ form_start(settings_form) }}
         {{ form_widget(settings_form) }}
-
         <input type="submit" value="{% trans from 'settings' %}save{% endtrans %}" />
-    </form>
+    {{ form_end(settings_form) }}
 {% endblock %}
