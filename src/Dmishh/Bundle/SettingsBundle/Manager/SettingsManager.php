@@ -27,32 +27,32 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * @var array
      */
-    private $globalSettings;
+    protected $globalSettings;
 
     /**
      * @var array
      */
-    private $ownerSettings;
+    protected $ownerSettings;
 
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
-    private $em;
+    protected $em;
 
     /**
      * @var \Doctrine\ORM\EntityRepository
      */
-    private $repository;
+    protected $repository;
 
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    protected $serializer;
 
     /**
      * @var array
      */
-    private $settingsConfiguration;
+    protected $settingsConfiguration;
 
     /**
      * @param ObjectManager       $em
@@ -188,11 +188,7 @@ class SettingsManager implements SettingsManagerInterface
     {
         $names = (array) $names;
 
-        $settings = $this->repository->findBy(array(
-                'name' => $names,
-                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier()
-            )
-        );
+        $settings = $this->getSettingsFromRepositoryByNames($names,$owner);
 
         // Assert: $settings might be a smaller set than $names
 
@@ -209,11 +205,8 @@ class SettingsManager implements SettingsManagerInterface
 
             if (!$setting) {
                 // if the setting does not exist in DB, create it
-                $setting = new Setting();
+                $setting = $this->getNewSetting($owner);
                 $setting->setName($name);
-                if ($owner !== null) {
-                    $setting->setOwnerId($owner->getSettingIdentifier());
-                }
                 $this->em->persist($setting);
             }
 
@@ -251,7 +244,7 @@ class SettingsManager implements SettingsManagerInterface
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSettingException
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\WrongScopeException
      */
-    private function validateSetting($name, SettingsOwnerInterface $owner = null)
+    protected function validateSetting($name, SettingsOwnerInterface $owner = null)
     {
         // Name validation
         if (!is_string($name) || !array_key_exists($name, $this->settingsConfiguration)) {
@@ -303,7 +296,7 @@ class SettingsManager implements SettingsManagerInterface
      * @throws \Dmishh\Bundle\SettingsBundle\Exception\UnknownSerializerException
      * @return array
      */
-    private function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
+    protected function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
     {
         $settings = array();
 
@@ -325,6 +318,24 @@ class SettingsManager implements SettingsManagerInterface
             }
         }
 
+        return $settings;
+    }
+
+    protected function getNewSetting(SettingsOwnerInterface $owner = null){
+        $setting = new Setting();
+        if ($owner !== null) {
+            $setting->setOwnerId($owner->getSettingIdentifier());
+        }
+        return new $setting();
+
+    }
+
+    protected function getSettingsFromRepositoryByNames($names,SettingsOwnerInterface $owner = null){
+        $settings = $this->repository->findBy(array(
+                'name' => $names,
+                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier()
+            )
+        );
         return $settings;
     }
 }

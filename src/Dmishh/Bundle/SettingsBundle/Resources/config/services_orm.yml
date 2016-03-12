@@ -1,0 +1,7 @@
+services:
+    dmishh.settings.settings_manager:
+        class: Dmishh\Bundle\SettingsBundle\Manager\SettingsManager
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @dmishh.settings.serializer
+            - %settings_manager.settings%

@@ -1,0 +1,7 @@
+services:
+    dmishh.settings.settings_manager:
+        class: Dmishh\Bundle\SettingsBundle\Manager\MongoDB\SettingsManager
+        arguments:
+            - @doctrine.odm.mongodb.document_manager
+            - @dmishh.settings.serializer
+            - %settings_manager.settings%
