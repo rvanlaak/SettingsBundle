@@ -42,17 +42,17 @@ Twig template:
 {{ get_setting('some_user_setting', app.user) }} {# => 'value' #}
 ```
 
-See the [general usage](/src/Dmishh/Bundle/SettingsBundle/Resources/doc/usage.md) documentation for more examples.
+See the [general usage](/Resources/doc/general-usage.md) documentation for more examples.
 
 ## Documentation
 
-* [Installation](src/Dmishh/Bundle/SettingsBundle/Resources/doc/installation.md)
-* [General usage](src/Dmishh/Bundle/SettingsBundle/Resources/doc/general-usage.md)
-* [Scopes](src/Dmishh/Bundle/SettingsBundle/Resources/doc/scopes.md)
-* [Advanced configuration](src/Dmishh/Bundle/SettingsBundle/Resources/doc/configuration.md)
-* [I18n](src/Dmishh/Bundle/SettingsBundle/Resources/doc/i18n.md)
-* [Customization](src/Dmishh/Bundle/SettingsBundle/Resources/doc/customization.md)
-* [FAQ](src/Dmishh/Bundle/SettingsBundle/Resources/doc/faq.md)
+* [Installation](/Resources/doc/installation.md)
+* [General usage](/Resources/doc/general-usage.md)
+* [Scopes](/Resources/doc/scopes.md)
+* [Advanced configuration](/Resources/doc/advanced-configuration.md)
+* [I18n](/Resources/doc/i18n.md)
+* [Customization](/Resources/doc/customization.md)
+* [FAQ](/Resources/doc/faq.md)
 
 ## Roadmap and contribution
 
@@ -85,6 +85,6 @@ Make sure to read the [UPGRADE.md](UPGRADE.md) to successfully migrate your appl
 
 ## License
 
-The MIT License. For the full text of license, please, see [LICENSE](https://github.com/dmishh/SettingsBundle/blob/master/LICENSE)
+The MIT License. For the full text of license, please, see [LICENSE](/LICENSE)
 
 © 2013-2015 [Dmitriy Scherbina](http://dmishh.com)
