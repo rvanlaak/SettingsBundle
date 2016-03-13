@@ -1,7 +1,7 @@
 {
     "name": "dmishh/settings-bundle",
-    "description": "Database centric Symfony2 configuration management. Global and per-user settings supported. It just works.",
-    "keywords": ["symfony2", "bundle", "config", "configuration", "settings"],
+    "description": "Database centric Symfony configuration management. Global and per-user settings supported.",
+    "keywords": ["symfony", "bundle", "config", "configuration", "settings"],
     "homepage": "https://github.com/dmishh/SettingsBundle",
     "type": "symfony-bundle",
     "license": "MIT",
@@ -22,7 +22,8 @@
     "require": {
         "php": "^5.5.9|^7.0",
         "psr/cache": "^1.0",
-        "symfony/framework-bundle": "^2.3|^3.0",
+        "symfony/framework-bundle": "^2.7|^3.0",
+        "symfony/form": "^2.7|^3.0",
         "doctrine/orm": "^2.2.3"
     },
     "require-dev": {

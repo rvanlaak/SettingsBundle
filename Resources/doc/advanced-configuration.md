@@ -23,7 +23,7 @@ dmishh_settings:
     serialization: php # database serialization mechanism (php|json)
     settings:
         my_first_setting:
-            type: number # any Symfony2 form type
+            type: number # any Symfony form type
             options: # options passed to form
                 required: false
             constraints:
