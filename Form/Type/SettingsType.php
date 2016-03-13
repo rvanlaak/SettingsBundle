@@ -15,7 +15,6 @@ use Dmishh\SettingsBundle\Exception\SettingsException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * Settings management form.
@@ -77,18 +76,6 @@ class SettingsType extends AbstractType
     }
 
     /**
-     * SF < 2.7
-     * {@inheritdoc}
-     *
-     * @deprecated since version 2.3, to be renamed in 3.0.
-     *             Use the method configureSettings instead
-     */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
@@ -98,24 +85,12 @@ class SettingsType extends AbstractType
                 'disabled_settings' => array(),
             )
         );
-
-        // SF 2.6 : parameters of OptionsResolver::addAllowedTypes change and OptionsResolver::setDefined was include
-        // @see https://github.com/symfony/OptionsResolver/blob/master/CHANGELOG.md#260
-        if (method_exists($resolver, 'setDefined')) {
-            $resolver->addAllowedTypes('disabled_settings', 'array');
-        } else {
-            $resolver->addAllowedTypes(
-                array(
-                    'disabled_settings' => 'array',
-                )
-            );
-        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'settings_management';
     }
