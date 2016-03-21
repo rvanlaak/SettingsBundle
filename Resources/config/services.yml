@@ -26,7 +26,7 @@ services:
         arguments:
             - "%settings_manager.settings%"
         tags:
-            - { name: form.type, alias: settings_management }
+            - { name: form.type }
 
     twig.extension.settings_extension:
         class: Dmishh\SettingsBundle\Twig\SettingsExtension

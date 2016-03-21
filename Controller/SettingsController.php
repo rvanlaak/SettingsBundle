@@ -10,6 +10,7 @@
 namespace Dmishh\SettingsBundle\Controller;
 
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
+use Dmishh\SettingsBundle\Form\Type\SettingsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -92,7 +93,7 @@ class SettingsController extends Controller
      */
     protected function manage(Request $request, SettingsOwnerInterface $owner = null)
     {
-        $form = $this->createForm('settings_management', $this->get('settings_manager')->all($owner));
+        $form = $this->createForm(SettingsType::class, $this->get('settings_manager')->all($owner));
 
         if ($request->isMethod('post')) {
             $form->handleRequest($request);
