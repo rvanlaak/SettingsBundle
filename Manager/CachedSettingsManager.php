@@ -17,7 +17,7 @@ use Psr\Cache\CacheItemPoolInterface;
  */
 class CachedSettingsManager implements SettingsManagerInterface
 {
-    const PREFIX = 'dmishh_settings_o{%s}_k{%s}';
+    const PREFIX = 'dmishh_settings_%s_%s';
 
     /**
      * @var CacheItemPoolInterface
