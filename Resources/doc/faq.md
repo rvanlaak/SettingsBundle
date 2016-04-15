@@ -18,8 +18,9 @@ Add `required: false` to setting validation options
 dmishh_settings:
     settings:
         my_first_setting:
-            options:
-                required: false
+        	validation:
+	            options:
+	                required: false
 ```
 
 **? How to add an `array` setting?**
