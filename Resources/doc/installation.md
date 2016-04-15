@@ -36,7 +36,7 @@
     // in AppKernel::registerBundles()
     $bundles = array(
         // ...
-        new Dmishh\SettingsBundle\DmishhSettingsBundle(),
+        new Dmishh\Bundle\SettingsBundle\DmishhSettingsBundle(),
     );
     ```
 

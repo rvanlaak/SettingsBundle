@@ -23,13 +23,14 @@ dmishh_settings:
     serialization: php # database serialization mechanism (php|json)
     settings:
         my_first_setting:
-            type: number # any Symfony form type
-            options: # options passed to form
-                required: false
-            constraints:
-                Symfony\Component\Validator\Constraints\Range:
-                    min: 1
-                    max: 65535
+            validation:
+                type: number # any Symfony form type
+                options: # options passed to form
+                    required: false
+                    constraints:
+                        Symfony\Component\Validator\Constraints\Range:
+                            min: 1
+                            max: 65535
 ```
 
 
@@ -43,12 +44,13 @@ Also you can use [built-in](http://symfony.com/doc/current/reference/constraints
 dmishh_settings:
     settings:
         my_first_setting:
-            type: text
-            options:
-                max_length: 15
-            constraints:
-                Symfony\Component\Validator\Constraints\Regex:
-                    pattern: "/^\d+$/"
+            validation:
+                type: text
+                options:
+                    max_length: 15
+                    constraints:
+                        Symfony\Component\Validator\Constraints\Regex:
+                            pattern: "/^\d+$/"
 ```
 
 __Note:__ [validation](#validation) is provided only at the form level.
