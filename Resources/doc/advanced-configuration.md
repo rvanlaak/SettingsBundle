@@ -84,3 +84,16 @@ cache_adapter:
 ```
 
 Read more about how you configure the cache adapter bundle on [www.php-cache.com](http://www.php-cache.com).
+
+### Symfony 3
+
+Because type names were [deprecated in Symfony 2.8](https://github.com/symfony/symfony/blob/2.8/UPGRADE-2.8.md#form) and removed in Symfony 3.0, the type option expects the fully qualified class name instead.
+
+```yaml
+# app/config/config.yml
+dmishh_settings:
+    settings:
+        my_first_setting:
+             type: Symfony\Component\Form\Extension\Core\Type\NumberType # any Symfony form type
+```
+
