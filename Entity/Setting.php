@@ -34,7 +34,7 @@ class Setting
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=191)
      */
     private $name;
 
@@ -48,7 +48,7 @@ class Setting
     /**
      * @var string
      *
-     * @ORM\Column(name="owner_id", type="string", length=255, nullable=true)
+     * @ORM\Column(name="owner_id", type="string", length=191, nullable=true)
      */
     private $ownerId;
 
