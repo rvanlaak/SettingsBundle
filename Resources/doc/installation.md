@@ -73,5 +73,5 @@
 
 * Open <a href="http://YOUR-PROJECT-URL/app_dev.php/settings/global">http://YOUR-PROJECT-URL/app_dev.php/settings/global</a> and start managing your settings!
 
-*Note:* If you're using Symfony 3, please see the instructions in [Advanced configuration](advanced-configuration.md).
+**Note:** If you're using Symfony 3, please see the instructions in [Advanced configuration](advanced-configuration.md).
 

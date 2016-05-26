@@ -32,7 +32,7 @@ dmishh_settings:
                     max: 65535
 ```
 
-*Note:* In Symfony 3, use the fully qualified class name instead of the form type name. 
+**Note:** In Symfony 3, use the fully qualified class name instead of the form type name. 
 
 
 #### Settings validation
