@@ -73,15 +73,5 @@
 
 * Open <a href="http://YOUR-PROJECT-URL/app_dev.php/settings/global">http://YOUR-PROJECT-URL/app_dev.php/settings/global</a> and start managing your settings!
 
-### Symfony 3
-
-Because type names were [deprecated in Symfony 2.8](https://github.com/symfony/symfony/blob/2.8/UPGRADE-2.8.md#form) and removed in Symfony 3.0, the default set up is slightly different.
-
-```yaml
-# app/config/config.yml
-dmishh_settings:
-    settings:
-        my_first_setting:
-            type: Symfony\Component\Form\Extension\Core\Type\TextType
-```
+*Note:* If you're using Symfony 3, please see the instructions in [Advanced configuration](advanced-configuration.md).
 
