@@ -23,7 +23,7 @@ dmishh_settings:
     serialization: php # database serialization mechanism (php|json)
     settings:
         my_first_setting:
-            type: number # any Symfony form type
+            type: number # any Symfony form type, or FQCN for Symfony >=3.0
             options: # options passed to form
                 required: false
             constraints:
@@ -31,6 +31,8 @@ dmishh_settings:
                     min: 1
                     max: 65535
 ```
+
+**Note:** In Symfony 3, use the fully qualified class name instead of the form type name. 
 
 
 #### Settings validation
@@ -84,3 +86,4 @@ cache_adapter:
 ```
 
 Read more about how you configure the cache adapter bundle on [www.php-cache.com](http://www.php-cache.com).
+
