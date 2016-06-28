@@ -111,9 +111,17 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('invalidateCache'))
             ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
-        $cachedSettingsManager->expects($this->once())
+
+        // Clear the cache
+        $cachedSettingsManager->expects($this->at(0))
             ->method('invalidateCache')
             ->with($this->equalTo($name), $this->equalTo($owner))
+            ->willReturn(null);
+
+        // Clear all cache for this owner
+        $cachedSettingsManager->expects($this->at(1))
+            ->method('invalidateCache')
+            ->with($this->equalTo(null), $this->equalTo($owner))
             ->willReturn(null);
 
         $cachedSettingsManager->set($name, $value, $owner);
@@ -131,9 +139,9 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('invalidateCache'))
             ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
-        $cachedSettingsManager->expects($this->exactly(3))
+        $cachedSettingsManager->expects($this->exactly(4))
             ->method('invalidateCache')
-            ->with($this->logicalOr('name0', 'name1', 'name2'), $owner);
+            ->with($this->logicalOr('name0', 'name1', 'name2', null), $owner);
 
         $cachedSettingsManager->setMany($settings, $owner);
     }
@@ -150,9 +158,13 @@ class CachedSettingsManagerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('invalidateCache'))
             ->setConstructorArgs(array($settingsManager, $this->getMock(CacheItemPoolInterface::class), 4711))
             ->getMock();
-        $cachedSettingsManager->expects($this->once())
+        $cachedSettingsManager->expects($this->at(0))
             ->method('invalidateCache')
             ->with($this->equalTo($name), $this->equalTo($owner))
+            ->willReturn(null);
+        $cachedSettingsManager->expects($this->at(1))
+            ->method('invalidateCache')
+            ->with($this->equalTo(null), $this->equalTo($owner))
             ->willReturn(null);
 
         $cachedSettingsManager->clear($name, $owner);
