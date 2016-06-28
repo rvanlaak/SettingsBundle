@@ -80,6 +80,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     public function set($name, $value, SettingsOwnerInterface $owner = null)
     {
         $this->invalidateCache($name, $owner);
+        $this->invalidateCache(null, $owner);
 
         return $this->settingsManager->set($name, $value, $owner);
     }
@@ -92,6 +93,7 @@ class CachedSettingsManager implements SettingsManagerInterface
         foreach ($settings as $key => $value) {
             $this->invalidateCache($key, $owner);
         }
+        $this->invalidateCache(null, $owner);
 
         return $this->settingsManager->setMany($settings, $owner);
     }
@@ -102,6 +104,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     public function clear($name, SettingsOwnerInterface $owner = null)
     {
         $this->invalidateCache($name, $owner);
+        $this->invalidateCache(null, $owner);
 
         return $this->settingsManager->clear($name, $owner);
     }
