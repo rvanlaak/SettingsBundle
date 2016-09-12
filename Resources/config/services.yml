@@ -19,7 +19,7 @@ services:
     dmishh.settings.serializer:
         class: Dmishh\SettingsBundle\Serializer\PhpSerializer
         factory: ['@dmishh.settings.serializer_factory', create]
-        arguments: [%settings_manager.serialization%]
+        arguments: ["%settings_manager.serialization%"]
 
     form.type.settings_management:
         class: Dmishh\SettingsBundle\Form\Type\SettingsType
