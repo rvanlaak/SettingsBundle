@@ -31,4 +31,4 @@ install:
   - composer update
 
 script:
-  - phpunit
+  - vendor/bin/phpunit
