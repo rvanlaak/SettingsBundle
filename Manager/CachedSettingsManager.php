@@ -53,6 +53,7 @@ class CachedSettingsManager implements SettingsManagerInterface
             return $cached;
         }
 
+        $this->settingsManager->clearSettings($owner);
         $value = $this->settingsManager->get($name, $owner, $default);
         $this->storeInCache($name, $value, $owner);
 
@@ -68,6 +69,7 @@ class CachedSettingsManager implements SettingsManagerInterface
             return $cached;
         }
 
+        $this->settingsManager->clearSettings($owner);
         $value = $this->settingsManager->all($owner);
         $this->storeInCache(null, $value, $owner);
 
