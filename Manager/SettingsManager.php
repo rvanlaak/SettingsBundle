@@ -298,7 +298,27 @@ class SettingsManager implements SettingsManagerInterface
 
         return $this;
     }
+    
+    /* 
+     * Clear locally stored settings
+     * 
+     * @param SettingsOwnerInterface|null $owner
+     *
+     * @return SettingsManager
+     */
+    public function clearSettings(SettingsOwnerInterface $owner = null)
+    {
+        if ($owner === null) {
+            $this->globalSettings = null;
+        }
 
+         if ($owner !== null && array_key_exists($owner->getSettingIdentifier(),
+                    $this->ownerSettings)) {
+             unset($this->ownerSettings[$owner->getSettingIdentifier()]);
+        }
+        
+        return $this;
+    }
     /**
      * Retreives settings from repository.
      *
