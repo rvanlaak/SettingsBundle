@@ -3,6 +3,7 @@ services:
       alias: dmishh.settings.settings_manager
 
     dmishh.settings.settings_manager:
+        public: true
         class: Dmishh\SettingsBundle\Manager\SettingsManager
         arguments:
             - "@doctrine.orm.entity_manager"
