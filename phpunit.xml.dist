@@ -20,7 +20,8 @@
     </testsuites>
 
     <php>
-        <server name="KERNEL_DIR" value="." />
+        <server name="KERNEL_DIR" value="./Tests/Resources/app" />
+        <server name="KERNEL_CLASS" value="AppKernel" />
         <ini name="opcache.load_comments" value="1" />
         <ini name="zend_optimizerplus.load_comments" value="1" />
     </php>
