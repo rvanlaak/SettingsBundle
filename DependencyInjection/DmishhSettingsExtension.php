@@ -55,7 +55,7 @@ class DmishhSettingsExtension extends Extension
         }
 
         $container->getDefinition(SettingsManager::class)
-            ->replaceArgument(0, $config['settings']);
+            ->replaceArgument(2, $config['settings']);
 
         $container->getDefinition(SettingsType::class)
             ->replaceArgument(0, $config['settings']);

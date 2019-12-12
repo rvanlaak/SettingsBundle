@@ -3,6 +3,8 @@
 namespace Dmishh\SettingsBundle\Tests\Functional;
 
 use Dmishh\SettingsBundle\DmishhSettingsBundle;
+use Dmishh\SettingsBundle\Manager\SettingsManager;
+use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Dmishh\SettingsBundle\Serializer\PhpSerializer;
 use Dmishh\SettingsBundle\Serializer\SerializerInterface;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
@@ -34,6 +36,9 @@ final class ServiceInstantiationTest extends BaseBundleTestCase
         self::assertTrue($container->has(SerializerInterface::class));
         $service = $container->get(SerializerInterface::class);
         self::assertInstanceOf(PhpSerializer::class, $service);
+
+        $service = $container->get(SettingsManagerInterface::class);
+        self::assertInstanceOf(SettingsManager::class, $service);
     }
 
     protected function getBundleClass()
