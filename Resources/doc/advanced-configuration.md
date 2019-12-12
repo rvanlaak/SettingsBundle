@@ -23,6 +23,7 @@ dmishh_settings:
     serialization: php # database serialization mechanism (php|json)
     settings:
         my_first_setting:
+            scope: all # global or user
             type: number # any Symfony form type, or FQCN for Symfony >=3.0
             options: # options passed to form
                 required: false
