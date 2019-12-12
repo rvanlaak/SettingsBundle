@@ -61,7 +61,7 @@ class Configuration implements ConfigurationInterface
                                     ->thenInvalid('Invalid scope %s. Valid scopes are: '.implode(', ', array_map(function ($s) { return '"'.$s.'"'; }, $scopes)).'.')
                                 ->end()
                             ->end()
-                            ->scalarNode('type')->defaultValue('text')->end()
+                            ->scalarNode('type')->defaultValue('Symfony\Component\Form\Extension\Core\Type\TextType')->end()
 
                             ->variableNode('options')
                                 ->info('The options given to the form builder')
