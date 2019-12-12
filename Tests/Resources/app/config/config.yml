@@ -1,6 +1,6 @@
 framework:
   secret: foobar
-  test: ~
+  translator: ~
 
 doctrine:
   dbal:

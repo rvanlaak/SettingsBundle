@@ -11,7 +11,7 @@
 
 namespace Dmishh\SettingsBundle\Exception;
 
-class UnknownSettingException extends SettingsException
+class UnknownSettingException extends \RuntimeException implements SettingsException
 {
     public function __construct($settingName)
     {

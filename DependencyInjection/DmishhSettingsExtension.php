@@ -11,8 +11,13 @@
 
 namespace Dmishh\SettingsBundle\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Dmishh\SettingsBundle\Controller\SettingsController;
+use Dmishh\SettingsBundle\Form\Type\SettingsType;
+use Dmishh\SettingsBundle\Manager\CachedSettingsManager;
+use Dmishh\SettingsBundle\Manager\SettingsManager;
+use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
@@ -32,23 +37,32 @@ class DmishhSettingsExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        foreach ($config as $key => $value) {
-            $container->setParameter('settings_manager.'.$key, $value);
-        }
-
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
+        $container->setParameter('settings_manager.serialization', $config['serialization']);
+
         // Configure the correct storage
-        if ($config['cache_service'] === null) {
-            $container->removeDefinition('dmishh.settings.cached_settings_manager');
+        if (null === $config['cache_service']) {
+            $container->removeDefinition(CachedSettingsManager::class);
         } else {
-            $container->getDefinition('dmishh.settings.cached_settings_manager')
+            $container->getDefinition(CachedSettingsManager::class)
                 ->replaceArgument(1, new Reference($config['cache_service']))
                 ->replaceArgument(2, $config['cache_lifetime']);
 
             // set an alias to make sure the cached settings manager is the default
-            $container->setAlias('settings_manager', 'dmishh.settings.cached_settings_manager');
+            $container->setAlias(SettingsManagerInterface::class, CachedSettingsManager::class);
         }
+
+        $container->getDefinition(SettingsManager::class)
+            ->replaceArgument(0, $config['settings']);
+
+        $container->getDefinition(SettingsType::class)
+            ->replaceArgument(0, $config['settings']);
+
+        $container->getDefinition(SettingsController::class)
+            ->replaceArgument(2, $config['template'])
+            ->replaceArgument(3, $config['security']['users_can_manage_own_settings'])
+            ->replaceArgument(4, $config['security']['manage_global_settings_role']);
     }
 }

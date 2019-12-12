@@ -38,14 +38,14 @@ class SettingsType extends AbstractType
     {
         foreach ($this->settingsConfiguration as $name => $configuration) {
             // If setting's value exists in data and setting isn't disabled
-            if (array_key_exists($name, $options['data']) && !in_array($name, $options['disabled_settings'])) {
+            if (\array_key_exists($name, $options['data']) && !\in_array($name, $options['disabled_settings'])) {
                 $fieldType = $configuration['type'];
                 $fieldOptions = $configuration['options'];
                 $fieldOptions['constraints'] = $configuration['constraints'];
 
                 // Validator constraints
-                if (!empty($fieldOptions['constraints']) && is_array($fieldOptions['constraints'])) {
-                    $constraints = array();
+                if (!empty($fieldOptions['constraints']) && \is_array($fieldOptions['constraints'])) {
+                    $constraints = [];
                     foreach ($fieldOptions['constraints'] as $class => $constraintOptions) {
                         if (class_exists($class)) {
                             $constraints[] = new $class($constraintOptions);
@@ -77,21 +77,15 @@ class SettingsType extends AbstractType
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'disabled_settings' => array(),
-            )
+            [
+                'disabled_settings' => [],
+            ]
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix()
     {
         return 'settings_management';

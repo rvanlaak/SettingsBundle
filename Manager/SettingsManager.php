@@ -11,10 +11,11 @@ namespace Dmishh\SettingsBundle\Manager;
 
 use Dmishh\SettingsBundle\Entity\Setting;
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
+use Dmishh\SettingsBundle\Exception\UnknownSerializerException;
 use Dmishh\SettingsBundle\Exception\UnknownSettingException;
 use Dmishh\SettingsBundle\Exception\WrongScopeException;
 use Dmishh\SettingsBundle\Serializer\SerializerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Settings Manager provides settings management and persistence using Doctrine's Object Manager.
@@ -54,18 +55,13 @@ class SettingsManager implements SettingsManagerInterface
      */
     private $settingsConfiguration;
 
-    /**
-     * @param ObjectManager $em
-     * @param SerializerInterface $serializer
-     * @param array $settingsConfiguration
-     */
     public function __construct(
-        ObjectManager $em,
+        EntityManagerInterface $em,
         SerializerInterface $serializer,
-        array $settingsConfiguration = array()
+        array $settingsConfiguration = []
     ) {
         $this->em = $em;
-        $this->repository = $em->getRepository('Dmishh\SettingsBundle\Entity\Setting');
+        $this->repository = $em->getRepository(Setting::class);
         $this->serializer = $serializer;
         $this->settingsConfiguration = $settingsConfiguration;
     }
@@ -73,7 +69,7 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name, SettingsOwnerInterface $owner = null, $default = null)
+    public function get(string $name, ?SettingsOwnerInterface $owner = null, $default = null)
     {
         $this->validateSetting($name, $owner);
         $this->loadSettings($owner);
@@ -82,31 +78,30 @@ class SettingsManager implements SettingsManagerInterface
 
         switch ($this->settingsConfiguration[$name]['scope']) {
             case SettingsManagerInterface::SCOPE_GLOBAL:
-                $value = $this->globalSettings[$name];
+                $value = $this->globalSettings[$name] ?? null;
                 break;
             case SettingsManagerInterface::SCOPE_ALL:
-                $value = $this->globalSettings[$name];
-            //Do not break here. Try to fetch the users settings
+                $value = $this->globalSettings[$name] ?? null;
+            // Do not break here. Try to fetch the users settings
+            // no break
             case SettingsManagerInterface::SCOPE_USER:
-                if ($owner !== null) {
-                    if ($this->ownerSettings[$owner->getSettingIdentifier()][$name] !== null) {
-                        $value = $this->ownerSettings[$owner->getSettingIdentifier()][$name];
-                    }
+                if (null !== $owner) {
+                    $value = $this->ownerSettings[$owner->getSettingIdentifier()][$name] ?? $value;
                 }
                 break;
         }
 
-        return $value === null ? $default : $value;
+        return null === $value ? $default : $value;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function all(SettingsOwnerInterface $owner = null)
+    public function all(?SettingsOwnerInterface $owner = null): array
     {
         $this->loadSettings($owner);
 
-        if ($owner === null) {
+        if (null === $owner) {
             return $this->globalSettings;
         }
 
@@ -114,7 +109,7 @@ class SettingsManager implements SettingsManagerInterface
 
         // If some user setting is not defined, please use the value from global
         foreach ($settings as $key => $value) {
-            if ($value === null && isset($this->globalSettings[$key])) {
+            if (null === $value && isset($this->globalSettings[$key])) {
                 $settings[$key] = $this->globalSettings[$key];
             }
         }
@@ -125,76 +120,74 @@ class SettingsManager implements SettingsManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function set($name, $value, SettingsOwnerInterface $owner = null)
+    public function set(string $name, $value, ?SettingsOwnerInterface $owner = null): void
     {
         $this->setWithoutFlush($name, $value, $owner);
-
-        return $this->flush($name, $owner);
+        $this->flush([$name], $owner);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setMany(array $settings, SettingsOwnerInterface $owner = null)
+    public function setMany(array $settings, ?SettingsOwnerInterface $owner = null): void
     {
         foreach ($settings as $name => $value) {
             $this->setWithoutFlush($name, $value, $owner);
         }
 
-        return $this->flush(array_keys($settings), $owner);
+        $this->flush(array_keys($settings), $owner);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function clear($name, SettingsOwnerInterface $owner = null)
+    public function clear(string $name, ?SettingsOwnerInterface $owner = null): void
     {
-        return $this->set($name, null, $owner);
+        $this->set($name, null, $owner);
+    }
+
+    /**
+     * Find a setting by name form an array of settings.
+     *
+     * @param Setting[] $haystack
+     */
+    protected function findSettingByName(array $haystack, string $needle): ?Setting
+    {
+        foreach ($haystack as $setting) {
+            if ($setting->getName() === $needle) {
+                return $setting;
+            }
+        }
+
+        return null;
     }
 
     /**
      * Sets setting value to private array. Used for settings' batch saving.
-     *
-     * @param string $name
-     * @param mixed $value
-     * @param SettingsOwnerInterface|null $owner
-     *
-     * @return SettingsManager
      */
-    private function setWithoutFlush($name, $value, SettingsOwnerInterface $owner = null)
+    private function setWithoutFlush(string $name, $value, ?SettingsOwnerInterface $owner = null): void
     {
         $this->validateSetting($name, $owner);
         $this->loadSettings($owner);
 
-        if ($owner === null) {
+        if (null === $owner) {
             $this->globalSettings[$name] = $value;
         } else {
             $this->ownerSettings[$owner->getSettingIdentifier()][$name] = $value;
         }
-
-        return $this;
     }
 
     /**
      * Flushes settings defined by $names to database.
      *
-     * @param string|array $names
-     * @param SettingsOwnerInterface|null $owner
-     *
-     * @throws \Dmishh\SettingsBundle\Exception\UnknownSerializerException
-     *
-     * @return SettingsManager
+     * @throws UnknownSerializerException
      */
-    private function flush($names, SettingsOwnerInterface $owner = null)
+    private function flush(array $names, ?SettingsOwnerInterface $owner = null): void
     {
-        $names = (array)$names;
-
-        $settings = $this->repository->findBy(
-            array(
-                'name' => $names,
-                'ownerId' => $owner === null ? null : $owner->getSettingIdentifier(),
-            )
-        );
+        $settings = $this->repository->findBy([
+            'name' => $names,
+            'ownerId' => null === $owner ? null : $owner->getSettingIdentifier(),
+        ]);
 
         // Assert: $settings might be a smaller set than $names
 
@@ -213,7 +206,7 @@ class SettingsManager implements SettingsManagerInterface
                 // if the setting does not exist in DB, create it
                 $setting = new Setting();
                 $setting->setName($name);
-                if ($owner !== null) {
+                if (null !== $owner) {
                     $setting->setOwnerId($owner->getSettingIdentifier());
                 }
                 $this->em->persist($setting);
@@ -223,94 +216,58 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         $this->em->flush();
-
-        return $this;
-    }
-
-    /**
-     * Find a setting by name form an array of settings.
-     *
-     * @param Setting[] $haystack
-     * @param string $needle
-     *
-     * @return Setting|null
-     */
-    protected function findSettingByName($haystack, $needle)
-    {
-        foreach ($haystack as $setting) {
-            if ($setting->getName() === $needle) {
-                return $setting;
-            }
-        }
     }
 
     /**
      * Checks that $name is valid setting and it's scope is also valid.
      *
-     * @param string $name
      * @param SettingsOwnerInterface $owner
      *
      * @return SettingsManager
      *
-     * @throws \Dmishh\SettingsBundle\Exception\UnknownSettingException
-     * @throws \Dmishh\SettingsBundle\Exception\WrongScopeException
+     * @throws UnknownSettingException
+     * @throws WrongScopeException
      */
-    private function validateSetting($name, SettingsOwnerInterface $owner = null)
+    private function validateSetting(string $name, ?SettingsOwnerInterface $owner = null): void
     {
         // Name validation
-        if (!is_string($name) || !array_key_exists($name, $this->settingsConfiguration)) {
+        if (!\is_string($name) || !\array_key_exists($name, $this->settingsConfiguration)) {
             throw new UnknownSettingException($name);
         }
 
         // Scope validation
         $scope = $this->settingsConfiguration[$name]['scope'];
-        if ($scope !== SettingsManagerInterface::SCOPE_ALL) {
-            if ($scope === SettingsManagerInterface::SCOPE_GLOBAL && $owner !== null || $scope === SettingsManagerInterface::SCOPE_USER && $owner === null) {
+        if (SettingsManagerInterface::SCOPE_ALL !== $scope) {
+            if (SettingsManagerInterface::SCOPE_GLOBAL === $scope && null !== $owner || SettingsManagerInterface::SCOPE_USER === $scope && null === $owner) {
                 throw new WrongScopeException($scope, $name);
             }
         }
-
-        return $this;
     }
 
     /**
      * Settings lazy loading.
-     *
-     * @param SettingsOwnerInterface|null $owner
-     *
-     * @return SettingsManager
      */
-    private function loadSettings(SettingsOwnerInterface $owner = null)
+    private function loadSettings(SettingsOwnerInterface $owner = null): void
     {
         // Global settings
-        if ($this->globalSettings === null) {
+        if (null === $this->globalSettings) {
             $this->globalSettings = $this->getSettingsFromRepository();
         }
 
         // User settings
-        if ($owner !== null && ($this->ownerSettings === null || !array_key_exists(
-                    $owner->getSettingIdentifier(),
-                    $this->ownerSettings
-                ))
-        ) {
+        if (null !== $owner && (null === $this->ownerSettings || !\array_key_exists($owner->getSettingIdentifier(), $this->ownerSettings))) {
             $this->ownerSettings[$owner->getSettingIdentifier()] = $this->getSettingsFromRepository($owner);
         }
-
-        return $this;
     }
 
     /**
      * Retreives settings from repository.
      *
-     * @param SettingsOwnerInterface|null $owner
-     *
-     * @throws \Dmishh\SettingsBundle\Exception\UnknownSerializerException
-     *
-     * @return array
+     * @throws UnknownSerializerException
      */
-    private function getSettingsFromRepository(SettingsOwnerInterface $owner = null)
+    private function getSettingsFromRepository(?SettingsOwnerInterface $owner = null): array
     {
-        $settings = array();
+        $settings = [];
 
         foreach (array_keys($this->settingsConfiguration) as $name) {
             try {
@@ -322,10 +279,8 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         /** @var Setting $setting */
-        foreach ($this->repository->findBy(
-            array('ownerId' => $owner === null ? null : $owner->getSettingIdentifier())
-        ) as $setting) {
-            if (array_key_exists($setting->getName(), $settings)) {
+        foreach ($this->repository->findBy(['ownerId' => null === $owner ? null : $owner->getSettingIdentifier()]) as $setting) {
+            if (\array_key_exists($setting->getName(), $settings)) {
                 $settings[$setting->getName()] = $this->serializer->unserialize($setting->getValue());
             }
         }

@@ -14,10 +14,7 @@ namespace Dmishh\SettingsBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Table(
- *  name="dmishh_settings",
- *  indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "owner_id"})}
- * )
+ * @ORM\Table(name="dmishh_settings", indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "owner_id"})})
  * @ORM\Entity
  */
 class Setting
@@ -32,91 +29,58 @@ class Setting
     private $id;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(type="text", nullable=true)
      */
     private $value;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @ORM\Column(name="owner_id", type="string", length=255, nullable=true)
      */
     private $ownerId;
 
-    /**
-     * @return int
-     */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @param string $name
-     *
-     * @return Setting
-     */
-    public function setName($name)
+    public function setName(?string $name)
     {
         $this->name = $name;
-
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $value
-     *
-     * @return Setting
-     */
-    public function setValue($value)
+    public function setValue(?string $value): void
     {
         $this->value = $value;
-
-        return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getValue()
+    public function getValue(): ?string
     {
         return $this->value;
     }
 
-    /**
-     * @return string
-     */
-    public function getOwnerId()
+    public function getOwnerId(): ?string
     {
         return $this->ownerId;
     }
 
-    /**
-     * @param string $ownerId
-     *
-     * @return Setting
-     */
-    public function setOwnerId($ownerId)
+    public function setOwnerId(?string $ownerId)
     {
         $this->ownerId = $ownerId;
-
-        return $this;
     }
 }

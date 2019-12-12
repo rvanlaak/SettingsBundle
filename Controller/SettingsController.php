@@ -11,73 +11,81 @@ namespace Dmishh\SettingsBundle\Controller;
 
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 use Dmishh\SettingsBundle\Form\Type\SettingsType;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
-class SettingsController extends Controller
+class SettingsController extends AbstractController
 {
     /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @var string|null
      */
-    public function manageGlobalAction(Request $request)
-    {
-        $securitySettings = $this->container->getParameter('settings_manager.security');
+    private $securityRole;
 
-        if (!empty($securitySettings['manage_global_settings_role']) &&
-            !$this->getAuthorizationChecker()->isGranted($securitySettings['manage_global_settings_role'])
-        ) {
-            throw new AccessDeniedException(
-                $this->container->get('translator')->trans(
-                    'not_allowed_to_edit_global_settings',
-                    array(),
-                    'settings'
-                )
-            );
+    /**
+     * @var bool
+     */
+    private $securityManageOwnSettings;
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * @var SettingsManagerInterface
+     */
+    private $settingsManager;
+
+    /**
+     * @var string
+     */
+    private $template;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        SettingsManagerInterface $settingsManager,
+        string $template,
+        bool $securityManageOwnSettings,
+        ?string $securityRole
+    ) {
+        $this->translator = $translator;
+        $this->settingsManager = $settingsManager;
+        $this->template = $template;
+        $this->securityManageOwnSettings = $securityManageOwnSettings;
+        $this->securityRole = $securityRole;
+    }
+
+    /**
+     * @throws AccessDeniedException
+     */
+    public function manageGlobalAction(Request $request): Response
+    {
+        if (null !== $this->securityRole && !$this->get('security.authorization_checker')->isGranted($this->securityRole)) {
+            throw new AccessDeniedException($this->translator->trans('not_allowed_to_edit_global_settings', [], 'settings'));
         }
 
         return $this->manage($request);
     }
 
     /**
-     * @param Request $request
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     *
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
+     * @throws AccessDeniedException
      */
-    public function manageOwnAction(Request $request)
+    public function manageOwnAction(Request $request): Response
     {
-        $securityContext = $this->getSecurityContext();
-
-        if (!$securityContext->getToken()) {
-            throw new AccessDeniedException(
-                $this->get('translator')->trans(
-                    'must_be_logged_in_to_edit_own_settings',
-                    array(),
-                    'settings'
-                )
-            );
+        if (null === $this->get('security.token_storage')->getToken()) {
+            throw new AccessDeniedException($this->translator->trans('must_be_logged_in_to_edit_own_settings', [], 'settings'));
         }
 
-        $securitySettings = $this->container->getParameter('settings_manager.security');
-        if (!$securitySettings['users_can_manage_own_settings']) {
-            throw new AccessDeniedException(
-                $this->get('translator')->trans(
-                    'not_allowed_to_edit_own_settings',
-                    array(),
-                    'settings'
-                )
-            );
+        if (!$this->securityManageOwnSettings) {
+            throw new AccessDeniedException($this->translator->trans('not_allowed_to_edit_own_settings', [], 'settings'));
         }
 
-        $user = $securityContext->getToken()->getUser();
-
-        if (!($user instanceof SettingsOwnerInterface)) {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        if (!$user instanceof SettingsOwnerInterface) {
             //For this to work the User entity must implement SettingsOwnerInterface
             throw new AccessDeniedException();
         }
@@ -85,69 +93,20 @@ class SettingsController extends Controller
         return $this->manage($request, $user);
     }
 
-    /**
-     * @param Request $request
-     * @param SettingsOwnerInterface|null $owner
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function manage(Request $request, SettingsOwnerInterface $owner = null)
+    protected function manage(Request $request, ?SettingsOwnerInterface $owner = null): Response
     {
-        $form = $this->createForm(SettingsType::class, $this->get('settings_manager')->all($owner));
+        $form = $this->createForm(SettingsType::class, $this->settingsManager->all($owner));
+        $form->handleRequest($request);
 
-        if ($request->isMethod('post')) {
-            $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->settingsManager->setMany($form->getData(), $owner);
+            $this->addFlash('success', $this->translator->trans('settings_updated', [], 'settings'));
 
-            if ($form->isValid()) {
-                $this->get('settings_manager')->setMany($form->getData(), $owner);
-                $this->get('session')->getFlashBag()->add(
-                    'success',
-                    $this->get('translator')->trans('settings_updated', array(), 'settings')
-                );
-
-                return $this->redirect($request->getUri());
-            }
+            return $this->redirect($request->getUri());
         }
 
-        return $this->render(
-            $this->container->getParameter('settings_manager.template'),
-            array(
-                'settings_form' => $form->createView(),
-            )
-        );
-    }
-
-    /**
-     * Get AuthorizationChecker service.
-     *
-     * @return \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface|\Symfony\Component\Security\Core\SecurityContextInterface
-     */
-    private function getAuthorizationChecker()
-    {
-        // SF 2.6+
-        // http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
-        if ($this->has('security.authorization_checker')) {
-            return $this->get('security.authorization_checker');
-        }
-
-        // SF < 2.6
-        return $this->get('security.context');
-    }
-
-    /**
-     * Get SecurityContext service.
-     *
-     * @return \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface|\Symfony\Component\Security\Core\SecurityContextInterface
-     */
-    private function getSecurityContext()
-    {
-        // SF 2.6+
-        // http://symfony.com/blog/new-in-symfony-2-6-security-component-improvements
-        if ($this->has('security.token_storage')) {
-            return $this->get('security.token_storage');
-        }
-
-        // SF < 2.6
-        return $this->get('security.context');
+        return $this->render($this->template, [
+            'settings_form' => $form->createView(),
+        ]);
     }
 }

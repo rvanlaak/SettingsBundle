@@ -3,6 +3,9 @@
 namespace Dmishh\SettingsBundle\Tests;
 
 use Dmishh\SettingsBundle\DependencyInjection\DmishhSettingsExtension;
+use Dmishh\SettingsBundle\Manager\CachedSettingsManager;
+use Dmishh\SettingsBundle\Manager\SettingsManager;
+use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 
 /**
@@ -10,17 +13,17 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
  */
 class ServiceTest extends AbstractExtensionTestCase
 {
-    protected function getContainerExtensions()
+    protected function getContainerExtensions(): array
     {
-        return array(
+        return [
             new DmishhSettingsExtension(),
-        );
+        ];
     }
 
     public function testAlias()
     {
         $this->load();
-        $this->assertContainerBuilderHasAlias('settings_manager', 'dmishh.settings.settings_manager');
+        $this->assertContainerBuilderHasAlias(SettingsManagerInterface::class, SettingsManager::class);
     }
 
     /**
@@ -28,7 +31,7 @@ class ServiceTest extends AbstractExtensionTestCase
      */
     public function testCacheServiceAlias()
     {
-        $this->load(array('cache_service' => 'cache'));
-        $this->assertContainerBuilderHasAlias('settings_manager', 'dmishh.settings.cached_settings_manager');
+        $this->load(['cache_service' => 'cache']);
+        $this->assertContainerBuilderHasAlias(SettingsManagerInterface::class, CachedSettingsManager::class);
     }
 }
