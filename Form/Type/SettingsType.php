@@ -63,11 +63,13 @@ class SettingsType extends AbstractType
 
                 // Choices I18n
                 if (!empty($fieldOptions['choices'])) {
-                    $fieldOptions['choices'] = array_map(
-                        function ($label) use ($fieldOptions) {
-                            return $fieldOptions['label'].'_choices.'.$label;
-                        },
-                        array_combine($fieldOptions['choices'], $fieldOptions['choices'])
+                    $fieldOptions['choices'] = array_flip(
+                        array_map(
+                            function ($label) use ($fieldOptions) {
+                                return $fieldOptions['label'].'_choices.'.$label;
+                            },
+                            array_combine($fieldOptions['choices'], $fieldOptions['choices'])
+                        )
                     );
                 }
                 $builder->add($name, $fieldType, $fieldOptions);
