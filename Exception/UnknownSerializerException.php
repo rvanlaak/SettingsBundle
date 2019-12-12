@@ -11,7 +11,7 @@
 
 namespace Dmishh\SettingsBundle\Exception;
 
-class UnknownSerializerException extends SettingsException
+class UnknownSerializerException extends \RuntimeException implements SettingsException
 {
     public function __construct($serializerClass)
     {

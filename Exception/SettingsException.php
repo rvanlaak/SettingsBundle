@@ -11,6 +11,6 @@
 
 namespace Dmishh\SettingsBundle\Exception;
 
-class SettingsException extends \Exception
+interface SettingsException extends \Throwable
 {
 }

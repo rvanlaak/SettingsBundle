@@ -156,7 +156,7 @@ class SettingsManagerTest extends AbstractTest
     {
         $settingsManager = $this->createSettingsManager();
         $this->assertEquals(
-            array('some_setting' => null, 'some_setting2' => null, 'some_global_setting' => null),
+            ['some_setting' => null, 'some_setting2' => null, 'some_global_setting' => null],
             $settingsManager->all()
         );
     }
@@ -166,7 +166,7 @@ class SettingsManagerTest extends AbstractTest
         $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
         $this->assertEquals(
-            array('some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null),
+            ['some_setting' => null, 'some_setting2' => null, 'some_user_setting' => null],
             $settingsManager->all($owner)
         );
     }
@@ -185,7 +185,7 @@ class SettingsManagerTest extends AbstractTest
             'Did not get global value when local value was undefined.'
         );
         $this->assertEquals(
-            array('some_setting' => 'value', 'some_setting2' => null, 'some_user_setting' => null),
+            ['some_setting' => 'value', 'some_setting2' => null, 'some_user_setting' => null],
             $settingsManager->all($owner),
             'Did not get global value when local value was undefined.'
         );
@@ -199,7 +199,7 @@ class SettingsManagerTest extends AbstractTest
         );
         $this->assertEquals('value', $settingsManager->get('some_setting'));
         $this->assertEquals(
-            array('some_setting' => 'user_value', 'some_setting2' => null, 'some_user_setting' => null),
+            ['some_setting' => 'user_value', 'some_setting2' => null, 'some_user_setting' => null],
             $settingsManager->all($owner),
             'User/Local value should have priority over global.'
         );
@@ -207,11 +207,11 @@ class SettingsManagerTest extends AbstractTest
 
     public function testValidSerizalizationTypes()
     {
-        $settingsManager = $this->createSettingsManager(array(), 'php');
+        $settingsManager = $this->createSettingsManager([], 'php');
         $settingsManager->set('some_setting', 123);
         $this->assertEquals(123, $settingsManager->get('some_setting'));
 
-        $settingsManager = $this->createSettingsManager(array(), 'json');
+        $settingsManager = $this->createSettingsManager([], 'json');
         $settingsManager->set('some_setting', 123);
         $this->assertEquals(123, $settingsManager->get('some_setting'));
     }
@@ -221,7 +221,7 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testSetSettingWithInvalidSerizalizationType()
     {
-        $settingsManager = $this->createSettingsManager(array(), 'unknown_serialization_type');
+        $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
         $settingsManager->set('some_setting', 123);
     }
 
@@ -230,10 +230,10 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testGetSettingWithInvalidSerizalizationType()
     {
-        $settingsManager = $this->createSettingsManager(array());
+        $settingsManager = $this->createSettingsManager([]);
         $settingsManager->set('some_setting', 123);
 
-        $settingsManager = $this->createSettingsManager(array(), 'unknown_serialization_type');
+        $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
         $settingsManager->get('some_setting');
     }
 
@@ -261,7 +261,7 @@ class SettingsManagerTest extends AbstractTest
      */
     public function testFlush()
     {
-        $names = array('foo', 'bar', 'baz');
+        $names = ['foo', 'bar', 'baz'];
         $settings = 'foobar';
         $owner = null;
         $value = 'settingValue';
@@ -272,11 +272,11 @@ class SettingsManagerTest extends AbstractTest
 
         $serializer = $this
             ->getMockBuilder('Dmishh\SettingsBundle\Serializer\PhpSerializer')
-            ->setMethods(array('serialize'))
+            ->setMethods(['serialize'])
             ->getMock();
 
         $serializer
-            ->expects($this->exactly(count($names)))
+            ->expects($this->exactly(\count($names)))
             ->method('serialize')
             ->with($this->equalTo($value))
             ->willReturn($serializedValue);
@@ -284,22 +284,22 @@ class SettingsManagerTest extends AbstractTest
         $repo = $this
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
-            ->setMethods(array('findBy'))
+            ->setMethods(['findBy'])
             ->getMock();
 
         $repo->expects($this->once())->method('findBy')->with(
             $this->equalTo(
-                array(
+                [
                     'name' => $names,
                     'ownerId' => $owner,
-                )
+                ]
             )
         )->willReturn($settings);
 
         $em = $this
             ->getMockBuilder('Doctrine\Orm\EntityManager')
             ->disableOriginalConstructor()
-            ->setMethods(array('getRepository', 'flush'))
+            ->setMethods(['getRepository', 'flush'])
             ->getMock();
 
         $em->expects($this->once())->method('getRepository')->willReturn($repo);
@@ -308,34 +308,34 @@ class SettingsManagerTest extends AbstractTest
         $setting = $this
             ->getMockBuilder('Dmishh\SettingsBundle\Entity\Settings')
             ->disableOriginalConstructor()
-            ->setMethods(array('setValue'))
+            ->setMethods(['setValue'])
             ->getMock();
 
-        $setting->expects($this->exactly(count($names)))->method('setValue')->with($this->equalTo($serializedValue));
+        $setting->expects($this->exactly(\count($names)))->method('setValue')->with($this->equalTo($serializedValue));
 
         $manager = $this
             ->getMockBuilder('Dmishh\SettingsBundle\Manager\SettingsManager')
-            ->setConstructorArgs(array($em, $serializer, array()))
-            ->setMethods(array('findSettingByName', 'get'))
+            ->setConstructorArgs([$em, $serializer, []])
+            ->setMethods(['findSettingByName', 'get'])
             ->getMock();
 
         $manager
-            ->expects($this->exactly(count($names)))
+            ->expects($this->exactly(\count($names)))
             ->method('get')
             ->withConsecutive(
-                array($this->equalTo('foo'), $owner),
-                array($this->equalTo('bar'), $owner),
-                array($this->equalTo('baz'), $owner)
+                [$this->equalTo('foo'), $owner],
+                [$this->equalTo('bar'), $owner],
+                [$this->equalTo('baz'), $owner]
             )
             ->willReturn($value);
 
         $manager
-            ->expects($this->exactly(count($names)))
+            ->expects($this->exactly(\count($names)))
             ->method('findSettingByName')
             ->withConsecutive(
-                array($settings, $this->equalTo('foo')),
-                array($settings, $this->equalTo('bar')),
-                array($settings, $this->equalTo('baz'))
+                [$settings, $this->equalTo('foo')],
+                [$settings, $this->equalTo('bar')],
+                [$settings, $this->equalTo('baz')]
             )->willReturn($setting);
 
         $flushMethod->invoke($manager, $names, $owner);
@@ -349,7 +349,7 @@ class SettingsManagerTest extends AbstractTest
         $s2 = $this->createSetting('bar');
         $s3 = $this->createSetting('baz');
         $s4 = $this->createSetting('foo');
-        $settings = array($s1, $s2, $s3, $s4);
+        $settings = [$s1, $s2, $s3, $s4];
 
         $method = new \ReflectionMethod('Dmishh\SettingsBundle\Manager\SettingsManager', 'findSettingByName');
         $method->setAccessible(true);
@@ -367,7 +367,7 @@ class SettingsManagerTest extends AbstractTest
     protected function createSetting($name)
     {
         $s = $this->getMockBuilder('Dmishh\SettingsBundle\Entity\Setting')
-            ->setMethods(array('getName'))
+            ->setMethods(['getName'])
             ->getMock();
 
         $s->expects($this->any())
@@ -386,19 +386,19 @@ class SettingsManagerTest extends AbstractTest
     {
         return Mockery::mock(
             'Dmishh\SettingsBundle\Entity\SettingsOwnerInterface',
-            array('getSettingIdentifier' => $ownerId)
+            ['getSettingIdentifier' => $ownerId]
         );
     }
 
-    protected function createSettingsManager(array $configuration = array(), $serialization = 'php')
+    protected function createSettingsManager(array $configuration = [], $serialization = 'php')
     {
         if (empty($configuration)) {
-            $configuration = array(
-                'some_setting' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
-                'some_setting2' => array('scope' => SettingsManagerInterface::SCOPE_ALL),
-                'some_global_setting' => array('scope' => SettingsManagerInterface::SCOPE_GLOBAL),
-                'some_user_setting' => array('scope' => SettingsManagerInterface::SCOPE_USER),
-            );
+            $configuration = [
+                'some_setting' => ['scope' => SettingsManagerInterface::SCOPE_ALL],
+                'some_setting2' => ['scope' => SettingsManagerInterface::SCOPE_ALL],
+                'some_global_setting' => ['scope' => SettingsManagerInterface::SCOPE_GLOBAL],
+                'some_user_setting' => ['scope' => SettingsManagerInterface::SCOPE_USER],
+            ];
         }
 
         $serializer = SerializerFactory::create($serialization);

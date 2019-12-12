@@ -34,9 +34,6 @@ class CachedSettingsManager implements SettingsManagerInterface
      */
     private $cacheLifeTime;
 
-    /**
-     * @param SettingsManagerInterface $settingsManager
-     */
     public function __construct(SettingsManagerInterface $settingsManager, CacheItemPoolInterface $storage, $cacheLifeTime)
     {
         $this->settingsManager = $settingsManager;
@@ -47,7 +44,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function get($name, SettingsOwnerInterface $owner = null, $default = null)
+    public function get(string $name, ?SettingsOwnerInterface $owner = null, $default = null)
     {
         if (null !== $cached = $this->fetchFromCache($name, $owner)) {
             return $cached;
@@ -62,7 +59,7 @@ class CachedSettingsManager implements SettingsManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function all(SettingsOwnerInterface $owner = null)
+    public function all(?SettingsOwnerInterface $owner = null): array
     {
         if (null !== $cached = $this->fetchFromCache(null, $owner)) {
             return $cached;
@@ -77,45 +74,42 @@ class CachedSettingsManager implements SettingsManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function set($name, $value, SettingsOwnerInterface $owner = null)
+    public function set(string $name, $value, ?SettingsOwnerInterface $owner = null): void
     {
         $this->invalidateCache($name, $owner);
         $this->invalidateCache(null, $owner);
 
-        return $this->settingsManager->set($name, $value, $owner);
+        $this->settingsManager->set($name, $value, $owner);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setMany(array $settings, SettingsOwnerInterface $owner = null)
+    public function setMany(array $settings, ?SettingsOwnerInterface $owner = null): void
     {
         foreach ($settings as $key => $value) {
             $this->invalidateCache($key, $owner);
         }
         $this->invalidateCache(null, $owner);
 
-        return $this->settingsManager->setMany($settings, $owner);
+        $this->settingsManager->setMany($settings, $owner);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function clear($name, SettingsOwnerInterface $owner = null)
+    public function clear(string $name, ?SettingsOwnerInterface $owner = null): void
     {
         $this->invalidateCache($name, $owner);
         $this->invalidateCache(null, $owner);
 
-        return $this->settingsManager->clear($name, $owner);
+        $this->settingsManager->clear($name, $owner);
     }
 
     /**
-     * @param SettingsOwnerInterface $owner
-     * @param string $name
-     *
-     * @return bool TRUE if the cache entry was successfully deleted, FALSE otherwise.
+     * @return bool TRUE if the cache entry was successfully deleted, FALSE otherwise
      */
-    protected function invalidateCache($name, SettingsOwnerInterface $owner = null)
+    protected function invalidateCache(?string $name, ?SettingsOwnerInterface $owner = null): bool
     {
         return $this->storage->deleteItem($this->getCacheKey($name, $owner));
     }
@@ -123,12 +117,9 @@ class CachedSettingsManager implements SettingsManagerInterface
     /**
      * Get from cache.
      *
-     * @param SettingsOwnerInterface $owner
-     * @param string $name
-     *
      * @return mixed|null if nothing was found in cache
      */
-    protected function fetchFromCache($name, SettingsOwnerInterface $owner = null)
+    protected function fetchFromCache(?string $name, ?SettingsOwnerInterface $owner = null)
     {
         $cacheKey = $this->getCacheKey($name, $owner);
 
@@ -139,12 +130,10 @@ class CachedSettingsManager implements SettingsManagerInterface
      * Store in cache.
      *
      * @param SettingsOwnerInterface $owner
-     * @param string $name
-     * @param mixed $value
      *
-     * @return bool TRUE if the entry was successfully stored in the cache, FALSE otherwise.
+     * @return bool TRUE if the entry was successfully stored in the cache, FALSE otherwise
      */
-    protected function storeInCache($name, $value, SettingsOwnerInterface $owner = null)
+    protected function storeInCache(?string $name, $value, ?SettingsOwnerInterface $owner = null): bool
     {
         $item = $this->storage->getItem($this->getCacheKey($name, $owner))
             ->set($value)
@@ -154,12 +143,9 @@ class CachedSettingsManager implements SettingsManagerInterface
     }
 
     /**
-     * @param string $key
      * @param SettingsOwnerInterface $owner
-     *
-     * @return string
      */
-    protected function getCacheKey($key, SettingsOwnerInterface $owner = null)
+    protected function getCacheKey(?string $key, ?SettingsOwnerInterface $owner = null): string
     {
         return sprintf(self::PREFIX, $owner ? $owner->getSettingIdentifier() : '', $key);
     }

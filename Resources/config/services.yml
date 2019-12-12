@@ -1,37 +1,31 @@
 services:
-    settings_manager:
-      alias: dmishh.settings.settings_manager
+    Dmishh\SettingsBundle\Manager\SettingsManagerInterface: '@Dmishh\SettingsBundle\Manager\SettingsManager'
 
-    dmishh.settings.settings_manager:
-        public: true
-        class: Dmishh\SettingsBundle\Manager\SettingsManager
-        arguments:
-            - "@doctrine.orm.entity_manager"
-            - "@dmishh.settings.serializer"
-            - "%settings_manager.settings%"
+    Dmishh\SettingsBundle\Manager\SettingsManager:
+        arguments: [ '@doctrine.orm.entity_manager', '@Dmishh\SettingsBundle\Serializer\SerializerInterface', ~ ]
 
-    dmishh.settings.cached_settings_manager:
-        class: Dmishh\SettingsBundle\Manager\CachedSettingsManager
-        arguments: ["@dmishh.settings.settings_manager", ~, ~]
+    Dmishh\SettingsBundle\Manager\CachedSettingsManager:
+        arguments: [ '@Dmishh\SettingsBundle\Manager\SettingsManager', ~, ~ ]
 
-    dmishh.settings.serializer_factory:
-        class: Dmishh\SettingsBundle\Serializer\SerializerFactory
-
-    dmishh.settings.serializer:
+    Dmishh\SettingsBundle\Serializer\SerializerInterface:
         class: Dmishh\SettingsBundle\Serializer\PhpSerializer
-        factory: ['@dmishh.settings.serializer_factory', create]
-        arguments: ["%settings_manager.serialization%"]
+        factory: Dmishh\SettingsBundle\Serializer\SerializerFactory::create
+        arguments: ['%settings_manager.serialization%']
 
-    form.type.settings_management:
-        class: Dmishh\SettingsBundle\Form\Type\SettingsType
-        arguments:
-            - "%settings_manager.settings%"
+    Dmishh\SettingsBundle\Form\Type\SettingsType:
+        arguments: [ ~ ]
         tags:
             - { name: form.type }
 
-    twig.extension.settings_extension:
-        class: Dmishh\SettingsBundle\Twig\SettingsExtension
-        arguments:
-            - "@settings_manager"
+    Dmishh\SettingsBundle\Twig\SettingsExtension:
+        arguments: [ '@Dmishh\SettingsBundle\Manager\SettingsManagerInterface' ]
         tags:
             - { name: twig.extension }
+
+    Dmishh\SettingsBundle\Controller\SettingsController:
+        arguments:
+            - '@translator'
+            - '@Dmishh\SettingsBundle\Manager\SettingsManagerInterface'
+            - ~ # template
+            - ~ # manage own settings
+            - ~ # security role

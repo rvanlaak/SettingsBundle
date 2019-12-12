@@ -15,7 +15,7 @@ use Dmishh\SettingsBundle\Serializer\SerializerFactory;
 
 class SerializerTest extends AbstractTest
 {
-    public static $testData = array('abc' => '123', 123, 5.0);
+    public static $testData = ['abc' => '123', 123, 5.0];
 
     public function testPhpSerializer()
     {

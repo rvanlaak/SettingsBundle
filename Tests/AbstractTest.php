@@ -13,8 +13,9 @@ namespace Dmishh\SettingsBundle\Tests;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Configuration;
+use PHPUnit\Framework\TestCase;
 
-abstract class AbstractTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractTest extends TestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -24,7 +25,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->em = $this->createEntityManager();
         $this->generateSchema();
@@ -33,7 +34,7 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->em->close();
     }
@@ -53,23 +54,21 @@ abstract class AbstractTest extends \PHPUnit_Framework_TestCase
         );
         $driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
             new \Doctrine\Common\Annotations\AnnotationReader(),
-            array(__DIR__.'/../Entity')
+            [__DIR__.'/../Entity']
         );
         $config->setMetadataDriverImpl($driver);
         $config->setMetadataCacheImpl($cache);
 
-        $conn = array(
+        $conn = [
             'driver' => 'pdo_sqlite',
             'memory' => true,
-        );
+        ];
 
         $em = \Doctrine\ORM\EntityManager::create($conn, $config);
 
         return $em;
     }
 
-    /**
-     */
     protected function generateSchema()
     {
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();

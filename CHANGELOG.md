@@ -1,5 +1,13 @@
 ## Changelog
 
+#### Version 3.0.0-beta1
+
+* Added support for Symfony 4 & 5
+* Added FCQN as service names
+* Added PHP 7 type hints
+* Dropped support for Symfony < 3.4
+* Dropped support for PHP < 7.2
+
 #### Version 2.0.0-dev
 
 * Added optional caching
