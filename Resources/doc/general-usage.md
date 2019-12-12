@@ -18,17 +18,17 @@
     // GLOBAL SETTINGS
 
     // Set setting value by its name
-    $this->get('settings_manager')->set('my_first_setting', 'value');
+    $settingsManager->set('my_first_setting', 'value');
 
     // Get setting value by its name
-    $this->get('settings_manager')->get('my_first_setting'); // => 'value'
+    $settingsManager->get('my_first_setting'); // => 'value'
 
     // Get all settings
-    $this->get('settings_manager')->all(); // => array('my_first_setting' => 'value')
+    $settingsManager->all(); // => array('my_first_setting' => 'value')
 
     // Set settings' values from associative name-value array
-    $this->get('settings_manager')->setMany(array('my_first_setting' => 'new_value'));
-    $this->get('settings_manager')->get('my_first_setting'); // => 'new_value'
+    $settingsManager->setMany(array('my_first_setting' => 'new_value'));
+    $this->get('settings_manager')->get('my_first_setting'); // => 'new_value'$settingsManager
 
     ```
 
@@ -48,11 +48,11 @@
     // }
 
     // These are same examples as above with only difference that they are for current user
-    $this->get('settings_manager')->set('my_first_setting', 'user_value', $this->getUser());
-    $this->get('settings_manager')->get('my_first_setting', $this->getUser()); // => 'user_value'
-    $this->get('settings_manager')->all($this->getUser()); //  array('my_first_setting' => 'user_value')
-    $this->get('settings_manager')->setMany(array('my_first_setting' => 'new_user_value'), $this->getUser());
-    $this->get('settings_manager')->get('my_first_setting', $this->getUser()); // => 'new_user_value'
+    $settingsManager->set('my_first_setting', 'user_value', $this->getUser());
+    $settingsManager->get('my_first_setting', $this->getUser()); // => 'user_value'
+    $settingsManager->all($this->getUser()); //  array('my_first_setting' => 'user_value')
+    $settingsManager->setMany(array('my_first_setting' => 'new_user_value'), $this->getUser());
+    $settingsManager->get('my_first_setting', $this->getUser()); // => 'new_user_value'
 
 
     // PER ENTITY SETTINGS
@@ -67,8 +67,8 @@
     // }
 
     $myCompany = new Company();
-    $this->get('settings_manager')->set('delivery_frequency_setting', 'daily', $myCompany);
-    $this->get('settings_manager')->get('delivery_frequency_setting', $this->getUser()); // => 'daily'
+    $settingsManager->set('delivery_frequency_setting', 'daily', $myCompany);
+    $settingsManager->get('delivery_frequency_setting', $this->getUser()); // => 'daily'
     ```
 
 * In services: you must inject <em>@settings_manager</em> or the whole <em>@service_container</em> into your service and use it in the same way as in controllers (like in the example above)

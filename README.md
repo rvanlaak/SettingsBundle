@@ -21,13 +21,13 @@ Symfony controller:
 
 ```php
 // Global settings
-$this->get('settings_manager')->set('name', 'foo');
-$this->get('settings_manager')->get('name'); // returns 'foo'
+$settingsManager->set('name', 'foo');
+$settingsManager->get('name'); // returns 'foo'
 
 // User settings
-$this->get('settings_manager')->get('name', $user); // returns global 'foo'
-$this->get('settings_manager')->set('name', 'bar', $user);
-$this->get('settings_manager')->get('name', $user); // returns 'bar'
+$settingsManager->get('name', $user); // returns global 'foo'
+$settingsManager->set('name', 'bar', $user);
+$settingsManager->get('name', $user); // returns 'bar'
 ```
 
 Twig template:
