@@ -3,3 +3,6 @@ parameters:
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - .
+    excludes_analyse:
+        - vendor
+        - Tests
