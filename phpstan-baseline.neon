@@ -1,23 +1,8 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^PHPDoc tag @throws with type Symfony\\\\Component\\\\Security\\\\Core\\\\Exception\\\\AccessDeniedException is not subtype of Throwable$#"
-			count: 2
-			path: Controller/SettingsController.php
-
-		-
 			message: "#^Call to an undefined method object\\:\\:isGranted\\(\\)\\.$#"
 			count: 1
-			path: Controller/SettingsController.php
-
-		-
-			message: "#^Instantiated class Symfony\\\\Component\\\\Security\\\\Core\\\\Exception\\\\AccessDeniedException not found\\.$#"
-			count: 4
-			path: Controller/SettingsController.php
-
-		-
-			message: "#^Throwing object of an unknown class Symfony\\\\Component\\\\Security\\\\Core\\\\Exception\\\\AccessDeniedException\\.$#"
-			count: 4
 			path: Controller/SettingsController.php
 
 		-
