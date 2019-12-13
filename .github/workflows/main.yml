@@ -1,0 +1,13 @@
+name: Static code analysis
+
+on: [push]
+
+jobs:
+  static-code-analysis:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Run PHPStan
+      uses: docker://jakzal/phpqa
+      with:
+        args: phpstan analyze
