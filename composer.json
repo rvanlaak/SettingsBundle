@@ -33,7 +33,8 @@
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
         "nyholm/symfony-bundle-test": "^1.6",
-        "symfony/translation": "^4.4 || ^5.0"
+        "symfony/translation": "^4.4 || ^5.0",
+        "twig/twig": "^2.0 || ^3.0"
     },
     "autoload": {
         "psr-4": { "Dmishh\\SettingsBundle\\": "" }
