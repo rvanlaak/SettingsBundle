@@ -1,0 +1,282 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^PHPDoc tag @throws with type Symfony\\\\Component\\\\Security\\\\Core\\\\Exception\\\\AccessDeniedException is not subtype of Throwable$#"
+			count: 2
+			path: Controller/SettingsController.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:isGranted\\(\\)\\.$#"
+			count: 1
+			path: Controller/SettingsController.php
+
+		-
+			message: "#^Instantiated class Symfony\\\\Component\\\\Security\\\\Core\\\\Exception\\\\AccessDeniedException not found\\.$#"
+			count: 4
+			path: Controller/SettingsController.php
+
+		-
+			message: "#^Throwing object of an unknown class Symfony\\\\Component\\\\Security\\\\Core\\\\Exception\\\\AccessDeniedException\\.$#"
+			count: 4
+			path: Controller/SettingsController.php
+
+		-
+			message: "#^Call to an undefined method object\\:\\:getToken\\(\\)\\.$#"
+			count: 2
+			path: Controller/SettingsController.php
+
+		-
+			message: "#^Call to an undefined method Symfony\\\\Component\\\\Config\\\\Definition\\\\Builder\\\\TreeBuilder\\:\\:root\\(\\)\\.$#"
+			count: 1
+			path: DependencyInjection/Configuration.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\DependencyInjection\\\\DmishhSettingsExtension\\:\\:load\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: DependencyInjection/DmishhSettingsExtension.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\DependencyInjection\\\\DmishhSettingsExtension\\:\\:load\\(\\) has parameter \\$configs with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: DependencyInjection/DmishhSettingsExtension.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Entity\\\\Setting\\:\\:setName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Entity/Setting.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Entity\\\\Setting\\:\\:setOwnerId\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Entity/Setting.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Entity\\\\SettingsOwnerInterface\\:\\:getSettingIdentifier\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Entity/SettingsOwnerInterface.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Exception\\\\UnknownSerializerException\\:\\:__construct\\(\\) has parameter \\$serializerClass with no typehint specified\\.$#"
+			count: 1
+			path: Exception/UnknownSerializerException.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Exception\\\\UnknownSettingException\\:\\:__construct\\(\\) has parameter \\$settingName with no typehint specified\\.$#"
+			count: 1
+			path: Exception/UnknownSettingException.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Exception\\\\WrongScopeException\\:\\:__construct\\(\\) has parameter \\$scope with no typehint specified\\.$#"
+			count: 1
+			path: Exception/WrongScopeException.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Exception\\\\WrongScopeException\\:\\:__construct\\(\\) has parameter \\$settingName with no typehint specified\\.$#"
+			count: 1
+			path: Exception/WrongScopeException.php
+
+		-
+			message: "#^Property Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:\\$settingsConfiguration has no typehint specified\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:__construct\\(\\) has parameter \\$settingsConfiguration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:buildForm\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:buildForm\\(\\) has parameter \\$builder with no value type specified in iterable type Symfony\\\\Component\\\\Form\\\\FormBuilderInterface\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:buildForm\\(\\) has parameter \\$options with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Cannot instantiate interface Dmishh\\\\SettingsBundle\\\\Exception\\\\SettingsException\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Parameter \\#2 \\$input1 of function array_map expects array, array\\|false given\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Form/Type/SettingsType.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\CachedSettingsManager\\:\\:__construct\\(\\) has parameter \\$cacheLifeTime with no typehint specified\\.$#"
+			count: 1
+			path: Manager/CachedSettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\CachedSettingsManager\\:\\:get\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Manager/CachedSettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\CachedSettingsManager\\:\\:all\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/CachedSettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\CachedSettingsManager\\:\\:set\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: Manager/CachedSettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\CachedSettingsManager\\:\\:setMany\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/CachedSettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\CachedSettingsManager\\:\\:storeInCache\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: Manager/CachedSettingsManager.php
+
+		-
+			message: "#^Property Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:\\$globalSettings type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Property Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:\\$ownerSettings type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Property Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:\\$settingsConfiguration type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:__construct\\(\\) has parameter \\$settingsConfiguration with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Property Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:\\$repository \\(Doctrine\\\\ORM\\\\EntityRepository\\) does not accept Doctrine\\\\Persistence\\\\ObjectRepository\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:get\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:all\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:set\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:setMany\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:setWithoutFlush\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:flush\\(\\) has parameter \\$names with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Negated boolean expression is always false\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^PHPDoc tag @return with type Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager is incompatible with native type void\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:getSettingsFromRepository\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$key of function array_key_exists expects int\\|string, string\\|null given\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Parameter \\#1 \\$serialized of method Dmishh\\\\SettingsBundle\\\\Serializer\\\\SerializerInterface\\:\\:unserialize\\(\\) expects string, string\\|null given\\.$#"
+			count: 1
+			path: Manager/SettingsManager.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManagerInterface\\:\\:get\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Manager/SettingsManagerInterface.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManagerInterface\\:\\:all\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManagerInterface.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManagerInterface\\:\\:set\\(\\) has parameter \\$value with no typehint specified\\.$#"
+			count: 1
+			path: Manager/SettingsManagerInterface.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManagerInterface\\:\\:setMany\\(\\) has parameter \\$settings with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: Manager/SettingsManagerInterface.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\JsonSerializer\\:\\:serialize\\(\\) has parameter \\$data with no typehint specified\\.$#"
+			count: 1
+			path: Serializer/JsonSerializer.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\JsonSerializer\\:\\:serialize\\(\\) should return string but returns string\\|false\\.$#"
+			count: 1
+			path: Serializer/JsonSerializer.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\JsonSerializer\\:\\:unserialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Serializer/JsonSerializer.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\PhpSerializer\\:\\:serialize\\(\\) has parameter \\$data with no typehint specified\\.$#"
+			count: 1
+			path: Serializer/PhpSerializer.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\PhpSerializer\\:\\:unserialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Serializer/PhpSerializer.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\SerializerInterface\\:\\:serialize\\(\\) has parameter \\$data with no typehint specified\\.$#"
+			count: 1
+			path: Serializer/SerializerInterface.php
+
+		-
+			message: "#^Method Dmishh\\\\SettingsBundle\\\\Serializer\\\\SerializerInterface\\:\\:unserialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: Serializer/SerializerInterface.php
+
