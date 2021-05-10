@@ -2,7 +2,7 @@
 
 namespace Dmishh\SettingsBundle\Form\Type;
 
-use Dmishh\SettingsBundle\Exception\SettingsException;
+use Dmishh\SettingsBundle\Exception\UnknownConstraintClassException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,7 +41,7 @@ class SettingsType extends AbstractType
                         if (class_exists($class)) {
                             $constraints[] = new $class($constraintOptions);
                         } else {
-                            throw new SettingsException(sprintf('Constraint class "%s" not found', $class));
+                            throw new UnknownConstraintClassException($class);
                         }
                     }
 
