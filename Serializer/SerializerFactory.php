@@ -14,7 +14,7 @@ class SerializerFactory
      *
      * @return SerializerInterface
      */
-    public static function create($name)
+    public static function create(string $name): SerializerInterface
     {
         $serializerClass = 'Dmishh\\SettingsBundle\\Serializer\\'.Container::camelize($name).'Serializer';
 
