@@ -53,9 +53,6 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return Response
-     *
      * @throws AccessDeniedException
      */
     public function manageGlobalAction(Request $request): Response
@@ -68,9 +65,6 @@ class SettingsController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return Response
-     *
      * @throws AccessDeniedException
      */
     public function manageOwnAction(Request $request): Response
@@ -92,11 +86,6 @@ class SettingsController extends AbstractController
         return $this->manage($request, $user);
     }
 
-    /**
-     * @param Request $request
-     * @param SettingsOwnerInterface|null $owner
-     * @return Response
-     */
     protected function manage(Request $request, ?SettingsOwnerInterface $owner = null): Response
     {
         $form = $this->createForm(SettingsType::class, $this->settingsManager->all($owner));

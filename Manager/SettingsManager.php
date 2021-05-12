@@ -29,7 +29,7 @@ class SettingsManager implements SettingsManagerInterface
     private $ownerSettings;
 
     /**
-     * @var \Doctrine\Persistence\ObjectManager
+     * @var \Doctrine\Common\Persistence\ObjectManager
      */
     private $em;
 
@@ -143,9 +143,6 @@ class SettingsManager implements SettingsManagerInterface
      * Find a setting by name form an array of settings.
      *
      * @param Setting[] $haystack
-     * @param string $needle
-     *
-     * @return Setting|null
      */
     protected function findSettingByName(array $haystack, string $needle): ?Setting
     {
@@ -160,9 +157,6 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * Sets setting value to private array. Used for settings' batch saving.
-     * @param string $name
-     * @param mixed $value
-     * @param SettingsOwnerInterface|null $owner
      */
     private function setWithoutFlush(string $name, $value, ?SettingsOwnerInterface $owner = null): void
     {
@@ -178,8 +172,6 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * Flushes settings defined by $names to database.
-     * @param array $names
-     * @param SettingsOwnerInterface|null $owner
      *
      * @throws UnknownSerializerException
      */
@@ -221,8 +213,10 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * Checks that $name is valid setting and it's scope is also valid.
-     * @param string $name
-     * @param SettingsOwnerInterface|null $owner
+     *
+     * @param SettingsOwnerInterface $owner
+     *
+     * @return SettingsManager
      *
      * @throws UnknownSettingException
      * @throws WrongScopeException
@@ -245,7 +239,6 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * Settings lazy loading.
-     * @param SettingsOwnerInterface|null $owner
      */
     private function loadSettings(SettingsOwnerInterface $owner = null): void
     {
@@ -262,9 +255,6 @@ class SettingsManager implements SettingsManagerInterface
 
     /**
      * Retreives settings from repository.
-     * @param SettingsOwnerInterface|null $owner
-     *
-     * @return array
      *
      * @throws UnknownSerializerException
      */
