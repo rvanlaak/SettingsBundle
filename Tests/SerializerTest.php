@@ -28,11 +28,9 @@ class SerializerTest extends AbstractTest
         $this->assertEquals(self::$testData, $serializer->unserialize($serializer->serialize(self::$testData)));
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\UnknownSerializerException
-     */
     public function testUnknownSerializer()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\UnknownSerializerException');
         $serializer = SerializerFactory::create('unknown_serializer');
     }
 }

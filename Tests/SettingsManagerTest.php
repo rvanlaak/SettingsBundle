@@ -9,11 +9,9 @@ use Mockery;
 
 class SettingsManagerTest extends AbstractTest
 {
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\UnknownSettingException
-     */
     public function testGetUnknownSettingShouldRaiseException()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\UnknownSettingException');
         $settingsManager = $this->createSettingsManager();
         $settingsManager->get('unknown_setting');
     }
@@ -98,11 +96,10 @@ class SettingsManagerTest extends AbstractTest
         $this->assertNull($settingsManager->get('some_setting'));
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\WrongScopeException
-     */
     public function testSetUserSettingInGlobalScopeRaisesException()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\WrongScopeException');
+
         $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
         $settingsManager->set('some_global_setting', 'VALUE_GLOBAL');
@@ -111,21 +108,19 @@ class SettingsManagerTest extends AbstractTest
         $settingsManager->set('some_global_setting', 'VALUE_GLOBAL', $owner);
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\WrongScopeException
-     */
     public function testGetUserSettingInGlobalScopeRaisesException()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\WrongScopeException');
+
         $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
         $settingsManager->get('some_global_setting', $owner);
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\WrongScopeException
-     */
     public function testSetGlobalSettingInUserScopeRaisesException()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\WrongScopeException');
+
         $owner = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
         $settingsManager->set('some_user_setting', 'VALUE_USER', $owner);
@@ -134,11 +129,10 @@ class SettingsManagerTest extends AbstractTest
         $settingsManager->set('some_user_setting', 'VALUE_USER');
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\WrongScopeException
-     */
     public function testGetGlobalSettingInUserScopeRaisesException()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\WrongScopeException');
+
         $settingsManager = $this->createSettingsManager();
         $settingsManager->get('some_user_setting');
     }
@@ -207,20 +201,18 @@ class SettingsManagerTest extends AbstractTest
         $this->assertEquals(123, $settingsManager->get('some_setting'));
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\SettingsException
-     */
     public function testSetSettingWithInvalidSerizalizationType()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\SettingsException');
+
         $settingsManager = $this->createSettingsManager([], 'unknown_serialization_type');
         $settingsManager->set('some_setting', 123);
     }
 
-    /**
-     * @expectedException \Dmishh\SettingsBundle\Exception\SettingsException
-     */
     public function testGetSettingWithInvalidSerizalizationType()
     {
+        $this->expectException('\Dmishh\SettingsBundle\Exception\SettingsException');
+
         $settingsManager = $this->createSettingsManager([]);
         $settingsManager->set('some_setting', 123);
 
