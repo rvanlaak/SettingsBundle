@@ -4,7 +4,6 @@ SettingsBundle
 Bundle for storing configuration with Symfony in database using Doctrine2 ORM.
 
 [![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2/small.png)](https://insight.sensiolabs.com/projects/5375684f-5b40-489a-aca5-eb01c3ca5ac2)
 
 ## Features
 
