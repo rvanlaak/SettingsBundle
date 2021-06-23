@@ -13,3 +13,6 @@ test:
 
 test-lowest:
 	COMPOSER_PARAMS='--prefer-lowest' $(MAKE) test
+
+codestyle:
+	docker run --rm -v $(DIR):/project -w /project $(QA_IMAGE) php-cs-fixer fix

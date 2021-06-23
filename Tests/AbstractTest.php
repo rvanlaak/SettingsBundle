@@ -16,7 +16,7 @@ abstract class AbstractTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->em = $this->createEntityManager();
         $this->generateSchema();
