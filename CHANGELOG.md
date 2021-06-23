@@ -1,5 +1,15 @@
 ## Changelog
 
+#### Version 3.0.0-beta3
+
+* Run tests using Github Actions, and test lowest set of dependencies #121
+* Support PHP8.0 #117
+* Fix PHPUnit deprecations #120
+
+#### Version 3.0.0-beta2
+
+* Documentation and bugfixes
+
 #### Version 3.0.0-beta1
 
 * Added support for Symfony 4 & 5
