@@ -1,4 +1,4 @@
-name: Static code analysis
+name: Tests
 
 on: [pull_request]
 
@@ -11,3 +11,37 @@ jobs:
       uses: docker://jakzal/phpqa
       with:
         args: phpstan analyze
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            php: ['7.2', '7.4', '8.0']
+            symfony: ['4.4.*', '5.3.*']
+    name: Test on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
+    steps:
+        -   uses: actions/checkout@v2
+        -   uses: shivammathur/setup-php@v2
+            with:
+                php-version: ${{ matrix.php }}
+                coverage: none # disable xdebug, pcov
+        -   run: composer require symfony/framework-bundle:${{ matrix.symfony }} --no-update
+        -   run: composer require symfony/form:${{ matrix.symfony }} --no-update
+        -   run: composer install
+        -   run: make test
+  test-lowest:
+    runs-on: ubuntu-latest
+    strategy:
+        matrix:
+            php: ['7.2', '7.3']
+            symfony: ['3.4.*', '4.4.*']
+    name: Test lowest on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
+    steps:
+        -   uses: actions/checkout@v2
+        -   uses: shivammathur/setup-php@v2
+            with:
+                php-version: ${{ matrix.php }}
+                coverage: none # disable xdebug, pcov
+        -   run: composer require symfony/framework-bundle:${{ matrix.symfony }} --no-update
+        -   run: composer require symfony/form:${{ matrix.symfony }} --no-update
+        -   run: composer install
+        -   run: make test-lowest

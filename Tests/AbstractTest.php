@@ -33,8 +33,6 @@ abstract class AbstractTest extends TestCase
     protected function createEntityManager()
     {
         $config = new Configuration();
-        $cache = new \Doctrine\Common\Cache\ArrayCache();
-        $config->setQueryCacheImpl($cache);
         $config->setProxyDir(sys_get_temp_dir());
         $config->setProxyNamespace('EntityProxy');
         $config->setAutoGenerateProxyClasses(true);
@@ -48,7 +46,6 @@ abstract class AbstractTest extends TestCase
             [__DIR__.'/../Entity']
         );
         $config->setMetadataDriverImpl($driver);
-        $config->setMetadataCacheImpl($cache);
 
         $conn = [
             'driver' => 'pdo_sqlite',
