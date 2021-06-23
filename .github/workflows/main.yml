@@ -17,7 +17,7 @@ jobs:
         matrix:
             php: ['7.2', '7.4', '8.0']
             symfony: ['4.4.*', '5.3.*']
-    name: Symfony ${{ matrix.symfony }} on PHP ${{ matrix.php }}  tests
+    name: Test on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
     steps:
         -   uses: actions/checkout@v2
         -   uses: shivammathur/setup-php@v2
@@ -34,7 +34,7 @@ jobs:
         matrix:
             php: ['7.2', '7.3']
             symfony: ['3.4.*', '4.4.*']
-    name: Symfony ${{ matrix.symfony }} on PHP ${{ matrix.php }}  tests
+    name: Test lowest on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
     steps:
         -   uses: actions/checkout@v2
         -   uses: shivammathur/setup-php@v2
