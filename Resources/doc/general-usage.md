@@ -68,7 +68,7 @@
 
     $myCompany = new Company();
     $settingsManager->set('delivery_frequency_setting', 'daily', $myCompany);
-    $settingsManager->get('delivery_frequency_setting', $this->getUser()); // => 'daily'
+    $settingsManager->get('delivery_frequency_setting', $myCompany); // => 'daily'
     ```
 
 * In services: you must inject <em>@settings_manager</em> or the whole <em>@service_container</em> into your service and use it in the same way as in controllers (like in the example above)
