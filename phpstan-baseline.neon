@@ -91,11 +91,6 @@ parameters:
 			path: Form/Type/SettingsType.php
 
 		-
-			message: "#^Parameter \\#2 \\$input1 of function array_map expects array, array\\|false given\\.$#"
-			count: 1
-			path: Form/Type/SettingsType.php
-
-		-
 			message: "#^Method Dmishh\\\\SettingsBundle\\\\Form\\\\Type\\\\SettingsType\\:\\:configureOptions\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: Form/Type/SettingsType.php
@@ -147,11 +142,6 @@ parameters:
 
 		-
 			message: "#^Method Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:__construct\\(\\) has parameter \\$settingsConfiguration with no value type specified in iterable type array\\.$#"
-			count: 1
-			path: Manager/SettingsManager.php
-
-		-
-			message: "#^Property Dmishh\\\\SettingsBundle\\\\Manager\\\\SettingsManager\\:\\:\\$repository \\(Doctrine\\\\ORM\\\\EntityRepository\\) does not accept Doctrine\\\\Persistence\\\\ObjectRepository\\.$#"
 			count: 1
 			path: Manager/SettingsManager.php
 
