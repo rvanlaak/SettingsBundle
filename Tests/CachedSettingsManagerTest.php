@@ -117,13 +117,13 @@ class CachedSettingsManagerTest extends TestCase
         $cachedSettingsManager->expects($this->at(0))
             ->method('invalidateCache')
             ->with($this->equalTo($name), $this->equalTo($owner))
-            ->willReturn(null);
+            ->willReturn(true);
 
         // Clear all cache for this owner
         $cachedSettingsManager->expects($this->at(1))
             ->method('invalidateCache')
             ->with($this->equalTo(null), $this->equalTo($owner))
-            ->willReturn(null);
+            ->willReturn(true);
 
         $cachedSettingsManager->set($name, $value, $owner);
     }
@@ -162,11 +162,11 @@ class CachedSettingsManagerTest extends TestCase
         $cachedSettingsManager->expects($this->at(0))
             ->method('invalidateCache')
             ->with($this->equalTo($name), $this->equalTo($owner))
-            ->willReturn(null);
+            ->willReturn(true);
         $cachedSettingsManager->expects($this->at(1))
             ->method('invalidateCache')
             ->with($this->equalTo(null), $this->equalTo($owner))
-            ->willReturn(null);
+            ->willReturn(true);
 
         $cachedSettingsManager->clear($name, $owner);
     }
