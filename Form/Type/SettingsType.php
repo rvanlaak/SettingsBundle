@@ -78,8 +78,8 @@ class SettingsType extends AbstractType
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getBlockPrefix()
     {
         return 'settings_management';
