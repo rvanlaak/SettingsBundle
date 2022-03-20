@@ -76,7 +76,10 @@ class SettingsType extends AbstractType
             ]
         );
     }
-
+    
+    /**
+     * @return string
+     */
     public function getBlockPrefix()
     {
         return 'settings_management';
