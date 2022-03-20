@@ -1,7 +1,9 @@
 dmishh_settings_manage_global:
     path:         /global
-    defaults:     { _controller: DmishhSettingsBundle:Settings:manageGlobal }
+    defaults:
+        _controller: Dmishh\SettingsBundle\Controller\SettingsController::manageGlobalAction
 
 dmishh_settings_manage_own:
     path:         /personal
-    defaults:     { _controller: DmishhSettingsBundle:Settings:manageOwn }
+    defaults:
+        _controller: Dmishh\SettingsBundle\Controller\SettingsController::manageOwnAction
