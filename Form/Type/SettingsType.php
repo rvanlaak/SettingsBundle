@@ -80,7 +80,7 @@ class SettingsType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix(): void
+    public function getBlockPrefix(): string
     {
         return 'settings_management';
     }
