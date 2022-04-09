@@ -28,7 +28,7 @@ class Setting
         return $this->id;
     }
     
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -53,7 +53,7 @@ class Setting
         return $this->ownerId;
     }
     
-    public function setOwnerId(?string $ownerId)
+    public function setOwnerId(?string $ownerId): void
     {
         $this->ownerId = $ownerId;
     }
