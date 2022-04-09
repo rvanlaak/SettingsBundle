@@ -17,7 +17,7 @@ class SettingsType extends AbstractType
 {
     protected $settingsConfiguration;
 
-    public function __construct(array $settingsConfiguration): void
+    public function __construct(array $settingsConfiguration)
     {
         $this->settingsConfiguration = $settingsConfiguration;
     }
