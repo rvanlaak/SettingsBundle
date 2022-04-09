@@ -17,7 +17,7 @@ class SettingsType extends AbstractType
 {
     protected $settingsConfiguration;
 
-    public function __construct(array $settingsConfiguration)
+    public function __construct(array $settingsConfiguration): void
     {
         $this->settingsConfiguration = $settingsConfiguration;
     }
@@ -25,7 +25,7 @@ class SettingsType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($this->settingsConfiguration as $name => $configuration) {
             // If setting's value exists in data and setting isn't disabled
@@ -68,7 +68,7 @@ class SettingsType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -80,7 +80,7 @@ class SettingsType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): void
     {
         return 'settings_management';
     }
