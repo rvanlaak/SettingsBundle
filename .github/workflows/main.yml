@@ -15,8 +15,25 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.2', '7.4', '8.0' ]
-                symfony: [ '4.4.*', '5.3.*' ]
+                php: [ '8.0' ]
+                symfony: [ '5.4.*', '6.0.*' ]
+        name: Test on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
+        steps:
+            -   uses: actions/checkout@v2
+            -   uses: shivammathur/setup-php@v2
+                with:
+                    php-version: ${{ matrix.php }}
+                    coverage: none # disable xdebug, pcov
+            -   run: composer require symfony/framework-bundle:${{ matrix.symfony }} --no-update
+            -   run: composer require symfony/form:${{ matrix.symfony }} --no-update
+            -   run: composer install
+            -   run: make test
+    test-hightest:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php: [ '8.1' ]
+                symfony: [ '6.1.*' ]
         name: Test on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
         steps:
             -   uses: actions/checkout@v2
@@ -32,8 +49,8 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.2', '7.3' ]
-                symfony: [ '3.4.*', '4.4.*' ]
+                php: [ '7.4' ]
+                symfony: [ '5.4.*']
         name: Test lowest on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
         steps:
             -   uses: actions/checkout@v2
