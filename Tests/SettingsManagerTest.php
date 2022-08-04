@@ -2,9 +2,13 @@
 
 namespace Dmishh\SettingsBundle\Tests;
 
+use Dmishh\SettingsBundle\Entity\Setting;
 use Dmishh\SettingsBundle\Manager\SettingsManager;
 use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
+use Dmishh\SettingsBundle\Serializer\PhpSerializer;
 use Dmishh\SettingsBundle\Serializer\SerializerFactory;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use Mockery;
 
 class SettingsManagerTest extends AbstractTest
@@ -245,17 +249,17 @@ class SettingsManagerTest extends AbstractTest
     public function testFlush()
     {
         $names = ['foo', 'bar', 'baz'];
-        $settings = 'foobar';
+        $settings = ['foobar'];
         $owner = null;
         $value = 'settingValue';
         $serializedValue = 'sValue';
 
-        $flushMethod = new \ReflectionMethod('Dmishh\SettingsBundle\Manager\SettingsManager', 'flush');
+        $flushMethod = new \ReflectionMethod(SettingsManager::class, 'flush');
         $flushMethod->setAccessible(true);
 
         $serializer = $this
-            ->getMockBuilder('Dmishh\SettingsBundle\Serializer\PhpSerializer')
-            ->setMethods(['serialize'])
+            ->getMockBuilder(PhpSerializer::class)
+            ->onlyMethods(['serialize'])
             ->getMock();
 
         $serializer
@@ -265,9 +269,9 @@ class SettingsManagerTest extends AbstractTest
             ->willReturn($serializedValue);
 
         $repo = $this
-            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->getMockBuilder(EntityRepository::class)
             ->disableOriginalConstructor()
-            ->setMethods(['findBy'])
+            ->onlyMethods(['findBy'])
             ->getMock();
 
         $repo->expects($this->once())->method('findBy')->with(
@@ -280,26 +284,26 @@ class SettingsManagerTest extends AbstractTest
         )->willReturn($settings);
 
         $em = $this
-            ->getMockBuilder('Doctrine\Orm\EntityManager')
+            ->getMockBuilder(EntityManager::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getRepository', 'flush'])
+            ->onlyMethods(['getRepository', 'flush'])
             ->getMock();
 
-        $em->expects($this->once())->method('getRepository')->willReturn($repo);
-        $em->expects($this->once())->method('flush');
+        $em->expects(self::once())->method('getRepository')->willReturn($repo);
+        $em->expects(self::once())->method('flush');
 
         $setting = $this
-            ->getMockBuilder('Dmishh\SettingsBundle\Entity\Settings')
+            ->getMockBuilder(Setting::class)
             ->disableOriginalConstructor()
-            ->setMethods(['setValue'])
+            ->onlyMethods(['setValue'])
             ->getMock();
 
         $setting->expects($this->exactly(\count($names)))->method('setValue')->with($this->equalTo($serializedValue));
 
         $manager = $this
-            ->getMockBuilder('Dmishh\SettingsBundle\Manager\SettingsManager')
+            ->getMockBuilder(SettingsManager::class)
             ->setConstructorArgs([$em, $serializer, []])
-            ->setMethods(['findSettingByName', 'get'])
+            ->onlyMethods(['findSettingByName', 'get'])
             ->getMock();
 
         $manager
@@ -334,7 +338,7 @@ class SettingsManagerTest extends AbstractTest
         $s4 = $this->createSetting('foo');
         $settings = [$s1, $s2, $s3, $s4];
 
-        $method = new \ReflectionMethod('Dmishh\SettingsBundle\Manager\SettingsManager', 'findSettingByName');
+        $method = new \ReflectionMethod(SettingsManager::class, 'findSettingByName');
         $method->setAccessible(true);
 
         $result = $method->invoke($settingsManager, $settings, 'bar');

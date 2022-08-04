@@ -109,20 +109,18 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('set')->once()->with($name, $value, $owner);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['invalidateCache'])
+            ->onlyMethods(['invalidateCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
 
-        // Clear the cache
-        $cachedSettingsManager->expects($this->at(0))
+        $cachedSettingsManager->expects($this->exactly(2))
             ->method('invalidateCache')
-            ->with($this->equalTo($name), $this->equalTo($owner))
-            ->willReturn(true);
-
-        // Clear all cache for this owner
-        $cachedSettingsManager->expects($this->at(1))
-            ->method('invalidateCache')
-            ->with($this->equalTo(null), $this->equalTo($owner))
+            ->withConsecutive(
+                // Clear the cache
+                [$this->equalTo($name), $this->equalTo($owner)],
+                // Clear all cache for this owner
+                [$this->equalTo(null), $this->equalTo($owner)],
+            )
             ->willReturn(true);
 
         $cachedSettingsManager->set($name, $value, $owner);
@@ -137,7 +135,7 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('setMany')->once()->with($settings, $owner);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['invalidateCache'])
+            ->onlyMethods(['invalidateCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
         $cachedSettingsManager->expects($this->exactly(4))
@@ -156,16 +154,15 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('clear')->once()->with($name, $owner);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['invalidateCache'])
+            ->onlyMethods(['invalidateCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
-        $cachedSettingsManager->expects($this->at(0))
+        $cachedSettingsManager->expects($this->exactly(2))
             ->method('invalidateCache')
-            ->with($this->equalTo($name), $this->equalTo($owner))
-            ->willReturn(true);
-        $cachedSettingsManager->expects($this->at(1))
-            ->method('invalidateCache')
-            ->with($this->equalTo(null), $this->equalTo($owner))
+            ->withConsecutive(
+                [$this->equalTo($name), $this->equalTo($owner)],
+                [$this->equalTo(null), $this->equalTo($owner)],
+            )
             ->willReturn(true);
 
         $cachedSettingsManager->clear($name, $owner);

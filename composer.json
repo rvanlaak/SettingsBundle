@@ -32,7 +32,7 @@
         "doctrine/doctrine-bundle": "^2.0",
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.1",
-        "nyholm/symfony-bundle-test": "^1.6",
+        "nyholm/symfony-bundle-test": "^2.0.0",
         "symfony/translation": "^5.4 || ^6.0",
         "symfony/security-core": "^5.4 || ^6.0",
         "twig/twig": "^2.0 || ^3.0"
