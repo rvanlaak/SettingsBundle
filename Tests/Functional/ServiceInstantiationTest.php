@@ -12,7 +12,6 @@ use Nyholm\BundleTest\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-
 /**
  * @internal
  */
@@ -40,13 +39,13 @@ final class ServiceInstantiationTest extends KernelTestCase
         self::bootKernel();
 
         $container = self::getContainer();
-        self::assertTrue(true); //Kernel boot
+        self::assertTrue(true); // Kernel boot
     }
 
     public function testBundleWithDifferentConfiguration(): void
     {
         // Boot the kernel with a config closure, the handleOptions call in createKernel is important for that to work
-        $kernel = self::bootKernel(['config' => static function(TestKernel $kernel){
+        $kernel = self::bootKernel(['config' => static function (TestKernel $kernel) {
             // Add some other bundles we depend on
             $kernel->addTestBundle(DoctrineBundle::class);
 

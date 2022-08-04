@@ -79,7 +79,7 @@ class SettingsController extends AbstractController
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
         if (!$user instanceof SettingsOwnerInterface) {
-            //For this to work the User entity must implement SettingsOwnerInterface
+            // For this to work the User entity must implement SettingsOwnerInterface
             throw new AccessDeniedException();
         }
 

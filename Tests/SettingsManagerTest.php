@@ -229,15 +229,15 @@ class SettingsManagerTest extends AbstractTest
         $user = $this->createOwner();
         $settingsManager = $this->createSettingsManager();
 
-        //test default global value
+        // test default global value
         $this->assertNull($settingsManager->get('some_setting'));
         $this->assertEquals('foobar', $settingsManager->get('some_setting', null, 'foobar'));
 
-        //test default user value
+        // test default user value
         $this->assertNull($settingsManager->get('some_setting'));
         $this->assertEquals('foobar', $settingsManager->get('some_setting', $user, 'foobar'));
 
-        //test when there is an actual value
+        // test when there is an actual value
         $settingsManager->set('some_setting', 'value');
         $this->assertEquals('value', $settingsManager->get('some_setting', null, 'foobar'));
         $this->assertEquals('value', $settingsManager->get('some_setting', $user, 'foobar'));

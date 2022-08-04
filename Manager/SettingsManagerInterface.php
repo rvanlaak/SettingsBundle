@@ -6,9 +6,9 @@ use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 
 interface SettingsManagerInterface
 {
-    const SCOPE_ALL = 'all';
-    const SCOPE_GLOBAL = 'global';
-    const SCOPE_USER = 'user';
+    public const SCOPE_ALL = 'all';
+    public const SCOPE_GLOBAL = 'global';
+    public const SCOPE_USER = 'user';
 
     /**
      * Returns setting value by its name.
