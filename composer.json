@@ -21,7 +21,7 @@
     ],
     "require": {
         "php": "^7.4|^8.0",
-        "psr/cache": "^2.0|^3.0",
+        "psr/cache": "^1.0.1|^2.0|^3.0",
         "symfony/framework-bundle": "^5.4|^6.0",
         "symfony/form": "^5.4 || ^6.0",
         "doctrine/orm": "^2.6.3|^2.7"
