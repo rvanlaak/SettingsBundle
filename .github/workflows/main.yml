@@ -49,7 +49,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php: [ '7.4' ]
+                php: [ '8.0' ]
                 symfony: [ '5.4.*']
         name: Test lowest on Symfony ${{ matrix.symfony }} with PHP ${{ matrix.php }}
         steps:
