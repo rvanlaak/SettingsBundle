@@ -12,12 +12,16 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
   <coverage>
     <include>
-      <directory>./</directory>
-    </include>
-    <exclude>
+      <directory>./Controller</directory>
+      <directory>./DependencyInjection</directory>
+      <directory>./Entity</directory>
+      <directory>./Exception</directory>
+      <directory>./Form</directory>
+      <directory>./Manager</directory>
       <directory>./Resources</directory>
-      <directory>./Tests</directory>
-    </exclude>
+      <directory>./Serializer</directory>
+      <directory>./Twig</directory>
+    </include>
   </coverage>
   <testsuites>
     <testsuite name="SettingsBundle Test Suite">

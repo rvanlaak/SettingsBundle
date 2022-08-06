@@ -15,20 +15,24 @@ interface SettingsManagerInterface
      *
      * @param mixed|null $default value to return if the setting is not set
      */
-    public function get(string $name, ?SettingsOwnerInterface $owner = null, $default = null);
+    public function get(string $name, ?SettingsOwnerInterface $owner = null, mixed $default = null): mixed;
 
     /**
      * Returns all settings as associative name-value array.
+     *
+     * @return array<string, mixed>
      */
     public function all(?SettingsOwnerInterface $owner = null): array;
 
     /**
      * Sets setting value by its name.
      */
-    public function set(string $name, $value, ?SettingsOwnerInterface $owner = null): void;
+    public function set(string $name, mixed $value, ?SettingsOwnerInterface $owner = null): void;
 
     /**
      * Sets settings' values from associative name-value array.
+     *
+     * @param array<string, mixed> $settings
      */
     public function setMany(array $settings, ?SettingsOwnerInterface $owner = null): void;
 

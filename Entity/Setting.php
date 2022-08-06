@@ -11,41 +11,33 @@ use Doctrine\ORM\Mapping as ORM;
 class Setting
 {
     /**
-     * @var int
-     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private ?int $id;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private ?string $name;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(type="text", nullable=true)
      */
-    private $value;
+    private ?string $value;
 
     /**
-     * @var string|null
-     *
      * @ORM\Column(name="owner_id", type="string", length=255, nullable=true)
      */
-    private $ownerId;
+    private ?string $ownerId;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -70,7 +62,7 @@ class Setting
         return $this->ownerId;
     }
 
-    public function setOwnerId(?string $ownerId)
+    public function setOwnerId(?string $ownerId): void
     {
         $this->ownerId = $ownerId;
     }
