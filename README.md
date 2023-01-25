@@ -3,8 +3,6 @@ SettingsBundle
 
 Bundle for storing configuration with Symfony in database using Doctrine2 ORM.
 
-[![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
-
 ## Features
 
 * Easy-to-use (Twig extension, container service)
