@@ -1,7 +1,9 @@
 SettingsBundle
 ==============
 
-Bundle for storing configuration with Symfony in database using Doctrine2 ORM.
+Bundle for storing configuration with Symfony in database using Doctrine ORM.
+
+👀 This bundle was previously known as `dmissh/settings-bundle`, and the Packagist installation instruction will stay as is. 
 
 ## Features
 
