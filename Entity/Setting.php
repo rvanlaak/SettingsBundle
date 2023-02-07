@@ -4,7 +4,8 @@ namespace Dmishh\SettingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Table(name: 'dmishh_settings', indexes: [new ORM\Index(name: 'name_owner_id_idx', columns: ['name', 'owner_id'])])]
+#[ORM\Table(name: 'dmishh_settings')]
+#[ORM\Index(name: 'name_owner_id_idx', columns: ['name', 'owner_id'])]
 #[ORM\Entity]
 class Setting
 {
