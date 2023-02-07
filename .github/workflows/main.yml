@@ -28,6 +28,7 @@ jobs:
             -   run: composer require symfony/form:${{ matrix.symfony }} --no-update
             -   run: composer install
             -   run: make test
+
     test-highest:
         runs-on: ubuntu-latest
         strategy:
@@ -45,6 +46,7 @@ jobs:
             -   run: composer require symfony/form:${{ matrix.symfony }} --no-update
             -   run: composer install
             -   run: make test
+
     test-lowest:
         runs-on: ubuntu-latest
         strategy:
@@ -62,8 +64,12 @@ jobs:
             -   run: composer require symfony/form:${{ matrix.symfony }} --no-update
             -   run: composer install
             -   run: make test-lowest
+
     php-cs-fixer:
-        runs-on: ubuntu-latest
+        # https://github.com/jakzal/phpqa php-cs-fixer is not supported for php 8.2 (checked on 07-02-2023)
+        # https://github.com/jakzal/phpqa/issues/398
+        runs-on: ubuntu-20.04
+        #runs-on: ubuntu-latest
         steps:
             -   uses: actions/checkout@v3
             -   name: Run PHP-CS-Fixer
