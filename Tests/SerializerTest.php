@@ -21,8 +21,8 @@ class SerializerTest extends AbstractTest
     public function testJsonSerializer(): void
     {
         $serializer = SerializerFactory::create('json');
-        $this->assertEquals(json_encode(null, JSON_THROW_ON_ERROR), $serializer->serialize(null));
-        $this->assertEquals(json_encode(self::$testData, JSON_THROW_ON_ERROR), $serializer->serialize(self::$testData));
+        $this->assertEquals(json_encode(null, \JSON_THROW_ON_ERROR), $serializer->serialize(null));
+        $this->assertEquals(json_encode(self::$testData, \JSON_THROW_ON_ERROR), $serializer->serialize(self::$testData));
         $this->assertEquals(self::$testData, $serializer->unserialize($serializer->serialize(self::$testData)));
     }
 

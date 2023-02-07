@@ -36,7 +36,7 @@ class SettingsManager implements SettingsManagerInterface
 
     public function __construct(
         private EntityManagerInterface $em,
-        private SerializerInterface    $serializer,
+        private SerializerInterface $serializer,
         private array $settingsConfiguration = []
     ) {
         $this->repository = $em->getRepository(Setting::class);
@@ -58,8 +58,8 @@ class SettingsManager implements SettingsManagerInterface
                 break;
             case SettingsManagerInterface::SCOPE_ALL:
                 $value = $this->globalSettings[$name] ?? null;
-            // Do not break here. Try to fetch the users settings
-            // no break
+                // Do not break here. Try to fetch the users settings
+                // no break
             case SettingsManagerInterface::SCOPE_USER:
                 if (null !== $owner) {
                     $value = $this->ownerSettings[$owner->getSettingIdentifier()][$name] ?? $value;

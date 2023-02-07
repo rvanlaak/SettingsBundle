@@ -4,14 +4,13 @@ namespace Dmishh\SettingsBundle\Tests;
 
 use Dmishh\SettingsBundle\Entity\Setting;
 use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
+use Dmishh\SettingsBundle\Exception\WrongScopeException;
 use Dmishh\SettingsBundle\Manager\SettingsManager;
 use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Dmishh\SettingsBundle\Serializer\PhpSerializer;
 use Dmishh\SettingsBundle\Serializer\SerializerFactory;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
-use Mockery;
-use Dmishh\SettingsBundle\Exception\WrongScopeException;
 
 class SettingsManagerTest extends AbstractTest
 {
@@ -368,7 +367,7 @@ class SettingsManagerTest extends AbstractTest
 
     protected function createOwner(string $ownerId = 'user1'): SettingsOwnerInterface
     {
-        return Mockery::mock(
+        return \Mockery::mock(
             SettingsOwnerInterface::class,
             ['getSettingIdentifier' => $ownerId]
         );

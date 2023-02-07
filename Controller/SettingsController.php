@@ -8,18 +8,17 @@ use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SettingsController extends AbstractController
 {
     public function __construct(
-        private TranslatorInterface      $translator,
+        private TranslatorInterface $translator,
         private SettingsManagerInterface $settingsManager,
-        private string                   $template,
-        private bool                     $securityManageOwnSettings,
-        private ?string                  $securityRole,
+        private string $template,
+        private bool $securityManageOwnSettings,
+        private ?string $securityRole,
     ) {
     }
 
