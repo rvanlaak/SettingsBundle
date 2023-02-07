@@ -4,32 +4,22 @@ namespace Dmishh\SettingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="dmishh_settings", indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "owner_id"})})
- * @ORM\Entity
- */
+#[ORM\Table(name: 'dmishh_settings', indexes: [new ORM\Index(name: 'name_owner_id_idx', columns: ['name', 'owner_id'])])]
+#[ORM\Entity]
 class Setting
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $name;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $value;
 
-    /**
-     * @ORM\Column(name="owner_id", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: 'owner_id', type: 'string', length: 255, nullable: true)]
     private ?string $ownerId;
 
     public function getId(): ?int

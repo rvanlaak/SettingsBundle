@@ -2,7 +2,6 @@
 
 namespace Dmishh\SettingsBundle\Tests;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
@@ -35,15 +34,7 @@ abstract class AbstractTest extends TestCase
         $config->setProxyNamespace('EntityProxy');
         $config->setAutoGenerateProxyClasses(true);
 
-        if (method_exists(AnnotationRegistry::class, 'registerFile')) {
-            AnnotationRegistry::registerFile(
-                __DIR__ .
-                '/../vendor/doctrine/orm/lib/Doctrine/ORM/Mapping/Driver/DoctrineAnnotations.php'
-            );
-        }
-
-        $driver = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver(
-            new \Doctrine\Common\Annotations\AnnotationReader(),
+        $driver = new \Doctrine\ORM\Mapping\Driver\AttributeDriver(
             [__DIR__.'/../Entity']
         );
         $config->setMetadataDriverImpl($driver);
