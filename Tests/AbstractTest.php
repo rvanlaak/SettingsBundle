@@ -4,14 +4,12 @@ namespace Dmishh\SettingsBundle\Tests;
 
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\Configuration;
+use Doctrine\ORM\EntityManager;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractTest extends TestCase
 {
-    /**
-     * @var \Doctrine\ORM\EntityManager
-     */
-    protected $em;
+    protected EntityManager $em;
 
     /**
      * {@inheritdoc}
@@ -30,7 +28,7 @@ abstract class AbstractTest extends TestCase
         $this->em->close();
     }
 
-    protected function createEntityManager()
+    protected function createEntityManager(): EntityManager
     {
         $config = new Configuration();
         $config->setProxyDir(sys_get_temp_dir());
@@ -55,12 +53,10 @@ abstract class AbstractTest extends TestCase
             'memory' => true,
         ];
 
-        $em = \Doctrine\ORM\EntityManager::create($conn, $config);
-
-        return $em;
+        return EntityManager::create($conn, $config);
     }
 
-    protected function generateSchema()
+    protected function generateSchema(): void
     {
         $metadatas = $this->em->getMetadataFactory()->getAllMetadata();
 

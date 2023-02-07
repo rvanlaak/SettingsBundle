@@ -13,17 +13,10 @@ class CachedSettingsManager implements SettingsManagerInterface
 {
     public const PREFIX = 'dmishh_settings_%s_%s';
 
-    private CacheItemPoolInterface $storage;
-
-    private SettingsManagerInterface $settingsManager;
-
-    private int|DateInterval|null $cacheLifeTime;
-
-    public function __construct(SettingsManagerInterface $settingsManager, CacheItemPoolInterface $storage, int|DateInterval|null $cacheLifeTime)
+    public function __construct(private SettingsManagerInterface $settingsManager,
+                                private CacheItemPoolInterface   $storage,
+                                private int|DateInterval|null    $cacheLifeTime)
     {
-        $this->settingsManager = $settingsManager;
-        $this->storage = $storage;
-        $this->cacheLifeTime = $cacheLifeTime;
     }
 
     /**

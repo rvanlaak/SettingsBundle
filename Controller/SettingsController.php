@@ -13,28 +13,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SettingsController extends AbstractController
 {
-    private ?string $securityRole;
-
-    private bool $securityManageOwnSettings;
-
-    private TranslatorInterface $translator;
-
-    private SettingsManagerInterface $settingsManager;
-
-    private string $template;
-
     public function __construct(
-        TranslatorInterface $translator,
-        SettingsManagerInterface $settingsManager,
-        string $template,
-        bool $securityManageOwnSettings,
-        ?string $securityRole
+        private TranslatorInterface      $translator,
+        private SettingsManagerInterface $settingsManager,
+        private string                   $template,
+        private bool                     $securityManageOwnSettings,
+        private ?string $securityRole
     ) {
-        $this->translator = $translator;
-        $this->settingsManager = $settingsManager;
-        $this->template = $template;
-        $this->securityManageOwnSettings = $securityManageOwnSettings;
-        $this->securityRole = $securityRole;
     }
 
     /**

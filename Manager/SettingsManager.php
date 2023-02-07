@@ -29,31 +29,17 @@ class SettingsManager implements SettingsManagerInterface
      */
     private ?array $ownerSettings = null;
 
-    private EntityManagerInterface $em;
-
     /**
      * @var EntityRepository<Setting>
      */
     private EntityRepository $repository;
 
-    private SerializerInterface $serializer;
-
-    /**
-     * $settingConfiguration['foo']['scope'].
-     *
-     * @var array<string, array<string, string>>
-     */
-    private array $settingsConfiguration;
-
     public function __construct(
-        EntityManagerInterface $em,
-        SerializerInterface $serializer,
-        array $settingsConfiguration = []
+        private EntityManagerInterface $em,
+        private SerializerInterface    $serializer,
+        private array $settingsConfiguration = []
     ) {
-        $this->em = $em;
         $this->repository = $em->getRepository(Setting::class);
-        $this->serializer = $serializer;
-        $this->settingsConfiguration = $settingsConfiguration;
     }
 
     /**
@@ -81,7 +67,7 @@ class SettingsManager implements SettingsManagerInterface
                 break;
         }
 
-        return null === $value ? $default : $value;
+        return $value ?? $default;
     }
 
     /**
@@ -270,7 +256,7 @@ class SettingsManager implements SettingsManagerInterface
         }
 
         /** @var Setting $setting */
-        foreach ($this->repository->findBy(['ownerId' => null === $owner ? null : $owner->getSettingIdentifier()]) as $setting) {
+        foreach ($this->repository->findBy(['ownerId' => $owner?->getSettingIdentifier()]) as $setting) {
             if (\array_key_exists($setting->getName(), $settings)) {
                 $settings[$setting->getName()] = $this->serializer->unserialize($setting->getValue());
             }

@@ -354,7 +354,7 @@ class SettingsManagerTest extends AbstractTest
     protected function createSetting($name)
     {
         $s = $this->getMockBuilder('Dmishh\SettingsBundle\Entity\Setting')
-            ->setMethods(['getName'])
+            ->onlyMethods(['getName'])
             ->getMock();
 
         $s->expects($this->any())

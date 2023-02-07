@@ -10,22 +10,11 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PublicServicePass implements CompilerPassInterface
 {
-    /**
-     * A regex to match the services that should be public.
-     *
-     * @var string
-     */
-    private $regex;
-
-    /**
-     * @param string $regex
-     */
-    public function __construct($regex = '|.*|')
+    public function __construct(private string $regex = '|.*|')
     {
-        $this->regex = $regex;
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             if (preg_match($this->regex, $id)) {

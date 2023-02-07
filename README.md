@@ -3,7 +3,7 @@ SettingsBundle
 
 Bundle for storing configuration with Symfony in database using Doctrine2 ORM.
 
-[![Build Status](https://travis-ci.org/dmishh/SettingsBundle.png?branch=master)](https://travis-ci.org/dmishh/SettingsBundle)
+[![Build Status](https://github.com/rvanlaak/SettingsBundle/actions/workflows/main.yml/badge.svg)](https://github.com/rvanlaak/SettingsBundle/actions/workflows/main.yml)
 
 ## Features
 
@@ -39,22 +39,22 @@ Twig template:
 {{ get_setting('some_user_setting', app.user) }} {# => 'value' #}
 ```
 
-See the [general usage](/Resources/doc/general-usage.md) documentation for more examples.
+See the [general usage](./Resources/doc/general-usage.md) documentation for more examples.
 
 ## Documentation
 
-* [Installation](/Resources/doc/installation.md)
-* [General usage](/Resources/doc/general-usage.md)
-* [Scopes](/Resources/doc/scopes.md)
-* [Advanced configuration](/Resources/doc/advanced-configuration.md)
-* [I18n](/Resources/doc/i18n.md)
-* [Customization](/Resources/doc/customization.md)
-* [FAQ](/Resources/doc/faq.md)
+* [Installation](./Resources/doc/installation.md)
+* [General usage](./Resources/doc/general-usage.md)
+* [Scopes](./Resources/doc/scopes.md)
+* [Advanced configuration](./Resources/doc/advanced-configuration.md)
+* [I18n](./Resources/doc/i18n.md)
+* [Customization](./Resources/doc/customization.md)
+* [FAQ](./Resources/doc/faq.md)
 
 ## Changelog, Roadmap and contribution
 
-Please, do not hesitate to [report bugs](https://github.com/dmishh/SettingsBundle/issues) or send
-[pull requests](https://github.com/dmishh/SettingsBundle/pulls). It will help to motivate me to support
+Please, do not hesitate to [report bugs](https://github.com/rvanlaak/SettingsBundle/issues) or send
+[pull requests](https://github.com/rvanlaak/SettingsBundle/pulls). It will help to motivate me to support
 library better than anything else :)
 
 See [CHANGELOG.md](CHANGELOG.md) for all major changes.
@@ -65,4 +65,4 @@ Make sure to read the [UPGRADE.md](UPGRADE.md) to successfully migrate your appl
 
 ## License
 
-The MIT License. For the full text of license, please, see [LICENSE](/LICENSE)
+The MIT License. For the full text of license, please, see [LICENSE](LICENSE)
