@@ -20,7 +20,7 @@ class ServiceTest extends AbstractExtensionTestCase
         ];
     }
 
-    public function testAlias()
+    public function testAlias(): void
     {
         $this->load();
         $this->assertContainerBuilderHasAlias(SettingsManagerInterface::class, SettingsManager::class);
@@ -29,7 +29,7 @@ class ServiceTest extends AbstractExtensionTestCase
     /**
      * If we provide a cache_service we should use the CachedSettingsManager as default.
      */
-    public function testCacheServiceAlias()
+    public function testCacheServiceAlias(): void
     {
         $this->load(['cache_service' => 'cache']);
         $this->assertContainerBuilderHasAlias(SettingsManagerInterface::class, CachedSettingsManager::class);

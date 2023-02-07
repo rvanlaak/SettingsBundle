@@ -13,14 +13,14 @@ use Twig\TwigFunction;
  */
 class SettingsExtension extends AbstractExtension
 {
-    private $settingsManager;
-
-    public function __construct(SettingsManagerInterface $settingsManager)
+    public function __construct(private SettingsManagerInterface $settingsManager)
     {
-        $this->settingsManager = $settingsManager;
     }
 
-    public function getFunctions()
+    /**
+     * @return TwigFunction[]
+     */
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_setting', [$this->settingsManager, 'get']),

@@ -4,13 +4,7 @@ namespace Dmishh\SettingsBundle\Serializer;
 
 interface SerializerInterface
 {
-    /**
-     * @return string
-     */
-    public function serialize($data);
+    public function serialize(mixed $data): string;
 
-    /**
-     * @param string $serialized
-     */
-    public function unserialize($serialized);
+    public function unserialize(string $serialized): mixed;
 }

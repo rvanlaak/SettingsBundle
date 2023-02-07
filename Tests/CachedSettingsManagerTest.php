@@ -2,6 +2,7 @@
 
 namespace Dmishh\SettingsBundle\Tests;
 
+use Dmishh\SettingsBundle\Entity\SettingsOwnerInterface;
 use Dmishh\SettingsBundle\Manager\CachedSettingsManager;
 use Dmishh\SettingsBundle\Manager\SettingsManager;
 use PHPUnit\Framework\TestCase;
@@ -9,7 +10,7 @@ use Psr\Cache\CacheItemPoolInterface;
 
 class CachedSettingsManagerTest extends TestCase
 {
-    public function testGet()
+    public function testGet(): void
     {
         $owner = $this->createOwner();
         $name = 'name';
@@ -20,7 +21,7 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('get')->once()->with($name, $owner, $defaultValue)->andReturn($value);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['fetchFromCache', 'storeInCache'])
+            ->onlyMethods(['fetchFromCache', 'storeInCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
         $cachedSettingsManager->expects($this->once())
@@ -35,7 +36,7 @@ class CachedSettingsManagerTest extends TestCase
         $this->assertEquals($value, $cachedSettingsManager->get($name, $owner, $defaultValue));
     }
 
-    public function testGetHit()
+    public function testGetHit(): void
     {
         $owner = $this->createOwner();
         $name = 'name';
@@ -45,7 +46,7 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager = \Mockery::mock(SettingsManager::class);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['fetchFromCache', 'storeInCache'])
+            ->onlyMethods(['fetchFromCache', 'storeInCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
         $cachedSettingsManager->expects($this->once())
@@ -56,7 +57,7 @@ class CachedSettingsManagerTest extends TestCase
         $this->assertEquals($value, $cachedSettingsManager->get($name, $owner, $defaultValue));
     }
 
-    public function testAll()
+    public function testAll(): void
     {
         $owner = $this->createOwner();
         $value = ['foo' => 'bar'];
@@ -65,13 +66,15 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('all')->once()->with($owner)->andReturn($value);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['fetchFromCache', 'storeInCache'])
+            ->onlyMethods(['fetchFromCache', 'storeInCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
+
         $cachedSettingsManager->expects($this->once())
             ->method('fetchFromCache')
             ->with($this->equalTo(null), $this->equalTo($owner))
             ->willReturn(null);
+
         $cachedSettingsManager->expects($this->once())
             ->method('storeInCache')
             ->with($this->equalTo(null), $this->equalTo($value), $this->equalTo($owner))
@@ -80,7 +83,7 @@ class CachedSettingsManagerTest extends TestCase
         $this->assertEquals($value, $cachedSettingsManager->all($owner));
     }
 
-    public function testAllHit()
+    public function testAllHit(): void
     {
         $owner = $this->createOwner();
         $value = ['foo' => 'bar'];
@@ -88,9 +91,10 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager = \Mockery::mock(SettingsManager::class);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['fetchFromCache', 'storeInCache'])
+            ->onlyMethods(['fetchFromCache', 'storeInCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
+
         $cachedSettingsManager->expects($this->once())
             ->method('fetchFromCache')
             ->with($this->equalTo(null), $this->equalTo($owner))
@@ -99,7 +103,7 @@ class CachedSettingsManagerTest extends TestCase
         $this->assertEquals($value, $cachedSettingsManager->all($owner));
     }
 
-    public function testSet()
+    public function testSet(): void
     {
         $owner = $this->createOwner();
         $name = 'name';
@@ -109,26 +113,24 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('set')->once()->with($name, $value, $owner);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['invalidateCache'])
+            ->onlyMethods(['invalidateCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
 
-        // Clear the cache
-        $cachedSettingsManager->expects($this->at(0))
+        $cachedSettingsManager->expects($this->exactly(2))
             ->method('invalidateCache')
-            ->with($this->equalTo($name), $this->equalTo($owner))
-            ->willReturn(true);
-
-        // Clear all cache for this owner
-        $cachedSettingsManager->expects($this->at(1))
-            ->method('invalidateCache')
-            ->with($this->equalTo(null), $this->equalTo($owner))
+            ->withConsecutive(
+                // Clear the cache
+                [$this->equalTo($name), $this->equalTo($owner)],
+                // Clear all cache for this owner
+                [$this->equalTo(null), $this->equalTo($owner)],
+            )
             ->willReturn(true);
 
         $cachedSettingsManager->set($name, $value, $owner);
     }
 
-    public function testSetMany()
+    public function testSetMany(): void
     {
         $owner = $this->createOwner();
         $settings = ['name0' => 'value0', 'name1' => 'value1', 'name2' => 'value2'];
@@ -137,9 +139,10 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('setMany')->once()->with($settings, $owner);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['invalidateCache'])
+            ->onlyMethods(['invalidateCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
+
         $cachedSettingsManager->expects($this->exactly(4))
             ->method('invalidateCache')
             ->with($this->logicalOr('name0', 'name1', 'name2', null), $owner);
@@ -147,7 +150,7 @@ class CachedSettingsManagerTest extends TestCase
         $cachedSettingsManager->setMany($settings, $owner);
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         $owner = $this->createOwner();
         $name = 'name';
@@ -156,16 +159,16 @@ class CachedSettingsManagerTest extends TestCase
         $settingsManager->shouldReceive('clear')->once()->with($name, $owner);
 
         $cachedSettingsManager = $this->getMockBuilder(CachedSettingsManager::class)
-            ->setMethods(['invalidateCache'])
+            ->onlyMethods(['invalidateCache'])
             ->setConstructorArgs([$settingsManager, $this->getMockBuilder(CacheItemPoolInterface::class)->getMock(), 4711])
             ->getMock();
-        $cachedSettingsManager->expects($this->at(0))
+
+        $cachedSettingsManager->expects($this->exactly(2))
             ->method('invalidateCache')
-            ->with($this->equalTo($name), $this->equalTo($owner))
-            ->willReturn(true);
-        $cachedSettingsManager->expects($this->at(1))
-            ->method('invalidateCache')
-            ->with($this->equalTo(null), $this->equalTo($owner))
+            ->withConsecutive(
+                [$this->equalTo($name), $this->equalTo($owner)],
+                [$this->equalTo(null), $this->equalTo($owner)],
+            )
             ->willReturn(true);
 
         $cachedSettingsManager->clear($name, $owner);
@@ -174,7 +177,7 @@ class CachedSettingsManagerTest extends TestCase
     /**
      * Make sure we do always return a string, no matter input.
      */
-    public function testGetCacheKey()
+    public function testGetCacheKey(): void
     {
         $name = 'name';
         $owner = $this->createOwner();
@@ -192,15 +195,10 @@ class CachedSettingsManagerTest extends TestCase
         $this->assertStringContainsString('dmishh_settings', $getCacheKey->invoke($cachedSettingsManager, null, null));
     }
 
-    /**
-     * @param string $ownerId
-     *
-     * @return \Dmishh\SettingsBundle\Entity\SettingsOwnerInterface
-     */
-    protected function createOwner($ownerId = 'user1')
+    protected function createOwner(string $ownerId = 'user1'): SettingsOwnerInterface
     {
         return \Mockery::mock(
-            'Dmishh\SettingsBundle\Entity\SettingsOwnerInterface',
+            SettingsOwnerInterface::class,
             ['getSettingIdentifier' => $ownerId]
         );
     }

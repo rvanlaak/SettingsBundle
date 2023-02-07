@@ -6,7 +6,7 @@ use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 
 class WrongScopeException extends \LogicException implements SettingsException
 {
-    public function __construct($scope, $settingName)
+    public function __construct(string $scope, string $settingName)
     {
         if (SettingsManagerInterface::SCOPE_GLOBAL === $scope) {
             $message = sprintf(

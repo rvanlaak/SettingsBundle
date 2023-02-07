@@ -2,7 +2,7 @@
 
 namespace Dmishh\SettingsBundle\Form\Type;
 
-use Dmishh\SettingsBundle\Exception\SettingsException;
+use Dmishh\SettingsBundle\Exception\UnknownConstraintException;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -15,17 +15,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class SettingsType extends AbstractType
 {
-    protected $settingsConfiguration;
-
-    public function __construct(array $settingsConfiguration)
+    public function __construct(protected array $settingsConfiguration)
     {
-        $this->settingsConfiguration = $settingsConfiguration;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * @param array<string, mixed> $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         foreach ($this->settingsConfiguration as $name => $configuration) {
             // If setting's value exists in data and setting isn't disabled
@@ -41,7 +40,7 @@ class SettingsType extends AbstractType
                         if (class_exists($class)) {
                             $constraints[] = new $class($constraintOptions);
                         } else {
-                            throw new SettingsException(sprintf('Constraint class "%s" not found', $class));
+                            throw new UnknownConstraintException($class);
                         }
                     }
 
@@ -68,7 +67,7 @@ class SettingsType extends AbstractType
         }
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(
             [
@@ -77,7 +76,7 @@ class SettingsType extends AbstractType
         );
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'settings_management';
     }

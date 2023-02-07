@@ -4,48 +4,31 @@ namespace Dmishh\SettingsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="dmishh_settings", indexes={@ORM\Index(name="name_owner_id_idx", columns={"name", "owner_id"})})
- * @ORM\Entity
- */
+#[ORM\Table(name: 'dmishh_settings')]
+#[ORM\Index(name: 'name_owner_id_idx', columns: ['name', 'owner_id'])]
+#[ORM\Entity]
 class Setting
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private ?int $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="string", length=255)
-     */
-    private $name;
+    #[ORM\Column(type: 'string', length: 255)]
+    private ?string $name;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $value;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $value;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="owner_id", type="string", length=255, nullable=true)
-     */
-    private $ownerId;
+    #[ORM\Column(name: 'owner_id', type: 'string', length: 255, nullable: true)]
+    private ?string $ownerId;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function setName(?string $name)
+    public function setName(?string $name): void
     {
         $this->name = $name;
     }
@@ -70,7 +53,7 @@ class Setting
         return $this->ownerId;
     }
 
-    public function setOwnerId(?string $ownerId)
+    public function setOwnerId(?string $ownerId): void
     {
         $this->ownerId = $ownerId;
     }

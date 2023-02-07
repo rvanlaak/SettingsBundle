@@ -13,15 +13,10 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('dmishh_settings');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->root('dmishh_settings');
-        } else {
-            $rootNode = $treeBuilder->getRootNode();
-        }
+        $rootNode = $treeBuilder->getRootNode();
 
         $scopes = [
             SettingsManagerInterface::SCOPE_ALL,
@@ -32,7 +27,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->scalarNode('template')
-                    ->defaultValue('DmishhSettingsBundle:Settings:manage.html.twig')
+                    ->defaultValue('@DmishhSettings/Settings/manage.html.twig')
                 ->end()
                 ->scalarNode('cache_service')->defaultNull()->info('A service implementing Psr\Cache\CacheItemPoolInterface')->end()
                 ->integerNode('cache_lifetime')->defaultValue(3600)->end()
@@ -74,7 +69,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->variableNode('constraints')
-                                ->info('The constraints on this option. Example, use constraits found in Symfony\Component\Validator\Constraints')
+                                ->info('The constraints on this option. Example, use constraints found in Symfony\Component\Validator\Constraints')
                                 ->defaultValue([])
                                 ->validate()
                                     ->always(function ($v) {
