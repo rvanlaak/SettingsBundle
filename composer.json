@@ -24,12 +24,12 @@
         "psr/cache": "^3.0",
         "symfony/framework-bundle": "^5.4|^6.0",
         "symfony/form": "^5.4 || ^6.0",
-        "doctrine/orm": "^2.11"
+        "doctrine/orm": "^2.14"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
         "mockery/mockery": "^1.5",
-        "doctrine/doctrine-bundle": "^2.0",
+        "doctrine/doctrine-bundle": "^2.8",
         "polishsymfonycommunity/symfony-mocker-container": "^1.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.3",
         "nyholm/symfony-bundle-test": "^2.0.0",
