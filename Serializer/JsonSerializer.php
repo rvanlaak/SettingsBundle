@@ -13,6 +13,7 @@ class JsonSerializer implements SerializerInterface
     {
         $serialized = json_encode($data, JSON_THROW_ON_ERROR);
 
+        /** @phpstan-ignore-next-line */
         if (false === $serialized) {
             throw new InvalidArgumentException('Invalid argument: this argument cannot be serialized with this serializer');
         }

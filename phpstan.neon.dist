@@ -4,9 +4,11 @@ includes:
 parameters:
     level: max
     inferPrivatePropertyTypeFromConstructor: true
+    reportUnmatchedIgnoredErrors: false
     paths:
         - .
     excludePaths:
         - tmp-phpqa
         - vendor
         - Tests
+        - .github
