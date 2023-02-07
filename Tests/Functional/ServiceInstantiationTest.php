@@ -7,6 +7,7 @@ use Dmishh\SettingsBundle\Manager\SettingsManager;
 use Dmishh\SettingsBundle\Manager\SettingsManagerInterface;
 use Dmishh\SettingsBundle\Serializer\PhpSerializer;
 use Dmishh\SettingsBundle\Serializer\SerializerInterface;
+use Dmishh\SettingsBundle\Tests\CompilerPass\PublicServicePass;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Nyholm\BundleTest\TestKernel;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -28,36 +29,22 @@ final class ServiceInstantiationTest extends KernelTestCase
          * @var TestKernel $kernel
          */
         $kernel = parent::createKernel($options);
+        $kernel->addTestCompilerPass(new PublicServicePass('|Dmishh.*|'));
+        $kernel->addTestConfig(\dirname(__DIR__).'/Resources/app/config/config.yml');
+        $kernel->addTestBundle(DoctrineBundle::class);
         $kernel->addTestBundle(DmishhSettingsBundle::class);
         $kernel->handleOptions($options);
 
         return $kernel;
     }
 
-    public function testInitBundle()
+    public function testInitBundle(): void
     {
-        self::bootKernel();
+        $kernel = self::bootKernel();
 
-        $container = self::getContainer();
-        self::assertTrue(true); // Kernel boot
-    }
+        // Get the container
+        $container = $kernel->getContainer();
 
-    public function testBundleWithDifferentConfiguration(): void
-    {
-        // Boot the kernel with a config closure, the handleOptions call in createKernel is important for that to work
-        $kernel = self::bootKernel(['config' => static function (TestKernel $kernel) {
-            // Add some other bundles we depend on
-            $kernel->addTestBundle(DoctrineBundle::class);
-
-            // Add some configuration
-            $kernel->addTestConfig(\dirname(__DIR__).'/Resources/app/config/config.yml');
-//            $kernel->addTestCompilerPass(new PublicServicePass('|Dmishh.*|'));
-        }]);
-
-        $container = $this->getContainer();
-
-        self::markTestSkipped('Test failed and I dont know why');
-        // Test if your services exists
         self::assertTrue($container->has(SerializerInterface::class), 'Serializer interface not found');
         $service = $container->get(SerializerInterface::class);
         self::assertInstanceOf(PhpSerializer::class, $service, 'PHP Serializer not found');
@@ -66,7 +53,7 @@ final class ServiceInstantiationTest extends KernelTestCase
         self::assertInstanceOf(SettingsManager::class, $service);
     }
 
-    protected function getBundleClass()
+    protected function getBundleClass(): string
     {
         return DmishhSettingsBundle::class;
     }
