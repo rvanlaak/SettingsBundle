@@ -6,6 +6,7 @@ parameters:
     inferPrivatePropertyTypeFromConstructor: true
     paths:
         - .
-    excludes_analyse:
+    excludePaths:
+        - tmp-phpqa
         - vendor
         - Tests

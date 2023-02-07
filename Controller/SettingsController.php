@@ -13,30 +13,15 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class SettingsController extends AbstractController
 {
-    /**
-     * @var string|null
-     */
-    private $securityRole;
+    private ?string $securityRole;
 
-    /**
-     * @var bool
-     */
-    private $securityManageOwnSettings;
+    private bool $securityManageOwnSettings;
 
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
+    private TranslatorInterface $translator;
 
-    /**
-     * @var SettingsManagerInterface
-     */
-    private $settingsManager;
+    private SettingsManagerInterface $settingsManager;
 
-    /**
-     * @var string
-     */
-    private $template;
+    private string $template;
 
     public function __construct(
         TranslatorInterface $translator,
@@ -57,7 +42,7 @@ class SettingsController extends AbstractController
      */
     public function manageGlobalAction(Request $request): Response
     {
-        if (null !== $this->securityRole && !$this->get('security.authorization_checker')->isGranted($this->securityRole)) {
+        if (null !== $this->securityRole && !$this->isGranted($this->securityRole)) {
             throw new AccessDeniedException($this->translator->trans('not_allowed_to_edit_global_settings', [], 'settings'));
         }
 
@@ -69,7 +54,9 @@ class SettingsController extends AbstractController
      */
     public function manageOwnAction(Request $request): Response
     {
-        if (null === $this->get('security.token_storage')->getToken()) {
+        $user = $this->getUser();
+
+        if (null === $user) {
             throw new AccessDeniedException($this->translator->trans('must_be_logged_in_to_edit_own_settings', [], 'settings'));
         }
 
@@ -77,9 +64,8 @@ class SettingsController extends AbstractController
             throw new AccessDeniedException($this->translator->trans('not_allowed_to_edit_own_settings', [], 'settings'));
         }
 
-        $user = $this->get('security.token_storage')->getToken()->getUser();
         if (!$user instanceof SettingsOwnerInterface) {
-            //For this to work the User entity must implement SettingsOwnerInterface
+            // For this to work the User entity must implement SettingsOwnerInterface
             throw new AccessDeniedException();
         }
 

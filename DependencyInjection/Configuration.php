@@ -16,12 +16,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder('dmishh_settings');
-        // Keep compatibility with symfony/config < 4.2
-        if (!method_exists($treeBuilder, 'getRootNode')) {
-            $rootNode = $treeBuilder->root('dmishh_settings');
-        } else {
-            $rootNode = $treeBuilder->getRootNode();
-        }
+        $rootNode = $treeBuilder->getRootNode();
 
         $scopes = [
             SettingsManagerInterface::SCOPE_ALL,
@@ -74,7 +69,7 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->variableNode('constraints')
-                                ->info('The constraints on this option. Example, use constraits found in Symfony\Component\Validator\Constraints')
+                                ->info('The constraints on this option. Example, use constraints found in Symfony\Component\Validator\Constraints')
                                 ->defaultValue([])
                                 ->validate()
                                     ->always(function ($v) {
