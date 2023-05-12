@@ -29,3 +29,4 @@ services:
             - ~ # template
             - ~ # manage own settings
             - ~ # security role
+        public: true
